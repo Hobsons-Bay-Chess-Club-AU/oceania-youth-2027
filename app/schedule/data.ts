@@ -1,0 +1,15 @@
+export const scheduleRows = [
+  { date: "Day 0", day: "Arrival", time: "TBC", venue: "Main venue", activity: "Registration placeholder" },
+  { date: "", day: "", time: "TBC", venue: "Briefing room", activity: "Staff or team meeting placeholder" },
+  { date: "Day 1", day: "Opening", time: "TBC", venue: "Main hall", activity: "Opening ceremony placeholder" },
+  { date: "", day: "", time: "TBC", venue: "Playing hall", activity: "Round 1 placeholder" },
+  { date: "", day: "", time: "TBC", venue: "Playing hall", activity: "Round 2 placeholder" },
+  { date: "Day 2", day: "Competition", time: "TBC", venue: "Playing hall", activity: "Round 3 placeholder" },
+  { date: "", day: "", time: "TBC", venue: "Playing hall", activity: "Round 4 placeholder" },
+  { date: "Day 3", day: "Competition", time: "TBC", venue: "Playing hall", activity: "Round 5 placeholder" },
+  { date: "", day: "", time: "TBC", venue: "Playing hall", activity: "Round 6 placeholder" },
+  { date: "Day 4", day: "Competition", time: "TBC", venue: "Playing hall", activity: "Round 7 placeholder" },
+  { date: "", day: "", time: "TBC", venue: "Playing hall", activity: "Round 8 placeholder" },
+  { date: "Day 5", day: "Finals", time: "TBC", venue: "Playing hall", activity: "Round 9 placeholder" },
+  { date: "", day: "", time: "TBC", venue: "Ceremony space", activity: "Awards ceremony placeholder" },
+];

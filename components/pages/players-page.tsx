@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { Hero, Section } from "@/components/ui";
-import { playersData } from "@/lib/site-data";
+import { playersData } from "@/app/players/data";
 
 export function PlayersPage() {
   const [query, setQuery] = useState("");

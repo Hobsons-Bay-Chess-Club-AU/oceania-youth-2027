@@ -1,6 +1,6 @@
 import { siteConfig } from "@/lib/site-config";
 import { Hero, Section } from "@/components/ui";
-import { dgtGroups } from "@/lib/site-data";
+import { dgtGroups } from "@/app/dgt-boards/data";
 
 export function DgtBoardsPage() {
   return (

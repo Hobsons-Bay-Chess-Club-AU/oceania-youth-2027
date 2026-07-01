@@ -1,5 +1,5 @@
 import { Hero, Section } from "@/components/ui";
-import { regulations } from "@/lib/site-data";
+import { regulations } from "@/app/regulations/data";
 
 export function RegulationsPage() {
   return (

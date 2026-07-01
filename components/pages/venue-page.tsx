@@ -1,5 +1,5 @@
 import { Section } from "@/components/ui";
-import { venueData } from "@/lib/site-data";
+import { venueData } from "@/app/venue/data";
 
 export function VenuePage() {
   return (

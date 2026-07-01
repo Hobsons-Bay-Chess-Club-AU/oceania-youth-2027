@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { navItems } from "@/lib/site-data";
+import { navItems } from "@/app/navigation";
 import { siteConfig } from "@/lib/site-config";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {

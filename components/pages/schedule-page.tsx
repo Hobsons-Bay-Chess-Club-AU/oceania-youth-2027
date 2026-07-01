@@ -1,5 +1,5 @@
 import { Hero, Section } from "@/components/ui";
-import { scheduleRows } from "@/lib/site-data";
+import { scheduleRows } from "@/app/schedule/data";
 
 export function SchedulePage() {
   return (

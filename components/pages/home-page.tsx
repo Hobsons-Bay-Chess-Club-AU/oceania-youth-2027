@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { homePageData } from "@/lib/site-data";
+import { homePageData } from "@/app/data";
 import { siteConfig } from "@/lib/site-config";
 
 export function HomePage() {
