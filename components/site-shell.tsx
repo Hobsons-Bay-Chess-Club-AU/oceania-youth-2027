@@ -61,14 +61,6 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
 
           <div className="footer-grid">
             <div className="footer-card">
-              <p className="eyebrow">{siteConfig.footer.sourceLabel}</p>
-              <p>{siteConfig.footer.sourceText}</p>
-              <a href={siteConfig.links.sourceReference} target="_blank" rel="noreferrer">
-                Open reference source
-              </a>
-            </div>
-
-            <div className="footer-card">
               <p className="eyebrow">{siteConfig.footer.coverageTitle}</p>
               <div className="footer-link-list">
                 {siteConfig.footer.coverageLinks.map((item) => (

@@ -97,34 +97,6 @@ export function HomePage() {
               ))}
             </div>
           </div>
-
-          <div className="relative motion-fade-in">
-            <div className="motion-float absolute -left-6 -top-6 rounded-[1.75rem] bg-white px-4 py-3 shadow-xl">
-              <p className="text-xs font-black uppercase tracking-[0.16em] text-slate-400">
-                Design direction
-              </p>
-              <p className="mt-1 text-sm font-semibold text-slate-800">
-                Cleaner navigation, stronger hierarchy, and more visual energy
-              </p>
-            </div>
-            <div className="overflow-hidden rounded-[2rem] border border-white/25 bg-white/12 p-3 backdrop-blur-xl">
-              <div className="overflow-hidden rounded-[1.5rem]">
-                <img
-                  src={homePageData.heroImage}
-                  alt="Young chess players at a tournament"
-                  className="motion-image-drift h-[25rem] w-full object-cover md:h-[34rem]"
-                />
-              </div>
-            </div>
-            <div className="motion-float-delayed absolute -bottom-5 right-5 max-w-xs rounded-[1.5rem] bg-slate-950/78 p-4 text-white shadow-2xl backdrop-blur">
-              <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-200">
-                Homepage priority
-              </p>
-              <p className="mt-2 text-sm leading-6 text-white/85">
-                Make the event feel credible, contemporary, and easy to navigate within a few seconds.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -293,20 +265,18 @@ export function HomePage() {
         </article>
 
         <article className="motion-rise-in-delayed rounded-[2rem] border border-white/70 bg-slate-950 p-6 text-white shadow-[0_24px_60px_rgba(15,23,42,0.16)]">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">Source & updates</p>
-          <h2 className="mt-3 font-display text-3xl">Current baseline content</h2>
+          <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">Planning & updates</p>
+          <h2 className="mt-3 font-display text-3xl">Current site status</h2>
           <p className="mt-3 text-sm leading-6 text-white/75">
-            We&apos;re still using the imported 2025 information as placeholder content while the 2027 site evolves.
+            This website is being prepared as the 2027 event home for schedules, venue details, regulations, player information, and official updates.
           </p>
           <div className="mt-5">
-            <a
-              href={siteConfig.links.sourceReference}
-              target="_blank"
-              rel="noreferrer"
+            <Link
+              href="/regulations"
               className="inline-flex rounded-full bg-white px-5 py-3 text-sm font-bold text-slate-900"
             >
-              Open reference link
-            </a>
+              View regulations
+            </Link>
           </div>
           <p className="mt-5 text-sm text-white/65">
             {siteConfig.organization.legalLine}

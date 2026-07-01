@@ -27,7 +27,6 @@ export const siteConfig = {
     legalLine: "Official event website for planning, player information, regulations, and updates.",
   },
   links: {
-    sourceReference: "https://www.example.com/source-reference",
     registrations: "https://www.example.com/register",
     playerList: "https://www.example.com/players",
     liveBoardsGroupA: "https://www.example.com/live-boards-a",
@@ -44,9 +43,6 @@ export const siteConfig = {
     statusLabel: "Event planning phase",
     statusText:
       "The 2027 website is being prepared now, with structure, regulations, schedules, and player listings being staged for final event data.",
-    sourceLabel: "Reference website",
-    sourceText:
-      "The initial information architecture was adapted from the 2025 Oceania Youth Zonal site and is being refined into a dedicated 2027 experience.",
     coverageTitle: "Key sections",
     coverageLinks: [
       { label: "Tournament Schedule", href: "/schedule" },
