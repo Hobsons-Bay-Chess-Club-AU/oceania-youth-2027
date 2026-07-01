@@ -1,0 +1,39 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" rx="40" fill="#0C2246"/>
+  <circle cx="160" cy="110" r="120" fill="#1D4ED8" fill-opacity="0.45"/>
+  <circle cx="1060" cy="120" r="140" fill="#67D9FF" fill-opacity="0.35"/>
+  <circle cx="1030" cy="510" r="180" fill="#F59E0B" fill-opacity="0.25"/>
+  <rect x="72" y="78" width="1056" height="474" rx="32" fill="url(#paint0_linear)" fill-opacity="0.96"/>
+  <rect x="112" y="120" width="164" height="44" rx="22" fill="white" fill-opacity="0.12"/>
+  <text x="194" y="149" text-anchor="middle" fill="#D9F7FF" font-size="20" font-family="Arial, Helvetica, sans-serif" font-weight="700">YOUTH CHESS EVENT</text>
+  <text x="112" y="250" fill="white" font-size="76" font-family="Georgia, 'Times New Roman', serif" font-weight="700">
+    Oceania Youth
+  </text>
+  <text x="112" y="332" fill="white" font-size="76" font-family="Georgia, 'Times New Roman', serif" font-weight="700">
+    Chess 2027
+  </text>
+  <text x="112" y="394" fill="#D6E9FF" font-size="28" font-family="Arial, Helvetica, sans-serif">
+    Modern placeholder site for schedules, players,
+  </text>
+  <text x="112" y="432" fill="#D6E9FF" font-size="28" font-family="Arial, Helvetica, sans-serif">
+    venue information, results, and family updates.
+  </text>
+  <rect x="112" y="468" width="260" height="52" rx="26" fill="#F6C453"/>
+  <text x="242" y="501" text-anchor="middle" fill="#13233F" font-size="22" font-family="Arial, Helvetica, sans-serif" font-weight="700">
+    Placeholder Event Branding
+  </text>
+  <g opacity="0.95">
+    <rect x="832" y="158" width="194" height="194" rx="28" fill="white" fill-opacity="0.1"/>
+    <rect x="866" y="192" width="62" height="62" rx="16" fill="#F8FAFC"/>
+    <rect x="930" y="192" width="62" height="62" rx="16" fill="#F6C453"/>
+    <rect x="866" y="256" width="62" height="62" rx="16" fill="#F6C453"/>
+    <rect x="930" y="256" width="62" height="62" rx="16" fill="#F8FAFC"/>
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear" x1="96" y1="96" x2="1102" y2="534" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#123267"/>
+      <stop offset="0.56" stop-color="#1A4A8F"/>
+      <stop offset="1" stop-color="#2D7ED8"/>
+    </linearGradient>
+  </defs>
+</svg>
