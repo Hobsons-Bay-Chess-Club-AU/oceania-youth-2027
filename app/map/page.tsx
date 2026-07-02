@@ -1,5 +1,5 @@
-import { MapPage } from "@/components/pages/map-page";
+import { redirect } from "next/navigation";
 
 export default function Page() {
-  return <MapPage />;
+  redirect("/location");
 }

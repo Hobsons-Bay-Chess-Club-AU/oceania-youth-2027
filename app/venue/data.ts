@@ -13,12 +13,12 @@ export const venueData = {
   transportRoutes: [
     {
       label: "Transport route placeholder A",
-      href: "https://www.example.com/transport-route-a",
+      href: "https://oceaniayouth2027.hobsonsbaychess.com/transport-route-a",
       note: "(Add stop or station details here.)",
     },
     {
       label: "Transport route placeholder B",
-      href: "https://www.example.com/transport-route-b",
+      href: "https://oceaniayouth2027.hobsonsbaychess.com/transport-route-b",
       note: "(Add stop or station details here.)",
     },
   ],

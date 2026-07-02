@@ -56,7 +56,7 @@ export function VenuePage() {
       <Section title="Food Options">
         <div className="grid gap-4">
           <p className="leading-[1.7] text-[var(--muted)]">
-            There are many food options available. Please see our <a href="/map">map</a> for locations.
+            There are many food options available. Please see our <a href="/location">visit guide</a> for locations.
           </p>
           <h4 className="mt-2 text-lg font-semibold text-[var(--ink)]">On-Site</h4>
           <p className="leading-[1.7] text-[var(--muted)]">{venueData.onSiteFoodIntro}</p>
