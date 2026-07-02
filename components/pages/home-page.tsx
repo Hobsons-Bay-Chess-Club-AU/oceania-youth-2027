@@ -48,14 +48,14 @@ export function HomePage() {
           <div className="space-y-6 motion-rise-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
               <span className="text-lg">♟</span>
-              Placeholder event website for the 2027 edition
+              Every chess master was once a beginner (Irving Chernev)
             </div>
             <div className="space-y-4">
               <p className="text-xs font-black uppercase tracking-[0.28em] text-cyan-100/80">
-                Modern chess event landing page
+                Present by Hobsons Bay Chess Club
               </p>
               <h1 className="max-w-xl font-display text-5xl leading-[0.92] text-white md:text-7xl">
-                A sharper first impression for Oceania Youth Chess.
+                Oceania Youth Chess Zonal Tournament 2027
               </h1>
               <p className="max-w-2xl text-base leading-8 text-blue-50/88 md:text-lg">
                 This landing page direction is built to feel more premium, current, and event-driven,
