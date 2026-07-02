@@ -7,7 +7,7 @@ summary: "The official website is now online with key sections for schedules, re
 
 ## Website launch
 
-The Oceania Youth Chess 2027 event website is now live and will be the main place for official announcements and tournament planning information.
+The Oceania Youth Zonal 2027 event website is now live and will be the main place for official announcements and tournament planning information.
 
 Visitors can already browse:
 

@@ -20,7 +20,7 @@ export function NewsPostPage({ slug }: { slug: string }) {
 
   return (
     <div className="space-y-6 md:space-y-8">
-      <section className="relative overflow-hidden rounded-[2rem] border border-white/70 bg-[linear-gradient(140deg,rgba(12,34,70,0.98),rgba(30,77,147,0.94)_48%,rgba(255,197,107,0.86))] px-6 py-8 text-white shadow-[0_30px_80px_rgba(12,34,70,0.18)] md:px-10 md:py-12">
+      <section className="relative overflow-hidden rounded-[1rem] border border-white/70 bg-[linear-gradient(140deg,rgba(12,34,70,0.98),rgba(30,77,147,0.94)_48%,rgba(255,197,107,0.86))] px-6 py-8 text-white shadow-[0_30px_80px_rgba(12,34,70,0.18)] md:rounded-[2rem] md:px-10 md:py-12">
         <div className="motion-float absolute -left-10 top-14 h-36 w-36 rounded-full bg-cyan-200/25 blur-3xl" />
         <div className="motion-float-delayed absolute right-0 top-0 h-52 w-52 rounded-full bg-yellow-200/20 blur-3xl" />
         <div className="relative grid gap-6">
@@ -48,14 +48,14 @@ export function NewsPostPage({ slug }: { slug: string }) {
       </section>
 
       <section className="grid gap-6 xl:grid-cols-[0.68fr_0.32fr]">
-        <article className="rounded-[2rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff,#f8fbff)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] md:p-8">
+        <article className="rounded-[1rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff,#f8fbff)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] md:rounded-[2rem] md:p-8">
           <div
             className="news-content text-[0.98rem] leading-7 text-slate-700"
             dangerouslySetInnerHTML={{ __html: post.html }}
           />
         </article>
 
-        <aside className="rounded-[2rem] border border-slate-200 bg-white/80 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:p-8 xl:sticky xl:top-24 xl:self-start">
+        <aside className="rounded-[1rem] border border-slate-200 bg-white/80 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:rounded-[2rem] md:p-8 xl:sticky xl:top-24 xl:self-start">
           <p className="text-xs font-black uppercase tracking-[0.2em] text-sky-600">More updates</p>
           <h2 className="mt-3 font-display text-3xl text-slate-900">Keep reading</h2>
           <div className="mt-6 grid gap-3">
@@ -63,7 +63,7 @@ export function NewsPostPage({ slug }: { slug: string }) {
               <Link
                 key={item.slug}
                 href={`/news/${item.slug}`}
-                className="rounded-[1.35rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff,#f8fbff)] px-4 py-4 transition-transform hover:-translate-y-0.5"
+                className="rounded-[0.9rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff,#f8fbff)] px-4 py-4 transition-transform hover:-translate-y-0.5 md:rounded-[1.35rem]"
               >
                 <h3 className="font-display text-2xl text-slate-900">{item.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{item.summary}</p>

@@ -43,7 +43,7 @@ export function HomeHeroCountdown({
   }, [eventStartDate]);
 
   return (
-    <article className="relative overflow-hidden rounded-[2rem] border border-white/15 bg-white/10 p-5 text-white shadow-[0_20px_60px_rgba(8,24,49,0.22)] backdrop-blur-xl md:p-6">
+    <article className="relative overflow-hidden rounded-[1rem] border border-white/15 bg-white/10 p-5 text-white shadow-[0_20px_60px_rgba(8,24,49,0.22)] backdrop-blur-xl md:rounded-[2rem] md:p-6">
       <div className="absolute right-[-2rem] top-[-2rem] h-28 w-28 rounded-full bg-yellow-300/20 blur-2xl" />
       <div className="absolute bottom-[-2rem] left-[-1rem] h-24 w-24 rounded-full bg-cyan-200/20 blur-2xl" />
       <div className="relative">
@@ -63,7 +63,7 @@ export function HomeHeroCountdown({
 
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
           {(countdown ?? fallbackCountdownCards).map((item) => (
-            <article key={item.label} className="rounded-[1.4rem] border border-white/10 bg-slate-950/20 p-4">
+            <article key={item.label} className="rounded-[0.9rem] border border-white/10 bg-slate-950/20 p-4 md:rounded-[1.4rem]">
               <p className="text-3xl font-black text-white tabular-nums md:text-4xl">{item.value}</p>
               <p className="mt-2 text-xs font-black uppercase tracking-[0.18em] text-cyan-100/75">
                 {item.label}
@@ -72,7 +72,7 @@ export function HomeHeroCountdown({
           ))}
         </div>
 
-        <div className="mt-6 grid gap-4 rounded-[1.4rem] border border-white/10 bg-slate-950/20 p-4">
+        <div className="mt-6 grid gap-4 rounded-[0.9rem] border border-white/10 bg-slate-950/20 p-4 md:rounded-[1.4rem]">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-100/75">
               Event status

@@ -30,7 +30,7 @@ export function RegulationsPage() {
       >
         <div id="regulations-content" className="grid gap-6 xl:grid-cols-[minmax(0,0.34fr)_minmax(0,0.66fr)]">
           <aside className="xl:sticky xl:top-24 xl:self-start">
-            <div className="rounded-[1.75rem] border border-slate-200 bg-[linear-gradient(180deg,#f9fbff,#eef4ff)] p-4 shadow-sm sm:p-5">
+            <div className="rounded-[1rem] border border-slate-200 bg-[linear-gradient(180deg,#f9fbff,#eef4ff)] p-4 shadow-sm sm:p-5 md:rounded-[1.75rem]">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <p className="text-xs font-black uppercase tracking-[0.18em] text-sky-700">On this page</p>
                 <RegulationsPdfDownload label="PDF" className="text-sm font-bold text-sky-700" />
@@ -58,7 +58,7 @@ export function RegulationsPage() {
               <article
                 id={getSectionId(section.heading)}
                 key={section.heading}
-                className="scroll-mt-24 rounded-[1.75rem] border border-slate-200 bg-white/85 p-4 shadow-sm backdrop-blur sm:p-6"
+                className="scroll-mt-24 rounded-[1rem] border border-slate-200 bg-white/85 p-4 shadow-sm backdrop-blur sm:p-6 md:rounded-[1.75rem]"
               >
                 <h3 className="font-display text-xl text-slate-900 sm:text-2xl md:text-3xl">{section.heading}</h3>
                 <div className="mt-4 space-y-4">

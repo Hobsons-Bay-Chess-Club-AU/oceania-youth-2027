@@ -38,10 +38,10 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
             </span>
             <span className="grid min-w-0 gap-[0.15rem]">
               <strong className="block text-base leading-[1.1] [font-family:var(--font-display)] sm:text-[1.05rem]">
-                Oceania Youth Chess
+                Oceania Youth Chess Zonal
               </strong>
               <small className="block text-[0.76rem] leading-[1.2] text-white/70 sm:text-sm">
-                2027 event website
+                Melbourne, Australia | Sept 2027
               </small>
             </span>
           </Link>
@@ -81,7 +81,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           aria-hidden={!open}
         />
         <div
-          className={`fixed left-2 right-2 top-[4.35rem] grid max-h-[calc(100dvh-5rem)] gap-4 overflow-y-auto rounded-[1.25rem] border border-white/10 bg-[rgba(12,34,70,0.98)] p-4 shadow-[0_20px_60px_rgba(23,52,99,0.12)] transition min-[921px]:hidden ${open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none -translate-y-2.5 opacity-0"}`}
+          className={`fixed left-2 right-2 top-[4.35rem] grid max-h-[calc(100dvh-5rem)] gap-4 overflow-y-auto rounded-[0.9rem] border border-white/10 bg-[rgba(12,34,70,0.98)] p-4 shadow-[0_20px_60px_rgba(23,52,99,0.12)] transition min-[921px]:hidden md:rounded-[1.25rem] ${open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none -translate-y-2.5 opacity-0"}`}
         >
           <div className="flex items-center justify-between gap-4">
             <p className="m-0 text-xs font-extrabold uppercase tracking-[0.12em] text-[var(--gold)]">
@@ -114,16 +114,16 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
       <footer className="pb-8">
-        <div className="mx-auto grid w-[min(1180px,calc(100%-1rem))] gap-4 rounded-[1.5rem] bg-[linear-gradient(180deg,rgba(12,34,70,0.96),rgba(8,24,49,0.98))] p-5 text-white shadow-[0_20px_60px_rgba(23,52,99,0.12)] sm:w-[min(1180px,calc(100%-2rem))] sm:rounded-[2rem] sm:p-8">
+        <div className="mx-auto grid w-[min(1180px,calc(100%-1rem))] gap-4 rounded-[1rem] bg-[linear-gradient(180deg,rgba(12,34,70,0.96),rgba(8,24,49,0.98))] p-5 text-white shadow-[0_20px_60px_rgba(23,52,99,0.12)] sm:w-[min(1180px,calc(100%-2rem))] sm:p-8 md:rounded-[1.5rem]">
           <div className="grid gap-3 border-b border-white/10 pb-4">
             <p className="m-0 text-xs font-extrabold uppercase tracking-[0.12em] text-[var(--gold)]">
-              Oceania Youth Chess 2027
+              Oceania Youth Zonal 2027
             </p>
             <h3 className="text-2xl [font-family:var(--font-display)]">
               {siteConfig.organization.name}
             </h3>
             <p className="leading-[1.7] text-white">{siteConfig.organization.legalLine}</p>
-            <div className="mt-2 grid gap-2 rounded-[1.25rem] border border-white/10 bg-white/5 p-4">
+            <div className="mt-2 grid gap-2 rounded-[0.9rem] border border-white/10 bg-white/5 p-4 md:rounded-[1.25rem]">
               <span className="inline-flex w-fit rounded-full bg-white/10 px-3 py-2 text-xs font-extrabold uppercase tracking-[0.08em]">
                 {siteConfig.footer.statusLabel}
               </span>
@@ -132,7 +132,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </div>
 
           <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
-            <div className="grid gap-4 rounded-[1.4rem] border border-white/10 bg-white/5 p-4">
+            <div className="grid gap-4 rounded-[0.9rem] border border-white/10 bg-white/5 p-4 md:rounded-[1.4rem]">
               <p className="m-0 text-xs font-extrabold uppercase tracking-[0.12em] text-[var(--gold)]">
                 {siteConfig.footer.coverageTitle}
               </p>
@@ -149,7 +149,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
               </div>
             </div>
 
-            <div className="grid gap-4 rounded-[1.4rem] border border-white/10 bg-white/5 p-4">
+            <div className="grid gap-4 rounded-[0.9rem] border border-white/10 bg-white/5 p-4 md:rounded-[1.4rem]">
               <p className="m-0 text-xs font-extrabold uppercase tracking-[0.12em] text-[var(--gold)]">
                 Contact
               </p>

@@ -1,9 +1,9 @@
 export const siteConfig = {
-  name: "Oceania Youth Chess 2027",
+  name: "Oceania Youth Zonal 2027",
   shortName: "Oceania Youth 2027",
   siteUrl: "https://oceaniayouth2027.hobsonsbaychess.com/",
-  titleTemplate: "%s | Oceania Youth Chess 2027",
-  defaultTitle: "Oceania Youth Chess 2027",
+  titleTemplate: "%s | Oceania Youth Zonal 2027",
+  defaultTitle: "Oceania Youth Zonal 2027",
   description:
     "Placeholder website for a youth chess event in Oceania, built with a modern Next.js stack and ready for future schedules, venue details, players, and live event updates.",
   keywords: [
@@ -23,7 +23,7 @@ export const siteConfig = {
     email: "major_tournament@hobsonsbaychess.com",
   },
   organization: {
-    name: "Oceania Youth Chess 2027 Organising Committee",
+    name: "Oceania Youth Zonal 2027 Organising Committee",
     legalLine: "Official event website for planning, player information, regulations, and updates.",
   },
   links: {

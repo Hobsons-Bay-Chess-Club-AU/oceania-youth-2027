@@ -12,7 +12,7 @@ export function Hero({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="rounded-[1.5rem] border border-white/70 bg-[rgba(255,252,246,0.84)] p-[1.35rem] shadow-[0_20px_60px_rgba(23,52,99,0.12)] backdrop-blur-[16px] sm:rounded-[2rem] sm:p-8 md:p-12">
+    <section className="rounded-[1rem] border border-white/70 bg-[rgba(255,252,246,0.84)] p-[1.35rem] shadow-[0_20px_60px_rgba(23,52,99,0.12)] backdrop-blur-[16px] sm:p-8 md:rounded-[1.5rem] md:p-12">
       <div>
         <p className="mb-3 text-xs font-extrabold uppercase tracking-[0.12em] text-[var(--gold)]">
           {eyebrow}
@@ -39,7 +39,7 @@ export function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-[1.5rem] border border-white/70 bg-[rgba(255,252,246,0.84)] p-[1.35rem] shadow-[0_20px_60px_rgba(23,52,99,0.12)] backdrop-blur-[16px] sm:rounded-[2rem] sm:p-8">
+    <section className="rounded-[1rem] border border-white/70 bg-[rgba(255,252,246,0.84)] p-[1.35rem] shadow-[0_20px_60px_rgba(23,52,99,0.12)] backdrop-blur-[16px] sm:p-8 md:rounded-[1.5rem]">
       <div className="mb-5">
         <h2 className="m-0 text-[clamp(1.5rem,8vw,2.1rem)] text-[var(--ink)] [font-family:var(--font-display)] sm:text-[clamp(1.8rem,3vw,2.6rem)]">
           {title}
@@ -64,7 +64,7 @@ export function InfoGrid({
     <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
       {items.map((item) => (
         <article
-          className="rounded-[1.35rem] border border-[rgba(24,34,53,0.12)] bg-[#fffaf1] p-5"
+          className="rounded-[0.9rem] border border-[rgba(24,34,53,0.12)] bg-[#fffaf1] p-5 md:rounded-[1.35rem]"
           key={item.title}
         >
           <h3 className="text-xl text-[var(--ink)] [font-family:var(--font-display)]">{item.title}</h3>

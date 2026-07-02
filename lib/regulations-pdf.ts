@@ -5,9 +5,11 @@ const pageHeight = 842;
 const margin = 48;
 const contentWidth = pageWidth - margin * 2;
 const bodyFontSize = 11;
-const headingFontSize = 15;
+const headingFontSize = 16;
 const titleFontSize = 20;
 const lineHeight = 16;
+const sectionGap = 14;
+const blockGap = 8;
 
 type PdfPage = {
   lines: string[];
@@ -48,34 +50,56 @@ function wrapText(text: string, fontSize: number) {
   return lines;
 }
 
-function pushLine(pages: PdfPage[], text: string, y: { value: number }, fontSize = bodyFontSize) {
+function pushLine(
+  pages: PdfPage[],
+  text: string,
+  y: { value: number },
+  options?: { fontSize?: number; fontKey?: "F1" | "F2" },
+) {
+  const fontSize = options?.fontSize ?? bodyFontSize;
+  const fontKey = options?.fontKey ?? "F1";
+
   if (y.value < margin) {
     pages.push({ lines: [] });
     y.value = pageHeight - margin;
   }
 
-  pages[pages.length - 1].lines.push(`BT /F1 ${fontSize} Tf 1 0 0 1 ${margin} ${y.value} Tm (${escapePdfText(text)}) Tj ET`);
+  pages[pages.length - 1].lines.push(
+    `BT /${fontKey} ${fontSize} Tf 1 0 0 1 ${margin} ${y.value} Tm (${escapePdfText(text)}) Tj ET`,
+  );
   y.value -= lineHeight;
 }
 
-function pushWrappedBlock(pages: PdfPage[], text: string, y: { value: number }, fontSize = bodyFontSize) {
+function pushWrappedBlock(
+  pages: PdfPage[],
+  text: string,
+  y: { value: number },
+  options?: { fontSize?: number; fontKey?: "F1" | "F2"; gapAfter?: number },
+) {
+  const fontSize = options?.fontSize ?? bodyFontSize;
+
   for (const line of wrapText(text, fontSize)) {
-    pushLine(pages, line, y, fontSize);
+    pushLine(pages, line, y, { fontSize, fontKey: options?.fontKey });
   }
 
-  y.value -= 6;
+  y.value -= options?.gapAfter ?? blockGap;
 }
 
 export function buildRegulationsPdf() {
   const pages: PdfPage[] = [{ lines: [] }];
   const y = { value: pageHeight - margin };
 
-  pushWrappedBlock(pages, regulations.title, y, titleFontSize);
-  pushWrappedBlock(pages, "Official regulations for the Oceania Youth Chess 2027 tournament.", y);
-  y.value -= 4;
+  pushWrappedBlock(pages, regulations.title, y, { fontSize: titleFontSize, fontKey: "F2", gapAfter: 10 });
+  pushWrappedBlock(pages, "Official regulations for the Oceania Youth Zonal 2027 tournament.", y, {
+    gapAfter: 12,
+  });
 
   for (const section of regulations.sections) {
-    pushWrappedBlock(pages, section.heading, y, headingFontSize);
+    pushWrappedBlock(pages, section.heading, y, {
+      fontSize: headingFontSize,
+      fontKey: "F2",
+      gapAfter: 10,
+    });
 
     for (const paragraph of section.paragraphs) {
       pushWrappedBlock(pages, paragraph, y);
@@ -93,7 +117,7 @@ export function buildRegulationsPdf() {
       }
     }
 
-    y.value -= 4;
+    y.value -= sectionGap;
   }
 
   const objects: string[] = [];
@@ -102,7 +126,8 @@ export function buildRegulationsPdf() {
     return objects.length;
   };
 
-  const fontId = addObject("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>");
+  const bodyFontId = addObject("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>");
+  const boldFontId = addObject("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>");
   const pageIds: number[] = [];
   const contentIds: number[] = [];
 
@@ -111,7 +136,7 @@ export function buildRegulationsPdf() {
     const contentId = addObject(`<< /Length ${stream.length} >>\nstream\n${stream}\nendstream`);
     contentIds.push(contentId);
     const pageId = addObject(
-      `<< /Type /Page /Parent 0 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Contents ${contentId} 0 R /Resources << /Font << /F1 ${fontId} 0 R >> >> >>`,
+      `<< /Type /Page /Parent 0 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Contents ${contentId} 0 R /Resources << /Font << /F1 ${bodyFontId} 0 R /F2 ${boldFontId} 0 R >> >> >>`,
     );
     pageIds.push(pageId);
   }
@@ -120,7 +145,7 @@ export function buildRegulationsPdf() {
   const catalogId = addObject(`<< /Type /Catalog /Pages ${pagesId} 0 R >>`);
 
   for (let index = 0; index < pageIds.length; index += 1) {
-    objects[pageIds[index] - 1] = `<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Contents ${contentIds[index]} 0 R /Resources << /Font << /F1 ${fontId} 0 R >> >> >>`;
+    objects[pageIds[index] - 1] = `<< /Type /Page /Parent ${pagesId} 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Contents ${contentIds[index]} 0 R /Resources << /Font << /F1 ${bodyFontId} 0 R /F2 ${boldFontId} 0 R >> >> >>`;
   }
 
   let pdf = "%PDF-1.4\n";
