@@ -6,7 +6,7 @@ export function VenuePage() {
     <>
       <Section
         title="Venue, Accommodation & Food"
-        description="Content migrated from the 2025 site for reuse and editing."
+        description="TBU"
       >
         <div className="grid gap-4">
           <h3 className="mt-2 text-2xl text-[var(--ink)] [font-family:var(--font-display)]">Venue</h3>

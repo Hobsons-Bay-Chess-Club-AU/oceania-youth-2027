@@ -33,13 +33,13 @@ export const regulations = {
         "Each Federation or associated member country may register any number of players to participate in the age group categories.",
       ],
       list: [
-        "UNDER 8 Born on or after 1st January 2017",
-        "UNDER 10 Born on or after 1st January 2015",
-        "UNDER 12 Born on or after 1st January 2013",
-        "UNDER 14 Born on or after 1st January 2011",
-        "UNDER 16 Born on or after 1st January 2009",
-        "UNDER 18 Born on or after 1st January 2007",
-        "UNDER 20 Born on or after 1st January 2005",
+        "UNDER 8 Born on or after 1st January 2019",
+        "UNDER 10 Born on or after 1st January 2017",
+        "UNDER 12 Born on or after 1st January 2015",
+        "UNDER 14 Born on or after 1st January 2013",
+        "UNDER 16 Born on or after 1st January 20011",
+        "UNDER 18 Born on or after 1st January 2009",
+        "UNDER 20 Born on or after 1st January 2007",
       ],
     },
     { heading: "1.3 Rate of Play", paragraphs: ["90 minutes per player with an increment of 30 seconds per move from move one."] },
@@ -82,13 +82,13 @@ export const regulations = {
       heading: "1.9 If you Require a Visa",
       paragraphs: [
         "Invitational Letters will only be given for Visas once the Entry Fee is paid. If you are then unable to obtain an Australian Visa, your entry/registration fee will be refunded.",
-        "Please contact oceanicyouthchesschamps2025@gmail.com after you have paid your entry fee, and we will send you an invitational letter for a Visa.",
+        "Please contact major_tournaments@hobsonsbaychess.com after you have paid your entry fee, and we will send you an invitational letter for a Visa.",
       ],
     },
     {
       heading: "1.10 Accommodation for Invited Players",
       paragraphs: [
-        "To receive free accommodation as an invited player (excluding Australia) a member of your federation must email oceanicyouthchesschamps2025@gmail.com to claim your free accommodation by the 23rd of October at 11:59pm.",
+        "To receive free accommodation as an invited player (excluding Australia) a member of your federation must email major_tournaments@hobsonsbaychess.com to claim your free accommodation by the 23rd of October at 11:59pm.",
       ],
     },
     {
