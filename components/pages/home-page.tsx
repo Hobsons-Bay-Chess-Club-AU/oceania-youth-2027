@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { homePageData } from "@/app/data";
 import { siteConfig } from "@/lib/site-config";
+import { HomeHeroCountdown } from "@/components/home-hero-countdown";
 
 export function HomePage() {
   const quickFacts = [
@@ -96,6 +97,13 @@ export function HomePage() {
                 </article>
               ))}
             </div>
+          </div>
+          <div className="motion-rise-in-delayed">
+            <HomeHeroCountdown
+              dateLabel={homePageData.dateLabel}
+              eventStartDate={homePageData.eventStartDate}
+              registrationHref={siteConfig.links.registrations}
+            />
           </div>
         </div>
       </section>

@@ -2,6 +2,7 @@ import { siteConfig } from "@/lib/site-config";
 
 export const homePageData = {
   dateLabel: "Event dates coming soon",
+  eventStartDate: "2027-01-01",
   heroImage: siteConfig.heroImage,
   alert: {
     title: "Important event update placeholder",
