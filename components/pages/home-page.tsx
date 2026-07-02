@@ -2,44 +2,9 @@ import Link from "next/link";
 import { homePageData } from "@/app/data";
 import { siteConfig } from "@/lib/site-config";
 import { HomeHeroCountdown } from "@/components/home-hero-countdown";
+import { HomeTournamentStats } from "@/components/home-tournament-stats";
 
 export function HomePage() {
-  const quickFacts = [
-    {
-      label: "Player capacity",
-      value: "TBC",
-      note: "Use this for expected player count or registration target.",
-      tone: "from-sky-400 via-cyan-300 to-teal-200",
-    },
-    {
-      label: "Event duration",
-      value: "TBC",
-      note: "Use this for the total tournament days once dates are locked.",
-      tone: "from-amber-300 via-orange-300 to-pink-200",
-    },
-    {
-      label: "Competition streams",
-      value: "TBC",
-      note: "Use this for divisions, sections, or championship groups.",
-      tone: "from-violet-400 via-fuchsia-300 to-rose-200",
-    },
-  ];
-
-  const highlightCards = [
-    {
-      title: "Clear structure",
-      body: "The landing page should quickly route visitors to schedules, venue details, registrations, and player information.",
-    },
-    {
-      title: "Stronger branding",
-      body: "This design direction gives the event a more polished visual identity without locking in the final copy yet.",
-    },
-    {
-      title: "Better momentum",
-      body: "Layered cards, richer color, and subtle motion help the homepage feel alive from the first screen.",
-    },
-  ];
-
   return (
     <div className="space-y-6 md:space-y-8">
       <section className="relative overflow-hidden rounded-[1rem] border border-white/70 bg-[linear-gradient(135deg,rgba(12,34,70,0.98),rgba(28,74,143,0.92)_45%,rgba(107,217,255,0.78))] px-6 py-8 shadow-[0_30px_80px_rgba(12,34,70,0.18)] md:rounded-[2rem] md:px-10 md:py-12">
@@ -49,13 +14,13 @@ export function HomePage() {
           <div className="space-y-6 motion-rise-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
               <span className="text-lg">♟</span>
-              Every chess master was once a beginner (Irving Chernev)
+              {homePageData.heroKicker}
             </div>
             <div className="space-y-4">
               <p className="text-xs font-black uppercase tracking-[0.28em] text-cyan-100/80">
                 Present by Hobsons Bay Chess Club
               </p>
-              <h1 className="max-w-xl font-display text-5xl leading-[0.92] text-white md:text-7xl">
+              <h1 className="max-w-xl font-display text-3xl leading-[0.92] text-white md:text-5xl">
                 Oceania Youth Chess Zonal Tournament 2027
               </h1>
               <p className="max-w-2xl text-base leading-8 text-white md:text-lg">
@@ -83,7 +48,7 @@ export function HomePage() {
               </Link>
             </div>
             <div className="grid gap-3 sm:grid-cols-3">
-              {quickFacts.map((fact) => (
+              {homePageData.quickFacts.map((fact) => (
                 <article
                   key={fact.label}
                   className={`motion-scale-in rounded-[1rem] bg-gradient-to-br ${fact.tone} p-[1px] shadow-xl shadow-slate-950/10 md:rounded-[1.5rem]`}
@@ -130,32 +95,7 @@ export function HomePage() {
           </ul>
         </article>
 
-        <article className="motion-rise-in-delayed rounded-[1rem] border border-white/70 bg-white/75 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:rounded-[2rem] md:p-8">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div>
-              <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-500">
-                Why this redesign direction works
-              </p>
-              <h2 className="mt-3 font-display text-3xl text-slate-900 md:text-4xl">
-                Serious event, friendlier first impression
-              </h2>
-            </div>
-            <span className="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white">
-              2027-ready direction
-            </span>
-          </div>
-          <div className="mt-6 grid gap-4 md:grid-cols-3">
-            {highlightCards.map((card) => (
-              <article
-                key={card.title}
-                className="rounded-[1rem] border border-slate-200 bg-[linear-gradient(180deg,#ffffff,#f8fbff)] p-5 md:rounded-[1.5rem]"
-              >
-                <h3 className="font-display text-2xl text-slate-900">{card.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{card.body}</p>
-              </article>
-            ))}
-          </div>
-        </article>
+        <HomeTournamentStats {...homePageData.tournamentStats} />
       </section>
 
       <section className="motion-rise-in rounded-[1rem] border border-white/70 bg-white/75 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:rounded-[2rem] md:p-8">

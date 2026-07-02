@@ -41,7 +41,7 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
                 Oceania Youth Chess Zonal
               </strong>
               <small className="block text-[0.76rem] leading-[1.2] text-white/70 sm:text-sm">
-                Melbourne, Australia | Sept 2027
+                Melbourne, Australia | 2027
               </small>
             </span>
           </Link>

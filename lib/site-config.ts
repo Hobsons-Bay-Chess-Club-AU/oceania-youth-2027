@@ -27,7 +27,7 @@ export const siteConfig = {
     legalLine: "Official event website for planning, player information, regulations, and updates.",
   },
   links: {
-    registrations: "https://oceaniayouth2027.hobsonsbaychess.com/registration",
+    registrations: "/registration",
     playerList: "https://oceaniayouth2027.hobsonsbaychess.com/players",
     liveBoardsGroupA: "https://oceaniayouth2027.hobsonsbaychess.com/live-boards-a",
     liveBoardsGroupB: "https://oceaniayouth2027.hobsonsbaychess.com/live-boards-b",
