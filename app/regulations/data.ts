@@ -1,10 +1,10 @@
 export const regulations = {
-  title: "2025 Oceania Youth Chess Zonal Tournament Regulations",
+  title: "2027 Oceania Youth Chess Zonal Tournament Regulations",
   sections: [
     {
       heading: "1. Technical Regulations",
       paragraphs: [
-        "Australasian Chess Enterprises (ACE) and the Oceania Chess Confederation (OCC) invite all young chess players from Oceania to participate in the 2025 Oceania Youth Chess Zonal Tournament.",
+        "Hobsons Bay Chess Club and the Oceania Chess Confederation (OCC) invite all young chess players from Oceania to participate in the 2027 Oceania Youth Chess Zonal Tournament.",
       ],
     },
     {

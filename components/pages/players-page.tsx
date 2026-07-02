@@ -233,6 +233,8 @@ function PlayerCategoryTable({
           badge: "bg-slate-100 text-slate-700",
           panel: "bg-[linear-gradient(180deg,#f8fbff,#ffffff)]",
         };
+  const mobileLabelClass =
+    "before:mr-2 before:inline-block before:text-[0.72rem] before:font-extrabold before:uppercase before:tracking-[0.08em] before:text-slate-500 md:before:hidden";
 
   return (
     <article className={`rounded-[1.5rem] border border-slate-200 ${accentClasses.panel} p-4`}>
@@ -249,7 +251,7 @@ function PlayerCategoryTable({
         </div>
       ) : (
         <div className="mt-4 overflow-hidden rounded-[1.25rem] border border-slate-200 bg-white">
-          <div className="grid grid-cols-[minmax(0,1.6fr)_110px_96px_96px] gap-3 border-b border-slate-100 bg-slate-50 px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-slate-500">
+          <div className="hidden grid-cols-[minmax(0,1.6fr)_110px_96px_96px] gap-3 border-b border-slate-100 bg-slate-50 px-4 py-3 text-xs font-black uppercase tracking-[0.14em] text-slate-500 md:grid">
             <span>Player</span>
             <span>Federation</span>
             <span>FIDE ID</span>
@@ -259,12 +261,12 @@ function PlayerCategoryTable({
             {players.map((player) => (
               <div
                 key={`${player.category}-${player.division}-${player.fideId}`}
-                className="grid grid-cols-[minmax(0,1.6fr)_110px_96px_96px] gap-3 px-4 py-4 text-sm text-slate-700"
+                className="grid grid-cols-1 gap-[0.55rem] px-4 py-4 text-sm text-slate-700 md:grid-cols-[minmax(0,1.6fr)_110px_96px_96px] md:gap-3"
               >
                 <div className="min-w-0">
-                  <p className="truncate font-semibold text-slate-900">{player.name}</p>
+                  <p className="font-semibold text-slate-900 md:truncate">{player.name}</p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className={`${mobileLabelClass} flex items-center gap-2 before:content-['Federation']`}>
                   <span className="text-lg" aria-hidden="true">
                     {countryCodeToFlag(player.flag)}
                   </span>
@@ -274,11 +276,13 @@ function PlayerCategoryTable({
                   href={`https://ratings.fide.com/profile/${player.fideId}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="font-medium text-sky-700 hover:underline"
+                  className={`${mobileLabelClass} font-medium text-sky-700 hover:underline before:content-['FIDE_ID']`}
                 >
                   {player.fideId}
                 </a>
-                <span className="font-medium text-slate-900">{player.fideRating}</span>
+                <span className={`${mobileLabelClass} font-medium text-slate-900 before:content-['Rating']`}>
+                  {player.fideRating}
+                </span>
               </div>
             ))}
           </div>

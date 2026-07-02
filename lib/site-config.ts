@@ -20,7 +20,7 @@ export const siteConfig = {
   contact: {
     coordinatorName: "Oceania Youth Chess Organising Committee",
     phoneLabel: "Phone details to be published",
-    email: "info@oceaniayouthchess2027.org",
+    email: "major_tournament@hobsonsbaychess.com",
   },
   organization: {
     name: "Oceania Youth Chess 2027 Organising Committee",

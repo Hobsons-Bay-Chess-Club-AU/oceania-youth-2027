@@ -6,5 +6,5 @@ export const navItems = [
   { href: "/regulations", label: "Regulations" },
   { href: "/players", label: "Players" },
   { href: "/sponsors", label: "Sponsors" },
-  { href: "/dgt-boards", label: "DGT Boards" },
+  { href: "/dgt-boards", label: "Broadcasts" },
 ];

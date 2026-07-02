@@ -11,13 +11,13 @@ export function DgtBoardsPage() {
         description="The original DGT board listing has been rebuilt as a responsive card grid with the same external viewing links."
       />
       <Section title="Board groups">
-        <div className="board-grid">
+        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
           {dgtGroups.map((group) => (
-            <div className="board-column" key={group.title}>
-              <h3>{group.title}</h3>
-              <div className="board-stack">
+            <div className="grid gap-4" key={group.title}>
+              <h3 className="text-2xl text-[var(--ink)] [font-family:var(--font-display)]">{group.title}</h3>
+              <div className="grid gap-3">
                 {group.boards.map((board) => (
-                  <div className="board-card" key={board}>
+                  <div className="rounded-[1.35rem] border border-[rgba(24,34,53,0.12)] bg-[#fffaf1] p-4 font-bold" key={board}>
                     {board}
                   </div>
                 ))}
@@ -25,11 +25,11 @@ export function DgtBoardsPage() {
             </div>
           ))}
         </div>
-        <div className="cta-row">
-          <a href={siteConfig.links.liveBoardsGroupA} target="_blank" rel="noreferrer">
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <a className="inline-flex min-h-[2.8rem] items-center justify-center rounded-full bg-[var(--navy)] px-4 py-3 font-bold text-white" href={siteConfig.links.liveBoardsGroupA} target="_blank" rel="noreferrer">
             View Games from Boards 1 to 11
           </a>
-          <a href={siteConfig.links.liveBoardsGroupB} target="_blank" rel="noreferrer">
+          <a className="inline-flex min-h-[2.8rem] items-center justify-center rounded-full bg-[var(--navy)] px-4 py-3 font-bold text-white" href={siteConfig.links.liveBoardsGroupB} target="_blank" rel="noreferrer">
             View Games from Boards 12 to 20
           </a>
         </div>
