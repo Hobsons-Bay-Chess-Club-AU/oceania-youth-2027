@@ -211,6 +211,14 @@ export function HomePage() {
             <p className="rounded-2xl bg-slate-50 px-4 py-3">{siteConfig.contact.phoneLabel}</p>
             <p className="rounded-2xl bg-slate-50 px-4 py-3">{siteConfig.contact.email}</p>
           </div>
+          <div className="mt-5">
+            <Link
+              href="/contact-us"
+              className="inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white"
+            >
+              Contact the organisers
+            </Link>
+          </div>
         </article>
 
         <article className="motion-rise-in-delayed rounded-[1rem] border border-white/70 bg-slate-950 p-6 text-white shadow-[0_24px_60px_rgba(15,23,42,0.16)] md:rounded-[2rem]">

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { navItems } from "@/app/navigation";
+import { navItems, type NavItem } from "@/app/navigation";
 import { siteConfig } from "@/lib/site-config";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
@@ -13,6 +13,9 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
     "rounded-full px-3.5 py-2 text-[0.95rem] text-white/85 transition hover:bg-white/12 hover:text-white";
   const mobileNavLinkBase =
     "flex min-h-12 items-center justify-between rounded-2xl bg-white/5 px-4 py-3 text-base text-white/85 transition hover:bg-white/12 hover:text-white";
+  const isActiveLink = (href: string) => pathname === href;
+  const isGroupActive = (item: NavItem) =>
+    "children" in item ? item.children.some((child) => pathname === child.href) : pathname === item.href;
 
   useEffect(() => {
     setOpen(false);
@@ -47,14 +50,47 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </Link>
           <nav className="hidden flex-wrap items-center gap-2 min-[921px]:flex">
             {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`${navLinkBase} ${pathname === item.href ? "bg-white/12 text-white" : ""}`}
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
+              "children" in item ? (
+                <div
+                  key={item.label}
+                  className={`group relative ${isGroupActive(item) ? "rounded-[1.2rem] bg-white/8" : ""}`}
+                >
+                  <button
+                    type="button"
+                    className={`${navLinkBase} inline-flex items-center gap-2 ${isGroupActive(item) ? "bg-white/12 text-white" : ""}`}
+                  >
+                    {item.label}
+                    <span className="text-xs text-white/70">+</span>
+                  </button>
+                  <div className="pointer-events-none absolute left-0 top-full z-50 min-w-[13rem] pt-2 opacity-0 transition group-hover:pointer-events-auto group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:opacity-100">
+                    <div className="rounded-[1rem] border border-white/10 bg-[rgba(12,34,70,0.98)] p-2 shadow-[0_20px_60px_rgba(23,52,99,0.18)]">
+                    <div className="grid gap-1">
+                      {item.children.map((child) => (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          className={`rounded-[0.9rem] px-3 py-3 text-sm text-white/85 transition hover:bg-white/10 hover:text-white ${
+                            isActiveLink(child.href) ? "bg-white/12 text-white" : ""
+                          }`}
+                          onClick={() => setOpen(false)}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`${navLinkBase} ${isActiveLink(item.href) ? "bg-white/12 text-white" : ""}`}
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              )
             ))}
           </nav>
           <button
@@ -98,14 +134,38 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
           </div>
           <nav className="grid gap-2">
             {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`${mobileNavLinkBase} ${pathname === item.href ? "bg-white/12 text-white" : ""}`}
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
+              "children" in item ? (
+                <div key={item.label} className="grid gap-2">
+                  <div
+                    className={`rounded-[0.9rem] border border-white/10 px-4 py-3 text-sm font-black uppercase tracking-[0.12em] ${
+                      isGroupActive(item) ? "bg-white/10 text-white" : "bg-white/5 text-white/75"
+                    }`}
+                  >
+                    {item.label}
+                  </div>
+                  <div className="grid gap-2 pl-3">
+                    {item.children.map((child) => (
+                      <Link
+                        key={child.href}
+                        href={child.href}
+                        className={`${mobileNavLinkBase} ${isActiveLink(child.href) ? "bg-white/12 text-white" : ""}`}
+                        onClick={() => setOpen(false)}
+                      >
+                        {child.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`${mobileNavLinkBase} ${isActiveLink(item.href) ? "bg-white/12 text-white" : ""}`}
+                  onClick={() => setOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              )
             ))}
           </nav>
         </div>

@@ -21,6 +21,12 @@ export const siteConfig = {
     coordinatorName: "Oceania Youth Chess Organising Committee",
     phoneLabel: "Phone details to be published",
     email: "major_tournament@hobsonsbaychess.com",
+    responseWindow: "We aim to reply within 2 to 3 business days.",
+    locationLabel: "Australia host committee",
+    officeHours: "Email enquiries are monitored throughout the tournament planning period.",
+    formEndpoint: "",
+    formProviderName: "Formspree",
+    formProviderHref: "https://formspree.io/",
   },
   organization: {
     name: "Oceania Youth Zonal 2027 Organising Committee",
@@ -50,6 +56,7 @@ export const siteConfig = {
       { label: "Regulations", href: "/regulations" },
       { label: "Player Directory", href: "/players" },
       { label: "Visit Guide", href: "/location" },
+      { label: "Contact Us", href: "/contact-us" },
       { label: "Live Boards", href: "/dgt-boards" },
     ],
     note:
