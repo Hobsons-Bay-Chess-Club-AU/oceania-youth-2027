@@ -15,7 +15,7 @@ export const organizerData = {
       title: "Tournament Officials & Arbiters",
       staff: [
         { role: "Chief Arbiter", name: "IA Dr Peter Tsai (FIDE International Arbiter & Senior Arbiter, Australia)" },
-        { role: "Technical Delegate", name: "IA David Esmonde (Appointed by Continental President for Asia)" },
+        { role: "Technical Delegate", name: "TBC" },
         { role: "Sanctioning Bodies", name: "Oceania Chess Confederation (OCC) / FIDE Zone 3.6" },
       ],
     },
