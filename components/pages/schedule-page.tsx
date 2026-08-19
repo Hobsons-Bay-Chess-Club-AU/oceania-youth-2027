@@ -132,7 +132,7 @@ export function SchedulePage() {
                 >
                   <div className="flex items-center gap-4">
                     <span
-                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl font-display font-black text-xs shadow-md ${
+                      className={`flex h-11 min-w-[3.75rem] px-2 shrink-0 items-center justify-center rounded-xl font-display font-bold text-[0.7rem] shadow-md text-center leading-tight ${
                         isRound
                           ? "bg-gradient-to-tr from-amber-500 to-yellow-300 text-slate-950"
                           : isCeremony
@@ -140,7 +140,7 @@ export function SchedulePage() {
                           : "bg-slate-800 text-slate-300"
                       }`}
                     >
-                      {row.date || "Event"}
+                      {row.date ? row.date.replace(/\s*\d{4}$/, "") : "Event"}
                     </span>
                     <div className="space-y-0.5">
                       <div className="flex items-center gap-2">

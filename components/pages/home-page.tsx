@@ -50,18 +50,21 @@ export function HomePage() {
               <span className="inline-flex items-center rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 px-5 py-2.5 text-xs font-black uppercase tracking-wider text-slate-950 shadow-lg shadow-amber-500/20">
                 {homePageData.dateLabel}
               </span>
+              <a
+                href="/OceaniaYouth%202027%20Tournament%20Pack.pdf"
+                download="OceaniaYouth 2027 Tournament Pack.pdf"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-5 py-2.5 text-xs font-bold text-amber-300 transition hover:bg-amber-500/20 hover:-translate-y-0.5"
+              >
+                <span>📥 Download Tournament Pack (PDF)</span>
+              </a>
               <Link
                 href="/schedule"
                 className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/90 px-5 py-2.5 text-xs font-bold text-white transition hover:border-amber-400 hover:bg-slate-800 hover:-translate-y-0.5"
               >
                 <span>Explore Schedule</span>
                 <span>→</span>
-              </Link>
-              <Link
-                href="/players"
-                className="inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-5 py-2.5 text-xs font-bold text-cyan-300 transition hover:bg-cyan-500/20 hover:-translate-y-0.5"
-              >
-                Player Divisions
               </Link>
             </div>
 
@@ -330,12 +333,23 @@ export function HomePage() {
           <p className="text-xs text-slate-400">
             Review published guidelines regarding time controls, tie-breaks, norm eligibility, and player conduct.
           </p>
-          <Link
-            href="/regulations"
-            className="inline-flex rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-5 py-2.5 text-xs font-bold text-slate-950 shadow-md transition hover:scale-105"
-          >
-            Read Full Regulations →
-          </Link>
+          <div className="flex flex-wrap gap-2 pt-2">
+            <Link
+              href="/regulations"
+              className="inline-flex rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-5 py-2.5 text-xs font-bold text-slate-950 shadow-md transition hover:scale-105"
+            >
+              Read Regulations →
+            </Link>
+            <a
+              href="/OceaniaYouth%202027%20Tournament%20Pack.pdf"
+              download="OceaniaYouth 2027 Tournament Pack.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-300 hover:border-amber-400 hover:text-white transition"
+            >
+              <span>📥 Download Pack (PDF)</span>
+            </a>
+          </div>
           <p className="text-[0.7rem] text-slate-500 leading-relaxed">
             {siteConfig.organization.legalLine}
           </p>

@@ -50,10 +50,10 @@ export function HomeHeroCountdown({
           <div>
             <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-amber-400">
               <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
-              Tournament Clock
+              Official Tournament Clock
             </span>
             <h2 className="mt-1 font-display text-2xl font-bold text-white md:text-3xl">
-              {countdown ? "Countdown to Round 1" : "Dates Locking In Soon"}
+              Countdown to Opening Day
             </h2>
           </div>
           
@@ -99,15 +99,13 @@ export function HomeHeroCountdown({
         {/* Status Callout Card */}
         <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 space-y-3">
           <div className="flex items-center justify-between text-xs text-amber-300 font-semibold">
-            <span>Official Event Phase</span>
-            <span className="rounded-full bg-amber-400/20 px-2.5 py-0.5 text-amber-200">
-              Host: Australia
+            <span>Schedule Status: Locked</span>
+            <span className="rounded-full bg-emerald-400/20 px-2.5 py-0.5 text-emerald-300 font-bold">
+              Confirmed Dates
             </span>
           </div>
           <p className="text-xs leading-relaxed text-slate-300">
-            {countdown
-              ? `Counting down to ${dateLabel}. Registrations and federation player nominations will open upon schedule lock.`
-              : "Official dates are being finalized with FIDE Zone 3.6 & Australian Chess Federation. Monitor the news tab for updates."}
+            Counting down to <strong className="text-white">{dateLabel}</strong>. Official 9-round classical, 7-round rapid, and 9-round blitz schedules are locked.
           </p>
 
           <div className="flex flex-wrap gap-2 pt-1">
@@ -115,14 +113,14 @@ export function HomeHeroCountdown({
               href={registrationHref}
               className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-4 py-2 text-xs font-bold text-slate-950 shadow-md transition hover:scale-105"
             >
-              <span>Express Interest</span>
+              <span>Register Interest</span>
               <span>→</span>
             </Link>
             <Link
               href="/schedule"
               className="inline-flex items-center rounded-full border border-slate-700 bg-slate-800 px-4 py-2 text-xs font-bold text-white transition hover:bg-slate-700"
             >
-              View Draft Schedule
+              View Official Schedule
             </Link>
           </div>
         </div>
@@ -134,7 +132,7 @@ export function HomeHeroCountdown({
 function getCountdownParts(eventStartDate: string | null) {
   if (!eventStartDate) return null;
 
-  const target = new Date(`${eventStartDate}T00:00:00+10:00`);
+  const target = new Date(eventStartDate);
   const now = new Date();
   const diff = target.getTime() - now.getTime();
 
@@ -160,4 +158,5 @@ function getCountdownParts(eventStartDate: string | null) {
     { label: "Seconds", value: String(seconds).padStart(2, "0") },
   ];
 }
+
 

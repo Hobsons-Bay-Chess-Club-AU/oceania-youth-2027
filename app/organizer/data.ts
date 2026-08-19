@@ -1,31 +1,32 @@
 export const organizerData = {
-  title: "Organizing Team",
+  title: "Organising Committee & Officials",
   intro:
-    "The Oceania Youth Zonal 2027 is being prepared by an organizing team covering tournament operations, arbitration, logistics, communications, and volunteer coordination.",
+    "Hobsons Bay Chess Club Inc. (Est. 1974) is proud to host the Oceania Youth Chess Championship 2027 in Melbourne under the auspices of the Oceania Chess Confederation (OCC) and Australian Chess Federation (ACF).",
   groups: [
     {
-      title: "Core leadership",
+      title: "Core Leadership",
       staff: [
-        { role: "Chief Organizer", name: "To be announced" },
-        { role: "Deputy Organizer", name: "To be announced" },
-        { role: "Operations Manager", name: "To be announced" },
+        { role: "Event Director", name: "IA Casey Goh (FIDE International Arbiter / Associate Organiser Candidate)" },
+        { role: "Host Organisation", name: "Hobsons Bay Chess Club Inc. (HBCC Est. 1974)" },
+        { role: "Contact Email", name: "major_tournaments@hobsonsbaychess.com" },
       ],
     },
     {
-      title: "Tournament officials",
+      title: "Tournament Officials & Arbiters",
       staff: [
-        { role: "Chief Arbiter", name: "To be announced" },
-        { role: "Deputy Arbiter", name: "To be announced" },
-        { role: "Pairings and Results", name: "To be announced" },
+        { role: "Chief Arbiter", name: "IA Dr Peter Tsai (FIDE International Arbiter & Senior Arbiter, Australia)" },
+        { role: "Technical Delegate", name: "IA David Esmonde (Appointed by Continental President for Asia)" },
+        { role: "Sanctioning Bodies", name: "Oceania Chess Confederation (OCC) / FIDE Zone 3.6" },
       ],
     },
     {
-      title: "Event support",
+      title: "Participating OCC Federations (13 Nations)",
       staff: [
-        { role: "Volunteer Coordinator", name: "To be announced" },
-        { role: "Media and Communications", name: "To be announced" },
-        { role: "Venue Liaison", name: "To be announced" },
+        { role: "Australia & New Zealand", name: "Australian Chess Federation & New Zealand Chess Federation" },
+        { role: "Pacific Island Nations", name: "Fiji, Papua New Guinea, Solomon Islands, Palau, Guam, Nauru, New Caledonia, Tonga, Vanuatu, Kiribati, Marshall Islands" },
+        { role: "Support Programme", name: "Pacific Island Federation Participation Assistance Scheme ($1,000 AUD Travel Grants)" },
       ],
     },
   ],
 };
+

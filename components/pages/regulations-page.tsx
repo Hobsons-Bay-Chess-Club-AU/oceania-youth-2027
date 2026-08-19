@@ -13,10 +13,15 @@ export function RegulationsPage() {
         description="Comprehensive technical regulations governing playing formats, time controls, tie-breaks, norm pathways, and appeal procedures for Oceania Youth 2027."
       >
         <div className="mt-6 flex flex-wrap gap-3">
-          <RegulationsPdfDownload
-            label="Download PDF Manual"
+          <a
+            href="/OceaniaYouth%202027%20Tournament%20Pack.pdf"
+            download="OceaniaYouth 2027 Tournament Pack.pdf"
+            target="_blank"
+            rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-5 py-2.5 text-xs font-black uppercase text-slate-950 shadow-md transition hover:scale-105"
-          />
+          >
+            <span>📥 Download Tournament Pack (PDF)</span>
+          </a>
           <a
             href="#regulations-content"
             className="inline-flex items-center rounded-full border border-slate-700 bg-slate-800 px-5 py-2.5 text-xs font-bold text-white transition hover:bg-slate-700"

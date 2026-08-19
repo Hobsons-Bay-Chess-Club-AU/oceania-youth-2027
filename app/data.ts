@@ -1,111 +1,112 @@
 import { siteConfig } from "@/lib/site-config";
 
 export const homePageData = {
-  dateLabel: "Official dates to be announced",
-  eventStartDate: null as string | null,
-  heroKicker: "Oceania Zone 3.6 | Australia 2027",
+  dateLabel: "27 September – 4 October 2027",
+  eventStartDate: "2027-09-27T09:00:00+10:00",
+  heroKicker: "FIDE Zone 3.6 Championship | Melbourne 2027",
   heroImage: siteConfig.heroImage,
   alert: {
-    title: "Important event updates",
+    title: "Official Tournament Bulletin",
     items: [
-      "Australia has been announced as the host country for the 2027 Oceania Youth Zonal Tournament.",
-      "Official updates on dates, venue, entry procedures, and logistics will be published here as they are confirmed.",
-      "Players, families, and federations should use the News & Updates page for the latest notices.",
-      "Registration, travel guidance, and operational details will be expanded as planning milestones are released.",
+      "Official Dates Confirmed: Oceania Youth Zonal 2027 will be held 27 September – 4 October 2027 at Bacchus Marsh Grammar – Woodlea Campus in Melbourne, Australia.",
+      "3-in-1 Championship Package: Registration includes entry into all three championships (Classical 9 Rounds, Rapid 7 Rounds, and Blitz 9 Rounds) with NO extra event fees.",
+      "Pacific Island Assistance Scheme: The first 3 eligible federations (outside AUS & NZ) registering 5+ players by 1 March 2027 will receive a $1,000 AUD travel grant.",
+      "Official Federation Delegations receive complimentary twin-share accommodation for 1 Official Player per category plus 1 Head of Delegation.",
     ],
   },
   quickFacts: [
     {
       label: "Championships",
       value: "14",
-      note: "Open and Girls championships are planned across the seven official age categories.",
+      note: "Open and Girls championships across 7 age categories (U8 through U20).",
       tone: "from-sky-400 via-cyan-300 to-teal-200",
     },
     {
-      label: "Playing format",
-      value: "9",
-      note: "Each championship is scheduled as a nine-round Swiss tournament under the published regulations.",
+      label: "3-in-1 Format",
+      value: "25 Rounds",
+      note: "9 Classical (90+30) + 7 Rapid (10+2) + 9 Blitz (3+2) — all included in 1 package!",
       tone: "from-amber-300 via-orange-300 to-pink-200",
     },
     {
-      label: "Age groups",
-      value: "U8-U20",
-      note: "Age divisions run from Under 8 through Under 20, covering the full Oceania youth pathway.",
+      label: "Age Groups",
+      value: "U8–U20",
+      note: "Age divisions from Under 8 to Under 20 covering the full Oceania youth pathway.",
       tone: "from-violet-400 via-fuchsia-300 to-rose-200",
     },
   ],
   tournamentStats: {
-    heading: "Tournament snapshot",
-    title: "Oceania field at a glance",
-    badge: "Planning snapshot",
+    heading: "Championship Snapshot",
+    title: "Oceania Zonal at a Glance",
+    badge: "Official 2027 Specs",
     description:
-      "These planning figures help explain the scale of the event and can be updated later as entries, officials, and federation participation are confirmed.",
+      "Bringing together top junior players across 13 national federations in the Oceania region (FIDE Zone 3.6).",
     stats: {
-      Federations: 6,
+      Federations: 13,
       Championships: 14,
-      Rounds: 9,
+      Rounds: 25,
       AgeGroups: 7,
     },
   },
   eventDetails: [
     {
-      title: "Host nation",
-      body: "Australia has been announced as host, with final city and venue details to be published once confirmed.",
+      title: "Host Venue & City",
+      body: "Bacchus Marsh Grammar – Woodlea Campus (111 Frontier Ave, Aintree VIC 3336), Melbourne, Australia. Hosted by Hobsons Bay Chess Club Inc. (Est. 1974).",
     },
     {
-      title: "Dates",
-      body: "Official tournament dates are still to be announced and will be published here as soon as they are finalised.",
+      title: "Official Dates",
+      body: "27 September – 4 October 2027. Classical rounds run Sep 28 – Oct 3. Rapid & Blitz run Oct 3.",
     },
     {
-      title: "Format",
-      body: "The event is planned as nine-round Swiss championships across the official Oceania youth age categories.",
+      title: "Championship Format",
+      body: "FIDE Rated Classical (9 Rounds, 90m+30s), Rapid (7 Rounds, 10m+2s), and Blitz (9 Rounds, 3m+2s).",
     },
     {
-      title: "Eligibility",
-      body: "Participation is intended for players from Oceania federations and associated members, subject to age-group rules.",
+      title: "Eligible Federations",
+      body: "Australia, New Zealand, Fiji, Papua New Guinea, Solomon Islands, Palau, Guam, Nauru, New Caledonia, Tonga, Vanuatu, Kiribati, and Marshall Islands.",
     },
   ],
   stakes: [
     {
-      title: "Titles",
-      body: "Published regulations outline direct title pathways and norm opportunities across several age categories.",
+      title: "FIDE Direct Titles",
+      body: "Direct GM, WGM, IM, WIM, FM, WFM, CM, and WCM titles and norms awarded per FIDE Regulations B/01.",
     },
     {
-      title: "Recognition",
-      body: "Gold, silver, and bronze trophies are planned for each championship, together with participation certificates.",
+      title: "Trophies & Medals",
+      body: "Official Gold, Silver, and Bronze trophies for all 14 championships, plus Pacific Island Special Prizes.",
     },
     {
-      title: "Representation",
-      body: "The zonal gives young players the chance to compete for their federation on the Oceania stage.",
+      title: "Regional Glory",
+      body: "Compete for your national federation on Oceania's biggest junior stage.",
     },
     {
-      title: "Legacy",
-      body: "Events like this strengthen youth chess development across the region and create lasting international connections.",
+      title: "First 300 Lucky Draw",
+      body: "First 300 registered players enter a draw for 5x DGT Chess Clocks and 1x ChessNut Go electronic board.",
     },
   ],
   whyParticipate: [
     {
-      title: "Regional Representation",
-      body: "Players have the opportunity to represent their federation in the premier Oceania youth zonal environment.",
+      title: "Official FIDE Zonal",
+      body: "Represent your country in the premier youth zonal environment with FIDE ratings and direct title norms.",
     },
     {
-      title: "FIDE Ratings",
-      body: "Rated tournament conditions and title pathways make this a meaningful competitive step for ambitious juniors.",
+      title: "3 Events for 1 Price",
+      body: "Your single registration covers Classical, Rapid, and Blitz championships with zero extra entry fees.",
     },
     {
-      title: "Challenge Yourself",
-      body: "The event brings together strong young players from across the region, creating real tests in every age group.",
+      title: "Pacific Federation Grants",
+      body: "Travel assistance grants ($1,000 AUD) and free twin-share accommodation for official federation delegations.",
     },
     {
-      title: "Tournament Thrill",
-      body: "Beyond the games, the tournament offers a memorable international atmosphere for players, families, and teams.",
+      title: "World-Class Operations",
+      body: "Hosted by HBCC with FIDE International Arbiters, DGT live board broadcasts, and professional venue facilities.",
     },
   ],
   registration: {
     description:
-      "Registration is not yet open. This website will publish the official entry process, eligibility notes, deadlines, and tournament updates once the organiser releases them.",
-    playersRegistered: "Opening soon",
-    status: "Registration not yet open",
-    note: "Families and federations should monitor the News & Updates page for the registration announcement and key planning milestones.",
+      "Registration opens 1 September 2026. Early Bird registration ($260 AUD total) is available until 1 August 2027. Official Federation invited players pay $130 AUD (registration fee waived).",
+    playersRegistered: "Opens 1 Sept 2026",
+    status: "Early Bird Cutoff: 1 Aug 2027",
+    note: "Official entries are processed directly through the Hobsons Bay Chess Club portal.",
   },
 };
+
