@@ -1,7 +1,20 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans, Cinzel } from "next/font/google";
 import "./globals.css";
 import { SiteShell } from "@/components/site-shell";
 import { siteConfig } from "@/lib/site-config";
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+  display: "swap",
+});
+
+const cinzel = Cinzel({
+  subsets: ["latin"],
+  variable: "--font-cinzel",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
@@ -46,10 +59,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className={`${jakarta.variable} ${cinzel.variable}`}>
+      <body className="bg-slate-950 font-body antialiased selection:bg-amber-400 selection:text-slate-950">
         <SiteShell>{children}</SiteShell>
       </body>
     </html>
   );
 }
+

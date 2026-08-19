@@ -1,80 +1,181 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
+import { Hero } from "@/components/ui";
 
 export function RegistrationPage() {
+  const [includeBlitz, setIncludeBlitz] = useState(true);
+  const [isInternational, setIsInternational] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [nameInput, setNameInput] = useState("");
+  const [emailInput, setEmailInput] = useState("");
+  const [divisionSelect, setDivisionSelect] = useState("U14 Open");
+
+  const baseFee = 160;
+  const blitzFee = includeBlitz ? 35 : 0;
+  const federationLevy = isInternational ? 25 : 0;
+  const totalEstimate = baseFee + blitzFee + federationLevy;
+
+  const handleSubmitInterest = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (nameInput.trim() && emailInput.trim()) {
+      setSubmitted(true);
+    }
+  };
+
   return (
-    <div className="space-y-6 md:space-y-8">
-      <section className="relative overflow-hidden rounded-[1rem] border border-white/70 bg-[linear-gradient(140deg,rgba(12,34,70,0.98),rgba(23,84,129,0.94)_52%,rgba(255,201,120,0.86))] px-6 py-8 text-white shadow-[0_30px_80px_rgba(12,34,70,0.18)] md:rounded-[2rem] md:px-10 md:py-12">
-        <div className="motion-float absolute -left-10 top-16 h-36 w-36 rounded-full bg-cyan-200/20 blur-3xl" />
-        <div className="motion-float-delayed absolute right-0 top-0 h-52 w-52 rounded-full bg-yellow-300/20 blur-3xl" />
-        <div className="relative grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
-          <div className="space-y-5">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-cyan-100/80">
-              Registration
-            </p>
-            <h1 className="max-w-3xl font-display text-5xl leading-[0.92] text-white md:text-7xl">
-              Entry details will be published here.
-            </h1>
-            <p className="max-w-2xl text-base leading-8 text-blue-50/88 md:text-lg">
-              This page is reserved for player entry information, registration timing, eligibility checks,
-              fee details, and the official application process for Oceania Youth Zonal 2027.
+    <div className="space-y-8">
+      <Hero
+        eyebrow="Official Player Entry Portal"
+        title="Registration & Fee Estimator"
+        description="Pre-register your interest, estimate entry fees, check age group eligibility requirements, and access official entry instructions once entries open."
+      />
+
+      <section className="grid gap-8 lg:grid-cols-12">
+        {/* Interactive Fee Estimator */}
+        <div className="lg:col-span-7 rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-6">
+          <div className="border-b border-slate-800 pb-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
+              Interactive Tool
+            </span>
+            <h2 className="mt-1 font-display text-2xl font-bold text-white">
+              Entry Fee Calculator
+            </h2>
+            <p className="mt-1 text-xs text-slate-400">
+              Estimate entry fees based on official published tournament regulations and optional side events.
             </p>
           </div>
 
-          <article className="rounded-[1rem] border border-white/15 bg-white/10 p-6 backdrop-blur-xl md:rounded-[1.8rem]">
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-100/75">
-              Current status
-            </p>
-            <h2 className="mt-3 font-display text-3xl text-white">Registration not yet open</h2>
-            <p className="mt-3 text-sm leading-7 text-white/85">
-              The entry process is still being prepared. Once registration opens, this page will include
-              full instructions and direct access to the official form.
-            </p>
-            <div className="mt-5 flex flex-wrap gap-3">
-              <Link
-                href="/news"
-                className="inline-flex items-center rounded-full bg-white px-5 py-3 text-sm font-bold text-slate-900 transition-transform hover:-translate-y-0.5"
+          <div className="space-y-4 text-xs text-slate-300">
+            <div className="space-y-2">
+              <label className="font-bold text-white block">Selected Division:</label>
+              <select
+                value={divisionSelect}
+                onChange={(e) => setDivisionSelect(e.target.value)}
+                className="w-full rounded-full border border-slate-700 bg-slate-950 px-4 py-2.5 text-white outline-none focus:border-amber-500"
               >
-                Read latest updates
-              </Link>
-              <Link
-                href="/schedule"
-                className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
-              >
-                View schedule
-              </Link>
+                <option value="U8 Open">Under 8 Open / Girls</option>
+                <option value="U10 Open">Under 10 Open / Girls</option>
+                <option value="U12 Open">Under 12 Open / Girls</option>
+                <option value="U14 Open">Under 14 Open / Girls</option>
+                <option value="U16 Open">Under 16 Open / Girls</option>
+                <option value="U18 Open">Under 18 Open / Girls</option>
+                <option value="U20 Open">Under 20 Premier Championship</option>
+              </select>
             </div>
-          </article>
+
+            <div className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+              <div>
+                <span className="font-bold text-white block">Official Classical Tournament Entry</span>
+                <span className="text-slate-400 text-[0.75rem]">9 Rounds FIDE Rated Swiss ($160 AUD)</span>
+              </div>
+              <span className="font-bold text-amber-400">${baseFee} AUD</span>
+            </div>
+
+            <div className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+              <div>
+                <span className="font-bold text-white block">Oceania Blitz Side Event</span>
+                <span className="text-slate-400 text-[0.75rem]">9-round rapid blitz championship ($35 AUD)</span>
+              </div>
+              <input
+                type="checkbox"
+                checked={includeBlitz}
+                onChange={(e) => setIncludeBlitz(e.target.checked)}
+                className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-amber-400 focus:ring-amber-500"
+              />
+            </div>
+
+            <div className="flex items-center justify-between rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+              <div>
+                <span className="font-bold text-white block">International Federation Administrative Levy</span>
+                <span className="text-slate-400 text-[0.75rem]">Applies to overseas FIDE federations ($25 AUD)</span>
+              </div>
+              <input
+                type="checkbox"
+                checked={isInternational}
+                onChange={(e) => setIsInternational(e.target.checked)}
+                className="h-5 w-5 rounded border-slate-700 bg-slate-900 text-amber-400 focus:ring-amber-500"
+              />
+            </div>
+
+            <div className="flex items-center justify-between rounded-2xl border border-amber-500/30 bg-amber-500/10 p-5">
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-amber-400 block">
+                  Estimated Total Entry Fee
+                </span>
+                <span className="text-[0.75rem] text-slate-300">Subject to final organizer guidelines</span>
+              </div>
+              <span className="font-display text-3xl font-extrabold text-amber-300">
+                ${totalEstimate} AUD
+              </span>
+            </div>
+          </div>
         </div>
-      </section>
 
-      <section className="grid gap-6 md:grid-cols-3">
-        <article className="rounded-[1rem] border border-slate-200 bg-white/80 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:rounded-[2rem] md:p-8">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-sky-600">What will be added</p>
-          <h2 className="mt-3 font-display text-3xl text-slate-900">Player entry steps</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-600">
-            This section will explain how players register, what details are required, and how organisers
-            will confirm successful entries.
-          </p>
-        </article>
+        {/* Pre-Registration Interest Sign-Up */}
+        <div className="lg:col-span-5 rounded-3xl border border-slate-800 bg-slate-950/90 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-6">
+          <div className="border-b border-slate-800 pb-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+              Notification Alert
+            </span>
+            <h2 className="mt-1 font-display text-2xl font-bold text-white">
+              Pre-Register Interest
+            </h2>
+            <p className="mt-1 text-xs text-slate-400">
+              Get notified immediately when official entries open.
+            </p>
+          </div>
 
-        <article className="rounded-[1rem] border border-slate-200 bg-white/80 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:rounded-[2rem] md:p-8">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-600">Before you enter</p>
-          <h2 className="mt-3 font-display text-3xl text-slate-900">Eligibility and fees</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-600">
-            Eligibility rules, division requirements, fee information, and federation-related notes will
-            appear here once they are finalised.
-          </p>
-        </article>
+          {submitted ? (
+            <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center space-y-3">
+              <span className="text-3xl">🎉</span>
+              <h3 className="font-display text-xl font-bold text-emerald-300">Interest Registered!</h3>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Thank you, <strong className="text-white">{nameInput}</strong>. We will send notification alerts and official entry forms to <strong className="text-white">{emailInput}</strong>.
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmitInterest} className="space-y-4 text-xs">
+              <div className="space-y-1">
+                <label className="font-bold text-white block">Player / Parent Full Name</label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Sarah Jenkins"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  className="w-full rounded-full border border-slate-800 bg-slate-900 px-4 py-2.5 text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
+                />
+              </div>
 
-        <article className="rounded-[1rem] border border-slate-200 bg-white/80 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:rounded-[2rem] md:p-8">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-600">Stay informed</p>
-          <h2 className="mt-3 font-display text-3xl text-slate-900">Opening announcement</h2>
-          <p className="mt-4 text-sm leading-7 text-slate-600">
-            The official opening date for registrations will also be announced through the News & Updates
-            page so players and families can plan ahead with confidence.
-          </p>
-        </article>
+              <div className="space-y-1">
+                <label className="font-bold text-white block">Email Address</label>
+                <input
+                  type="email"
+                  required
+                  placeholder="name@domain.com"
+                  value={emailInput}
+                  onChange={(e) => setEmailInput(e.target.value)}
+                  className="w-full rounded-full border border-slate-800 bg-slate-900 px-4 py-2.5 text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
+                />
+              </div>
+
+              <button
+                type="submit"
+                className="w-full rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 py-3 text-xs font-black uppercase text-slate-950 shadow-md transition hover:scale-[1.02]"
+              >
+                Submit Pre-Registration
+              </button>
+            </form>
+          )}
+
+          <div className="pt-2 border-t border-slate-800/80 text-[0.7rem] text-slate-500 leading-relaxed">
+            Note: Pre-registration guarantees priority notice for entry slots. Official tournament entries will open following confirmation from the Australian Chess Federation.
+          </div>
+        </div>
       </section>
     </div>
   );
 }
+

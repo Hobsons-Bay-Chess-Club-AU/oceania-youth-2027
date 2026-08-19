@@ -1,81 +1,84 @@
-import { Section } from "@/components/ui";
+"use client";
+
+import Link from "next/link";
+import { Hero } from "@/components/ui";
 import { venueData } from "@/app/venue/data";
 
 export function VenuePage() {
   return (
-    <>
-      <Section
-        title="Venue, Accommodation & Food"
-        description="TBU"
-      >
-        <div className="grid gap-4">
-          <h3 className="mt-2 text-2xl text-[var(--ink)] [font-family:var(--font-display)]">Venue</h3>
-          <p className="leading-[1.7] text-[var(--muted)]">
-            The 2027 Oceania Youth Chess Zonal will be held at:
-          </p>
-          <div className="rounded-[1.35rem] border border-[rgba(24,34,53,0.12)] bg-[#fffaf1] px-4 py-4">
-            <strong>{venueData.venue.name}</strong>
-            <p className="mt-2 leading-[1.7] text-[var(--muted)]">{venueData.venue.address}</p>
+    <div className="space-y-8">
+      <Hero
+        eyebrow="Playing Hall & Logistics"
+        title="Venue, Accommodation & Dining"
+        description="Comprehensive logistics guide for players, parents, and federations attending Oceania Youth 2027."
+      />
+
+      <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-6">
+        <div className="border-b border-slate-800 pb-3">
+          <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
+            Playing Venue
+          </span>
+          <h2 className="mt-1 font-display text-2xl font-bold text-white md:text-3xl">
+            {venueData.venue.name}
+          </h2>
+          <p className="mt-1 text-xs text-slate-300">{venueData.venue.address}</p>
+        </div>
+
+        <p className="text-xs leading-relaxed text-slate-300">{venueData.venue.note}</p>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-5 space-y-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-amber-400">✈️ Airport Travel</span>
+            <p className="text-xs leading-relaxed text-slate-300">{venueData.byAir}</p>
           </div>
-          <p className="leading-[1.7] text-[var(--muted)]">{venueData.venue.note}</p>
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-5 space-y-2">
+            <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">🚆 Transit & Trams</span>
+            <p className="text-xs leading-relaxed text-slate-300">{venueData.byTransport}</p>
+          </div>
+        </div>
+      </section>
 
-          <h3 className="mt-2 text-2xl text-[var(--ink)] [font-family:var(--font-display)]">
-            Travel to the Venue
-          </h3>
-          <p className="leading-[1.7] text-[var(--muted)]">{venueData.travelIntro}</p>
-          <h4 className="mt-2 text-lg font-semibold text-[var(--ink)]">By Air</h4>
-          <p className="leading-[1.7] text-[var(--muted)]">{venueData.byAir}</p>
-          <h4 className="mt-2 text-lg font-semibold text-[var(--ink)]">By Public Transport</h4>
-          <p className="leading-[1.7] text-[var(--muted)]">{venueData.byTransport}</p>
-          <ul className="ml-5 list-disc space-y-2 leading-[1.8] text-[var(--muted)]">
-            {venueData.transportRoutes.map((route) => (
-              <li key={route.label}>
-                <a href={route.href} target="_blank" rel="noreferrer">
-                  {route.label}
-                </a>{" "}
-                {route.note}
-              </li>
+      <section className="grid gap-6 md:grid-cols-2">
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl space-y-4">
+          <h2 className="font-display text-xl font-bold text-white">Recommended Accommodation</h2>
+          <div className="space-y-3">
+            {venueData.accommodation.map((item) => (
+              <div key={item.name} className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 space-y-1">
+                <div className="flex items-center justify-between text-xs">
+                  <h3 className="font-display text-base font-bold text-white">{item.name}</h3>
+                  <span className="font-bold text-emerald-400">{item.distance}</span>
+                </div>
+                <p className="text-xs text-slate-400">{item.address}</p>
+                {item.offer && (
+                  <span className="inline-block mt-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-0.5 text-[0.65rem] font-bold text-emerald-300">
+                    {item.offer}
+                  </span>
+                )}
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
-      </Section>
 
-      <Section title="Accommodation">
-        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
-          {venueData.accommodation.map((item) => (
-            <article className="rounded-[1.35rem] border border-[rgba(24,34,53,0.12)] bg-[#fffaf1] p-5" key={item.name}>
-              <h3 className="text-xl text-[var(--ink)] [font-family:var(--font-display)]">{item.name}</h3>
-              <p className="mt-2 leading-[1.7] text-[var(--muted)]">{item.address}</p>
-              <p className="leading-[1.7] text-[var(--muted)]">{item.distance}</p>
-              {item.offer ? <p className="font-bold text-[var(--gold)]">{item.offer}</p> : null}
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      <Section title="Food Options">
-        <div className="grid gap-4">
-          <p className="leading-[1.7] text-[var(--muted)]">
-            There are many food options available. Please see our <a href="/location">visit guide</a> for locations.
-          </p>
-          <h4 className="mt-2 text-lg font-semibold text-[var(--ink)]">On-Site</h4>
-          <p className="leading-[1.7] text-[var(--muted)]">{venueData.onSiteFoodIntro}</p>
-          <ul className="ml-5 list-disc space-y-2 leading-[1.8] text-[var(--muted)]">
-            {venueData.onSiteFoodItems.map((item) => (
-              <li key={item}>{item}</li>
+        <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl space-y-4">
+          <h2 className="font-display text-xl font-bold text-white">Food & Catering</h2>
+          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 text-xs text-slate-300">
+            <span className="font-bold text-amber-300 block mb-1">On-Site Options</span>
+            {venueData.onSiteFoodIntro}
+          </div>
+          <div className="space-y-3">
+            {venueData.nearbyEateries.map((item) => (
+              <div key={item.name} className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 space-y-1">
+                <div className="flex items-center justify-between text-xs">
+                  <h3 className="font-display text-base font-bold text-white">{item.name}</h3>
+                  <span className="font-bold text-amber-300">{item.distance}</span>
+                </div>
+                <p className="text-xs text-slate-400">{item.address}</p>
+              </div>
             ))}
-          </ul>
+          </div>
         </div>
-        <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]">
-          {venueData.nearbyEateries.map((item) => (
-            <article className="rounded-[1.35rem] border border-[rgba(24,34,53,0.12)] bg-[#fffaf1] p-5" key={item.name}>
-              <h3 className="text-xl text-[var(--ink)] [font-family:var(--font-display)]">{item.name}</h3>
-              <p className="mt-2 leading-[1.7] text-[var(--muted)]">{item.address}</p>
-              <p className="leading-[1.7] text-[var(--muted)]">{item.distance}</p>
-            </article>
-          ))}
-        </div>
-      </Section>
-    </>
+      </section>
+    </div>
   );
 }
+

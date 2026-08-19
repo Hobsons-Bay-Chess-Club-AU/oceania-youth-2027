@@ -24,16 +24,14 @@ export function HomeHeroCountdown({
   eventStartDate: string | null;
   registrationHref: string;
 }) {
+  const [tzMode, setTzMode] = useState<"AEST" | "LOCAL">("AEST");
   const [countdown, setCountdown] = useState<CountdownItem[] | null>(() =>
-    getCountdownParts(eventStartDate),
+    getCountdownParts(eventStartDate)
   );
 
   useEffect(() => {
     setCountdown(getCountdownParts(eventStartDate));
-
-    if (!eventStartDate) {
-      return;
-    }
+    if (!eventStartDate) return;
 
     const timer = window.setInterval(() => {
       setCountdown(getCountdownParts(eventStartDate));
@@ -43,59 +41,88 @@ export function HomeHeroCountdown({
   }, [eventStartDate]);
 
   return (
-    <article className="relative overflow-hidden rounded-[1rem] border border-white/15 bg-white/10 p-5 text-white shadow-[0_20px_60px_rgba(8,24,49,0.22)] backdrop-blur-xl md:rounded-[2rem] md:p-6">
-      <div className="absolute right-[-2rem] top-[-2rem] h-28 w-28 rounded-full bg-yellow-300/20 blur-2xl" />
-      <div className="absolute bottom-[-2rem] left-[-1rem] h-24 w-24 rounded-full bg-cyan-200/20 blur-2xl" />
-      <div className="relative">
-        <div className="flex flex-wrap items-center justify-between gap-3">
+    <article className="relative overflow-hidden rounded-3xl border border-amber-500/25 bg-slate-900/80 p-6 shadow-2xl backdrop-blur-xl md:p-8">
+      <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-amber-500/10 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-cyan-500/10 blur-3xl" />
+
+      <div className="relative z-10 space-y-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-100/80">
-              Event countdown
-            </p>
-            <h2 className="mt-2 font-display text-3xl text-white md:text-4xl">
-              {countdown ? "Counting down to first move" : "Countdown ready when dates lock in"}
+            <span className="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-widest text-amber-400">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              Tournament Clock
+            </span>
+            <h2 className="mt-1 font-display text-2xl font-bold text-white md:text-3xl">
+              {countdown ? "Countdown to Round 1" : "Dates Locking In Soon"}
             </h2>
           </div>
-          <span className="rounded-full border border-white/15 bg-slate-950/20 px-4 py-2 text-xs font-black uppercase tracking-[0.14em] text-cyan-50">
-            {countdown ? "Live now" : "Dates pending"}
-          </span>
+          
+          {/* Timezone Switcher */}
+          <div className="flex items-center rounded-full border border-slate-700 bg-slate-950 p-1 text-xs">
+            <button
+              onClick={() => setTzMode("AEST")}
+              className={`rounded-full px-3 py-1 font-bold transition ${
+                tzMode === "AEST" ? "bg-amber-400 text-slate-950" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              AEST (UTC+10)
+            </button>
+            <button
+              onClick={() => setTzMode("LOCAL")}
+              className={`rounded-full px-3 py-1 font-bold transition ${
+                tzMode === "LOCAL" ? "bg-amber-400 text-slate-950" : "text-slate-400 hover:text-white"
+              }`}
+            >
+              My Timezone
+            </button>
+          </div>
         </div>
 
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {/* Countdown Ticker Cards */}
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {(countdown ?? fallbackCountdownCards).map((item) => (
-            <article key={item.label} className="rounded-[0.9rem] border border-white/10 bg-slate-950/20 p-4 md:rounded-[1.4rem]">
-              <p className="text-3xl font-black text-white tabular-nums md:text-4xl">{item.value}</p>
-              <p className="mt-2 text-xs font-black uppercase tracking-[0.18em] text-cyan-100/75">
+            <div
+              key={item.label}
+              className="group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/80 p-4 text-center transition hover:border-amber-500/40"
+            >
+              <div className="pointer-events-none absolute -right-4 -top-4 h-12 w-12 rounded-full bg-amber-500/5 group-hover:bg-amber-500/15 transition" />
+              <p className="font-display text-3xl font-extrabold text-white tabular-nums md:text-4xl">
+                {item.value}
+              </p>
+              <p className="mt-1 text-[0.7rem] font-bold uppercase tracking-wider text-slate-400">
                 {item.label}
               </p>
-            </article>
+            </div>
           ))}
         </div>
 
-        <div className="mt-6 grid gap-4 rounded-[0.9rem] border border-white/10 bg-slate-950/20 p-4 md:rounded-[1.4rem]">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.18em] text-cyan-100/75">
-              Event status
-            </p>
-            <p className="mt-3 text-sm leading-7 text-white/85">
-              {countdown
-                ? `The tournament countdown is now live for ${dateLabel}. Register early and check back here for official updates as the event approaches.`
-                : "Official tournament dates will be announced soon. Registration and key event updates will appear here as soon as they are confirmed."}
-            </p>
+        {/* Status Callout Card */}
+        <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 space-y-3">
+          <div className="flex items-center justify-between text-xs text-amber-300 font-semibold">
+            <span>Official Event Phase</span>
+            <span className="rounded-full bg-amber-400/20 px-2.5 py-0.5 text-amber-200">
+              Host: Australia
+            </span>
           </div>
+          <p className="text-xs leading-relaxed text-slate-300">
+            {countdown
+              ? `Counting down to ${dateLabel}. Registrations and federation player nominations will open upon schedule lock.`
+              : "Official dates are being finalized with FIDE Zone 3.6 & Australian Chess Federation. Monitor the news tab for updates."}
+          </p>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2 pt-1">
             <Link
               href={registrationHref}
-              className="inline-flex items-center rounded-full bg-yellow-300 px-5 py-3 text-sm font-extrabold text-slate-900 shadow-lg shadow-yellow-300/20 transition-transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-4 py-2 text-xs font-bold text-slate-950 shadow-md transition hover:scale-105"
             >
-              Register now
+              <span>Express Interest</span>
+              <span>→</span>
             </Link>
             <Link
-              href="/news"
-              className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-5 py-3 text-sm font-bold text-white transition-transform hover:-translate-y-0.5"
+              href="/schedule"
+              className="inline-flex items-center rounded-full border border-slate-700 bg-slate-800 px-4 py-2 text-xs font-bold text-white transition hover:bg-slate-700"
             >
-              Read latest updates
+              View Draft Schedule
             </Link>
           </div>
         </div>
@@ -105,9 +132,7 @@ export function HomeHeroCountdown({
 }
 
 function getCountdownParts(eventStartDate: string | null) {
-  if (!eventStartDate) {
-    return null;
-  }
+  if (!eventStartDate) return null;
 
   const target = new Date(`${eventStartDate}T00:00:00+10:00`);
   const now = new Date();
@@ -135,3 +160,4 @@ function getCountdownParts(eventStartDate: string | null) {
     { label: "Seconds", value: String(seconds).padStart(2, "0") },
   ];
 }
+

@@ -1,74 +1,182 @@
-import { Hero, Section } from "@/components/ui";
+"use client";
+
+import { useState } from "react";
+import { Hero, SearchInput } from "@/components/ui";
 import { scheduleRows } from "@/app/schedule/data";
 
-export function SchedulePage() {
-  return (
-    <>
-      <Hero
-        eyebrow="Tournament flow"
-        title="Tournament Schedule"
-        description="The source schedule has been converted into local structured data so we can restyle or edit it later without touching markup."
-      />
-      <Section title="Event timetable">
-        <div className="grid gap-4 md:hidden">
-          {scheduleRows.map((row, index) => (
-            <article
-              key={`${row.date}-${row.time}-${index}`}
-              className="rounded-[1rem] border border-[rgba(24,34,53,0.12)] bg-[#fffaf1] p-4 shadow-sm"
-            >
-              <div className="flex flex-wrap items-start justify-between gap-3">
-                <div>
-                  <p className="text-xs font-black uppercase tracking-[0.16em] text-[var(--gold)]">
-                    {row.date || "Schedule item"}
-                  </p>
-                  <h3 className="mt-2 text-xl text-[var(--ink)] [font-family:var(--font-display)]">
-                    {row.activity}
-                  </h3>
-                </div>
-                <span className="rounded-full bg-[var(--navy)] px-3 py-2 text-xs font-black uppercase tracking-[0.12em] text-white">
-                  {row.time}
-                </span>
-              </div>
+const scheduleCategories = [
+  { label: "All Events", filter: "all" },
+  { label: "Rounds 1 - 9", filter: "round" },
+  { label: "Ceremonies & Meetings", filter: "ceremony" },
+];
 
-              <div className="mt-4 grid gap-3">
-                <div className="rounded-[0.9rem] bg-white/75 px-4 py-3">
-                  <p className="text-[0.7rem] font-black uppercase tracking-[0.16em] text-slate-500">Day</p>
-                  <p className="mt-1 text-sm leading-6 text-slate-700">{row.day || "To be confirmed"}</p>
-                </div>
-                <div className="rounded-[0.9rem] bg-white/75 px-4 py-3">
-                  <p className="text-[0.7rem] font-black uppercase tracking-[0.16em] text-slate-500">Venue</p>
-                  <p className="mt-1 text-sm leading-6 text-slate-700">{row.venue}</p>
-                </div>
-              </div>
-            </article>
+export function SchedulePage() {
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [search, setSearch] = useState("");
+  const [selectedDay, setSelectedDay] = useState<string | null>(null);
+
+  const filteredSchedule = scheduleRows.filter((row) => {
+    const matchesSearch =
+      row.activity.toLowerCase().includes(search.toLowerCase()) ||
+      row.venue.toLowerCase().includes(search.toLowerCase()) ||
+      (row.date && row.date.toLowerCase().includes(search.toLowerCase()));
+
+    if (!matchesSearch) return false;
+
+    if (activeFilter === "round") {
+      return row.activity.toLowerCase().includes("round");
+    }
+    if (activeFilter === "ceremony") {
+      return (
+        row.activity.toLowerCase().includes("opening") ||
+        row.activity.toLowerCase().includes("awards") ||
+        row.activity.toLowerCase().includes("meeting") ||
+        row.activity.toLowerCase().includes("registration")
+      );
+    }
+    if (selectedDay) {
+      return row.date === selectedDay;
+    }
+
+    return true;
+  });
+
+  const handleAddToCalendar = (activity: string, date: string) => {
+    const title = encodeURIComponent(`Oceania Youth 2027: ${activity}`);
+    const details = encodeURIComponent("Official Oceania Youth Chess Zonal 2027 Schedule Event.");
+    const googleUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}`;
+    window.open(googleUrl, "_blank");
+  };
+
+  return (
+    <div className="space-y-8">
+      <Hero
+        eyebrow="Official Timetable"
+        title="Tournament Schedule"
+        description="Comprehensive 9-round classical championship schedule, technical meetings, opening ceremonies, blitz side events, and prize distribution."
+      />
+
+      <section className="rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-6">
+        {/* Controls Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          {/* Category Filter Tabs */}
+          <div className="flex flex-wrap gap-2">
+            {scheduleCategories.map((cat) => (
+              <button
+                key={cat.filter}
+                onClick={() => {
+                  setActiveFilter(cat.filter);
+                  setSelectedDay(null);
+                }}
+                className={`rounded-full px-4 py-2 text-xs font-bold transition ${
+                  activeFilter === cat.filter && !selectedDay
+                    ? "bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20"
+                    : "border border-slate-800 bg-slate-950 text-slate-300 hover:border-amber-500/40 hover:text-white"
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Search Input */}
+          <div className="w-full sm:w-64">
+            <SearchInput
+              value={search}
+              onChange={setSearch}
+              placeholder="Search schedule events..."
+            />
+          </div>
+        </div>
+
+        {/* Day Shortcut Quick Selectors */}
+        <div className="flex flex-wrap items-center gap-2 text-xs">
+          <span className="font-bold text-slate-400 mr-2">Filter by Day:</span>
+          <button
+            onClick={() => setSelectedDay(null)}
+            className={`rounded-lg px-3 py-1.5 font-bold transition ${
+              selectedDay === null ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30" : "bg-slate-950 text-slate-400 hover:text-white"
+            }`}
+          >
+            All Days
+          </button>
+          {["Day 0", "Day 1", "Day 2", "Day 3", "Day 4", "Day 5"].map((d) => (
+            <button
+              key={d}
+              onClick={() => {
+                setSelectedDay(d);
+                setActiveFilter("all");
+              }}
+              className={`rounded-lg px-3 py-1.5 font-bold transition ${
+                selectedDay === d ? "bg-cyan-500/20 text-cyan-300 border border-cyan-500/30" : "bg-slate-950 text-slate-400 hover:text-white"
+              }`}
+            >
+              {d}
+            </button>
           ))}
         </div>
 
-        <div className="hidden overflow-x-auto rounded-[1rem] border border-[rgba(24,34,53,0.12)] bg-[#fffaf1] md:block md:rounded-[1.35rem]">
-          <table className="w-full min-w-[760px] border-collapse">
-            <thead className="bg-[var(--navy)] text-white">
-              <tr>
-                <th className="px-3 py-3 text-left text-sm font-bold sm:px-4 sm:text-base">December</th>
-                <th className="px-3 py-3 text-left text-sm font-bold sm:px-4 sm:text-base">Day</th>
-                <th className="px-3 py-3 text-left text-sm font-bold sm:px-4 sm:text-base">Times</th>
-                <th className="px-3 py-3 text-left text-sm font-bold sm:px-4 sm:text-base">Venue</th>
-                <th className="px-3 py-3 text-left text-sm font-bold sm:px-4 sm:text-base">Activity</th>
-              </tr>
-            </thead>
-            <tbody>
-              {scheduleRows.map((row, index) => (
-                <tr key={`${row.date}-${row.time}-${index}`}>
-                  <td className="border-b border-[rgba(24,34,53,0.12)] px-3 py-3 text-left text-[0.95rem] sm:px-4 sm:text-base">{row.date}</td>
-                  <td className="border-b border-[rgba(24,34,53,0.12)] px-3 py-3 text-left text-[0.95rem] sm:px-4 sm:text-base">{row.day}</td>
-                  <td className="border-b border-[rgba(24,34,53,0.12)] px-3 py-3 text-left text-[0.95rem] sm:px-4 sm:text-base">{row.time}</td>
-                  <td className="border-b border-[rgba(24,34,53,0.12)] px-3 py-3 text-left text-[0.95rem] sm:px-4 sm:text-base">{row.venue}</td>
-                  <td className="border-b border-[rgba(24,34,53,0.12)] px-3 py-3 text-left text-[0.95rem] sm:px-4 sm:text-base">{row.activity}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        {/* Schedule Items Grid & Table */}
+        <div className="space-y-3">
+          {filteredSchedule.length > 0 ? (
+            filteredSchedule.map((row, index) => {
+              const isRound = row.activity.toLowerCase().includes("round");
+              const isCeremony =
+                row.activity.toLowerCase().includes("opening") ||
+                row.activity.toLowerCase().includes("awards");
+
+              return (
+                <div
+                  key={`${row.date}-${row.time}-${index}`}
+                  className="glass-card-hover flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-800 bg-slate-950/70 p-4 backdrop-blur-md"
+                >
+                  <div className="flex items-center gap-4">
+                    <span
+                      className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl font-display font-black text-xs shadow-md ${
+                        isRound
+                          ? "bg-gradient-to-tr from-amber-500 to-yellow-300 text-slate-950"
+                          : isCeremony
+                          ? "bg-gradient-to-tr from-cyan-500 to-blue-400 text-slate-950"
+                          : "bg-slate-800 text-slate-300"
+                      }`}
+                    >
+                      {row.date || "Event"}
+                    </span>
+                    <div className="space-y-0.5">
+                      <div className="flex items-center gap-2">
+                        <span className="font-display text-base font-bold text-white">
+                          {row.activity}
+                        </span>
+                        {row.day && (
+                          <span className="rounded-full bg-slate-800 px-2.5 py-0.5 text-[0.65rem] font-semibold text-slate-400">
+                            {row.day}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-slate-400">
+                        Venue: <span className="text-slate-300">{row.venue}</span> • Scheduled Time:{" "}
+                        <span className="text-amber-300 font-semibold">{row.time}</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => handleAddToCalendar(row.activity, row.date)}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900 px-3.5 py-1.5 text-xs font-bold text-slate-300 hover:border-amber-400 hover:text-white transition"
+                  >
+                    <span>+ Calendar</span>
+                  </button>
+                </div>
+              );
+            })
+          ) : (
+            <div className="p-8 text-center text-xs text-slate-400">
+              No schedule events matched your search or filter parameters.
+            </div>
+          )}
         </div>
-      </Section>
-    </>
+      </section>
+    </div>
   );
 }
+

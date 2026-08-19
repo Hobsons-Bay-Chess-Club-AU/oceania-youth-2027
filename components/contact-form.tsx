@@ -69,7 +69,7 @@ export function ContactForm() {
     } catch {
       setSubmitState("error");
       setStatusMessage(
-        "We could not send your message right now. Please email the organising team directly.",
+        "We could not send your message right now. Please email the organising team directly."
       );
     }
   }
@@ -80,91 +80,97 @@ export function ContactForm() {
       <input type="hidden" name="_subject" value="Oceania Youth Zonal 2027 contact enquiry" />
 
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="grid gap-2 text-sm font-semibold text-slate-700">
-          Full name
+        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
+          Full Name
           <input
             required
             type="text"
             name="name"
+            placeholder="Your name"
             autoComplete="name"
-            className="rounded-[0.9rem] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100 md:rounded-[1.2rem]"
+            className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
           />
         </label>
 
-        <label className="grid gap-2 text-sm font-semibold text-slate-700">
-          Email address
+        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
+          Email Address
           <input
             required
             type="email"
             name="email"
+            placeholder="name@domain.com"
             autoComplete="email"
-            className="rounded-[0.9rem] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100 md:rounded-[1.2rem]"
+            className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
           />
         </label>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-[0.9fr_1.1fr]">
-        <label className="grid gap-2 text-sm font-semibold text-slate-700">
-          Federation or organisation
+      <div className="grid gap-4 md:grid-cols-2">
+        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
+          Federation or Club
           <input
             type="text"
             name="organization"
+            placeholder="e.g. Chess Victoria / NZCF"
             autoComplete="organization"
-            className="rounded-[0.9rem] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100 md:rounded-[1.2rem]"
+            className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
           />
         </label>
 
-        <label className="grid gap-2 text-sm font-semibold text-slate-700">
+        <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
           Subject
           <input
             required
             type="text"
             name="subject"
-            className="rounded-[0.9rem] border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100 md:rounded-[1.2rem]"
+            placeholder="Enquiry topic"
+            className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
           />
         </label>
       </div>
 
-      <label className="grid gap-2 text-sm font-semibold text-slate-700">
+      <label className="grid gap-1.5 text-xs font-bold uppercase tracking-wider text-amber-400">
         Message
         <textarea
           required
           name="message"
-          rows={7}
-          className="rounded-[0.9rem] border border-slate-200 bg-white px-4 py-3 text-sm leading-7 text-slate-900 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100 md:rounded-[1.2rem]"
+          rows={5}
+          placeholder="Please describe your question..."
+          className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-4 py-3 text-xs text-white placeholder-slate-500 focus:border-amber-500 focus:outline-none"
         />
       </label>
 
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-[1rem] border border-slate-200 bg-slate-50 px-4 py-4 md:rounded-[1.4rem]">
-        <p className="max-w-xl text-sm leading-6 text-slate-600">
-          Messages are sent to the organising team by email. If you prefer, you can also contact us
-          directly at{" "}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-slate-800 bg-slate-950/80 p-4">
+        <p className="max-w-xl text-xs text-slate-400">
+          Direct email:{" "}
           <a
             href={`mailto:${siteConfig.contact.email}`}
-            className="font-bold text-sky-700 underline decoration-sky-200 underline-offset-4"
+            className="font-bold text-amber-300 hover:underline"
           >
             {siteConfig.contact.email}
           </a>
-          .
         </p>
         <button
           type="submit"
           disabled={submitState === "submitting"}
-          className="inline-flex items-center rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-6 py-2.5 text-xs font-black uppercase text-slate-950 shadow-md transition hover:scale-105 disabled:opacity-60"
         >
-          {submitState === "submitting" ? "Sending..." : "Send message"}
+          {submitState === "submitting" ? "Sending..." : "Submit Inquiry"}
         </button>
       </div>
 
-      {statusMessage ? (
+      {statusMessage && (
         <p
-          className={`text-sm leading-6 ${
-            submitState === "error" ? "text-rose-700" : "text-emerald-700"
+          className={`text-xs font-semibold p-3 rounded-xl ${
+            submitState === "error"
+              ? "bg-rose-500/10 border border-rose-500/20 text-rose-300"
+              : "bg-emerald-500/10 border border-emerald-500/20 text-emerald-300"
           }`}
         >
           {statusMessage}
         </p>
-      ) : null}
+      )}
     </form>
   );
 }
+

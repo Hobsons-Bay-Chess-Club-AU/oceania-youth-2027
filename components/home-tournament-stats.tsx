@@ -10,38 +10,12 @@ type TournamentStatsProps = {
   stats: Record<string, number>;
 };
 
-const statCardThemes = [
-  {
-    shell: "border-sky-200 bg-[linear-gradient(180deg,#eff9ff,#ffffff)]",
-    value: "text-sky-700",
-    label: "text-sky-800/80",
-  },
-  {
-    shell: "border-amber-200 bg-[linear-gradient(180deg,#fff8eb,#ffffff)]",
-    value: "text-amber-700",
-    label: "text-amber-900/75",
-  },
-  {
-    shell: "border-emerald-200 bg-[linear-gradient(180deg,#effcf6,#ffffff)]",
-    value: "text-emerald-700",
-    label: "text-emerald-900/75",
-  },
-  {
-    shell: "border-rose-200 bg-[linear-gradient(180deg,#fff1f4,#ffffff)]",
-    value: "text-rose-700",
-    label: "text-rose-900/75",
-  },
-  {
-    shell: "border-violet-200 bg-[linear-gradient(180deg,#f6f2ff,#ffffff)]",
-    value: "text-violet-700",
-    label: "text-violet-900/75",
-  },
-  {
-    shell: "border-cyan-200 bg-[linear-gradient(180deg,#ecfeff,#ffffff)]",
-    value: "text-cyan-700",
-    label: "text-cyan-900/75",
-  },
-];
+const statIcons: Record<string, string> = {
+  Federations: "🌐",
+  Championships: "🏆",
+  Rounds: "♟️",
+  AgeGroups: "🎯",
+};
 
 export function HomeTournamentStats({
   heading,
@@ -54,7 +28,7 @@ export function HomeTournamentStats({
   const [counts, setCounts] = useState(() => entries.map(() => 0));
 
   useEffect(() => {
-    const durationMs = 1400;
+    const durationMs = 1200;
     const frameMs = 24;
     const steps = Math.max(1, Math.floor(durationMs / frameMs));
     let step = 0;
@@ -75,34 +49,51 @@ export function HomeTournamentStats({
   }, [entries]);
 
   return (
-    <article className="motion-rise-in-delayed rounded-[1rem] border border-white/70 bg-white/75 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:rounded-[2rem] md:p-8">
-      <div className="flex flex-wrap items-center justify-between gap-4">
+    <article className="motion-rise-in-delayed rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl backdrop-blur-xl md:p-8">
+      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-amber-500">{heading}</p>
-          <h2 className="mt-3 font-display text-3xl text-slate-900 md:text-4xl">{title}</h2>
+          <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
+            {heading}
+          </span>
+          <h2 className="mt-1 font-display text-2xl font-bold text-white md:text-3xl">
+            {title}
+          </h2>
         </div>
-        <span className="rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white">{badge}</span>
+        <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-3.5 py-1 text-xs font-bold text-amber-300">
+          {badge}
+        </span>
       </div>
 
-      <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600 md:text-base">
+      <p className="mt-4 text-xs leading-relaxed text-slate-300 md:text-sm">
         {description}
       </p>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="mt-6 grid grid-cols-2 gap-4 xl:grid-cols-4">
         {entries.map(([name], index) => {
-          const theme = statCardThemes[index % statCardThemes.length];
+          const icon = statIcons[name] || "⭐";
 
           return (
-          <article
-            key={name}
-            className={`rounded-[1rem] border p-5 md:rounded-[1.5rem] ${theme.shell}`}
-          >
-            <p className={`text-xs font-black uppercase tracking-[0.16em] ${theme.label}`}>{name}</p>
-            <p className={`mt-3 font-display text-4xl tabular-nums ${theme.value}`}>{counts[index]}</p>
-          </article>
+            <div
+              key={name}
+              className="glass-card-hover group relative overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/70 p-5 backdrop-blur-md"
+            >
+              <div className="flex items-center justify-between text-slate-400 text-lg">
+                <span className="text-2xl">{icon}</span>
+                <span className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-500">
+                  Target
+                </span>
+              </div>
+              <p className="mt-3 font-display text-4xl font-extrabold text-white tabular-nums">
+                {counts[index]}
+              </p>
+              <p className="mt-1 text-xs font-bold text-slate-300">
+                {name === "AgeGroups" ? "Age Divisions" : name}
+              </p>
+            </div>
           );
         })}
       </div>
     </article>
   );
 }
+

@@ -1,70 +1,87 @@
+"use client";
+
 import Link from "next/link";
+import { useState } from "react";
 import { homePageData } from "@/app/data";
 import { siteConfig } from "@/lib/site-config";
 import { HomeHeroCountdown } from "@/components/home-hero-countdown";
 import { HomeTournamentStats } from "@/components/home-tournament-stats";
 
+const ageDivisions = [
+  { group: "U8", open: "Under 8 Open", girls: "Under 8 Girls", note: "Born 2019 or later" },
+  { group: "U10", open: "Under 10 Open", girls: "Under 10 Girls", note: "Born 2017 or later" },
+  { group: "U12", open: "Under 12 Open", girls: "Under 12 Girls", note: "Born 2015 or later" },
+  { group: "U14", open: "Under 14 Open", girls: "Under 14 Girls", note: "Born 2013 or later" },
+  { group: "U16", open: "Under 16 Open", girls: "Under 16 Girls", note: "Born 2011 or later" },
+  { group: "U18", open: "Under 18 Open", girls: "Under 18 Girls", note: "Born 2009 or later" },
+  { group: "U20", open: "Under 20 Open", girls: "Under 20 Girls", note: "Junior Premier Championship" },
+];
+
 export function HomePage() {
+  const [selectedGroup, setSelectedGroup] = useState(ageDivisions[3]); // Default U14
+
   return (
-    <div className="space-y-6 md:space-y-8">
-      <section className="relative overflow-hidden rounded-[1rem] border border-white/70 bg-[linear-gradient(135deg,rgba(12,34,70,0.98),rgba(28,74,143,0.92)_45%,rgba(107,217,255,0.78))] px-6 py-8 shadow-[0_30px_80px_rgba(12,34,70,0.18)] md:rounded-[2rem] md:px-10 md:py-12">
-        <div className="motion-float absolute -left-10 top-16 h-36 w-36 rounded-full bg-yellow-300/30 blur-3xl" />
-        <div className="motion-float-delayed absolute right-0 top-0 h-52 w-52 rounded-full bg-cyan-200/25 blur-3xl" />
-        <div className="relative grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-          <div className="space-y-6 motion-rise-in">
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur">
-              <span className="text-lg">♟</span>
+    <div className="space-y-10 md:space-y-14">
+      {/* Hero Championship Section */}
+      <section className="relative overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-b from-slate-900/90 via-slate-900/80 to-slate-950/95 p-6 shadow-2xl backdrop-blur-2xl md:p-10 lg:p-12">
+        <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-amber-500/15 blur-3xl" />
+        <div className="pointer-events-none absolute -right-20 top-1/3 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl" />
+
+        <div className="relative z-10 grid gap-10 lg:grid-cols-12 lg:items-center">
+          <div className="space-y-6 motion-rise-in lg:col-span-7">
+            <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-amber-300 backdrop-blur-md">
+              <span className="text-sm">♟️</span>
               {homePageData.heroKicker}
             </div>
-            <div className="space-y-4">
-              <p className="text-xs font-black uppercase tracking-[0.28em] text-cyan-100/80">
-                Present by Hobsons Bay Chess Club
+
+            <div className="space-y-3">
+              <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-cyan-400">
+                Presented by Hobsons Bay Chess Club AU
               </p>
-              <h1 className="max-w-xl font-display text-3xl leading-[0.92] text-white md:text-5xl">
-                Oceania Youth Chess Zonal Tournament 2027
+              <h1 className="font-display text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl">
+                Oceania Youth Chess Zonal 2027
               </h1>
-              <p className="max-w-2xl text-base leading-8 text-white md:text-lg">
-                The official Oceania Youth Zonal 2027 website brings together the key information
-                players, families, and federations need in one place, including event updates,
-                schedule planning, regulations, venue guidance, registration details, and player
-                information as they are confirmed.
+              <p className="max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
+                Welcome to the official digital portal for the 2027 Oceania Youth Zonal Championship. Access full tournament schedules, regulations, player lists, live board broadcasts, and venue travel guides for federations across Zone 3.6.
               </p>
             </div>
+
             <div className="flex flex-wrap gap-3">
-              <span className="inline-flex items-center rounded-full bg-yellow-300 px-5 py-3 text-sm font-extrabold text-slate-900 shadow-lg shadow-yellow-300/20">
+              <span className="inline-flex items-center rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 px-5 py-2.5 text-xs font-black uppercase tracking-wider text-slate-950 shadow-lg shadow-amber-500/20">
                 {homePageData.dateLabel}
               </span>
               <Link
                 href="/schedule"
-                className="inline-flex items-center rounded-full bg-white px-5 py-3 text-sm font-bold text-slate-900 transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/90 px-5 py-2.5 text-xs font-bold text-white transition hover:border-amber-400 hover:bg-slate-800 hover:-translate-y-0.5"
               >
-                Explore the schedule
+                <span>Explore Schedule</span>
+                <span>→</span>
               </Link>
               <Link
                 href="/players"
-                className="inline-flex items-center rounded-full border border-white/30 bg-white/10 px-5 py-3 text-sm font-bold text-white backdrop-blur transition-transform hover:-translate-y-0.5"
+                className="inline-flex items-center rounded-full border border-cyan-500/30 bg-cyan-500/10 px-5 py-2.5 text-xs font-bold text-cyan-300 transition hover:bg-cyan-500/20 hover:-translate-y-0.5"
               >
-                See player divisions
+                Player Divisions
               </Link>
             </div>
-            <div className="grid gap-3 sm:grid-cols-3">
+
+            <div className="grid gap-3 sm:grid-cols-3 pt-2">
               {homePageData.quickFacts.map((fact) => (
-                <article
+                <div
                   key={fact.label}
-                  className={`motion-scale-in rounded-[1rem] bg-gradient-to-br ${fact.tone} p-[1px] shadow-xl shadow-slate-950/10 md:rounded-[1.5rem]`}
+                  className="glass-card-hover rounded-2xl border border-slate-800 bg-slate-950/60 p-4 backdrop-blur-md"
                 >
-                  <div className="h-full rounded-[calc(1rem-1px)] bg-white/88 p-4 backdrop-blur md:rounded-[calc(1.5rem-1px)]">
-                    <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-500">
-                      {fact.label}
-                    </p>
-                    <p className="mt-2 font-display text-4xl text-slate-900">{fact.value}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">{fact.note}</p>
-                  </div>
-                </article>
+                  <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-400">
+                    {fact.label}
+                  </p>
+                  <p className="mt-1 font-display text-3xl font-extrabold text-amber-400">{fact.value}</p>
+                  <p className="mt-1 text-xs text-slate-300 leading-snug">{fact.note}</p>
+                </div>
               ))}
             </div>
           </div>
-          <div className="motion-rise-in-delayed">
+
+          <div className="motion-rise-in-delayed lg:col-span-5">
             <HomeHeroCountdown
               dateLabel={homePageData.dateLabel}
               eventStartDate={homePageData.eventStartDate}
@@ -74,172 +91,257 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
-        <article className="motion-rise-in rounded-[1rem] border border-sky-200/70 bg-[linear-gradient(180deg,#e8fbff,#f7fdff)] p-6 shadow-[0_24px_60px_rgba(59,130,246,0.08)] md:rounded-[2rem] md:p-8">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-sky-600">Live notice</p>
-          <h2 className="mt-3 font-display text-3xl text-slate-900 md:text-4xl">
+      {/* Live Notice & Stats Section */}
+      <section className="grid gap-6 lg:grid-cols-12">
+        <div className="motion-rise-in rounded-3xl border border-cyan-500/30 bg-gradient-to-b from-slate-900/90 to-slate-950/90 p-6 shadow-xl backdrop-blur-xl lg:col-span-5 md:p-8">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+            <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+              Official Bulletin
+            </span>
+            <span className="flex h-2 w-2 rounded-full bg-cyan-400 animate-ping" />
+          </div>
+          <h2 className="mt-3 font-display text-2xl font-bold text-white md:text-3xl">
             {homePageData.alert.title}
           </h2>
-          <ul className="mt-5 space-y-3">
+          <ul className="mt-4 space-y-2.5">
             {homePageData.alert.items.map((item, index) => (
               <li
                 key={item}
-                className="flex items-start gap-3 rounded-2xl bg-white px-4 py-3 text-sm leading-6 text-slate-700 shadow-sm"
+                className="flex items-start gap-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-3 text-xs leading-relaxed text-slate-300"
               >
-                <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sky-100 text-xs font-black text-sky-700">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan-500/10 font-bold text-cyan-400 text-[0.7rem]">
                   0{index + 1}
                 </span>
                 <span>{item}</span>
               </li>
             ))}
           </ul>
-        </article>
+        </div>
 
-        <HomeTournamentStats {...homePageData.tournamentStats} />
+        <div className="lg:col-span-7">
+          <HomeTournamentStats {...homePageData.tournamentStats} />
+        </div>
       </section>
 
-      <section className="motion-rise-in rounded-[1rem] border border-white/70 bg-white/75 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:rounded-[2rem] md:p-8">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+      {/* Interactive Age Division Pathways Preview */}
+      <section className="motion-rise-in rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl md:p-8">
+        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-slate-800 pb-4">
           <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-fuchsia-500">
-              Quick look
-            </p>
-            <h2 className="mt-3 font-display text-3xl text-slate-900 md:text-4xl">
-              Everything families need at a glance
+            <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
+              14 Championship Categories
+            </span>
+            <h2 className="mt-1 font-display text-2xl font-bold text-white md:text-3xl">
+              Age Divisions & FIDE Pathways
             </h2>
           </div>
-          <p className="max-w-xl text-sm leading-6 text-slate-500">
-            These cards keep the practical details simple, visual, and fast to scan on both phone and desktop.
+          <p className="max-w-md text-xs text-slate-400">
+            Click on an age category to inspect Open and Girls divisional structures and qualification paths.
           </p>
         </div>
-        <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {homePageData.eventDetails.map((item, index) => (
-            <article
-              key={item.title}
-              className="rounded-[1rem] border border-slate-200 bg-slate-50/90 p-5 transition-transform hover:-translate-y-1 md:rounded-[1.75rem]"
+
+        {/* Division Selector Buttons */}
+        <div className="mt-6 flex flex-wrap gap-2">
+          {ageDivisions.map((div) => (
+            <button
+              key={div.group}
+              onClick={() => setSelectedGroup(div)}
+              className={`rounded-full px-4 py-2 text-xs font-bold transition ${
+                selectedGroup.group === div.group
+                  ? "bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20"
+                  : "border border-slate-800 bg-slate-950 text-slate-300 hover:border-amber-500/40 hover:text-white"
+              }`}
             >
-              <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-sm font-black text-slate-700 shadow-sm">
-                {index + 1}
-              </div>
-              <h3 className="mt-4 font-display text-2xl text-slate-900">{item.title}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{item.body}</p>
-            </article>
+              Category {div.group}
+            </button>
+          ))}
+        </div>
+
+        {/* Selected Category Details */}
+        <div className="mt-6 grid gap-4 md:grid-cols-3">
+          <div className="rounded-2xl border border-amber-500/20 bg-slate-950/80 p-5 space-y-2">
+            <span className="text-[0.65rem] font-bold uppercase tracking-wider text-amber-400">
+              Category Focus
+            </span>
+            <h3 className="font-display text-2xl font-bold text-white">{selectedGroup.group} Division</h3>
+            <p className="text-xs text-slate-400">{selectedGroup.note}</p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-5 space-y-2">
+            <span className="text-[0.65rem] font-bold uppercase tracking-wider text-cyan-400">
+              Open Tournament
+            </span>
+            <h3 className="font-display text-xl font-bold text-white">{selectedGroup.open}</h3>
+            <p className="text-xs text-slate-400">
+              9 Rounds Swiss Classical (90m + 30s increment). FIDE Rated with title norm pathways.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-5 space-y-2">
+            <span className="text-[0.65rem] font-bold uppercase tracking-wider text-pink-400">
+              Girls Tournament
+            </span>
+            <h3 className="font-display text-xl font-bold text-white">{selectedGroup.girls}</h3>
+            <p className="text-xs text-slate-400">
+              Dedicated 9-round championship for female players across Zone 3.6 federations.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Quick Look & Features Grid */}
+      <section className="motion-rise-in rounded-3xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl backdrop-blur-md md:p-8">
+        <div className="mb-6">
+          <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+            Quick Reference
+          </span>
+          <h2 className="mt-1 font-display text-2xl font-bold text-white md:text-3xl">
+            Everything Families & Players Need
+          </h2>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          {homePageData.eventDetails.map((item, index) => (
+            <div
+              key={item.title}
+              className="glass-card-hover rounded-2xl border border-slate-800 bg-slate-950/70 p-5 backdrop-blur-md space-y-3"
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-500/10 font-bold text-amber-400 text-xs">
+                0{index + 1}
+              </span>
+              <h3 className="font-display text-lg font-bold text-white">{item.title}</h3>
+              <p className="text-xs leading-relaxed text-slate-400">{item.body}</p>
+            </div>
           ))}
         </div>
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <article className="motion-rise-in rounded-[1rem] border border-slate-200 bg-[linear-gradient(180deg,#fffaf0,#ffffff)] p-6 shadow-[0_24px_60px_rgba(15,23,42,0.06)] md:rounded-[2rem] md:p-8">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-orange-500">Big rewards</p>
-          <h2 className="mt-3 font-display text-3xl text-slate-900 md:text-4xl">
-            More than just a tournament
+      {/* Stakes & Why Participate */}
+      <section className="grid gap-6 lg:grid-cols-2">
+        <div className="motion-rise-in rounded-3xl border border-amber-500/20 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-4">
+          <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
+            Championship Honors
+          </span>
+          <h2 className="font-display text-2xl font-bold text-white md:text-3xl">
+            Titles, Medals & Norm Opportunities
           </h2>
-          <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <div className="grid gap-3 sm:grid-cols-2 pt-2">
             {homePageData.stakes.map((item) => (
-              <article
+              <div
                 key={item.title}
-                className="rounded-[1rem] bg-white p-5 shadow-sm ring-1 ring-slate-100 md:rounded-[1.5rem]"
+                className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 space-y-1"
               >
-                <h3 className="font-display text-2xl text-slate-900">{item.title}</h3>
-                <p className="mt-3 text-sm leading-6 text-slate-600">{item.body}</p>
-              </article>
+                <h3 className="font-display text-base font-bold text-amber-300">{item.title}</h3>
+                <p className="text-xs leading-relaxed text-slate-400">{item.body}</p>
+              </div>
             ))}
           </div>
-        </article>
+        </div>
 
-        <article className="motion-rise-in-delayed rounded-[1rem] border border-indigo-200/80 bg-[linear-gradient(160deg,#eef2ff,#f7f9ff_45%,#fff6eb)] p-6 shadow-[0_24px_60px_rgba(99,102,241,0.08)] md:rounded-[2rem] md:p-8">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-indigo-500">Why attend</p>
-          <h2 className="mt-3 font-display text-3xl text-slate-900 md:text-4xl">
-            Reasons players and families will care
+        <div className="motion-rise-in-delayed rounded-3xl border border-cyan-500/20 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-4">
+          <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
+            The Oceania Experience
+          </span>
+          <h2 className="font-display text-2xl font-bold text-white md:text-3xl">
+            Why Players & Families Attend
           </h2>
-          <div className="mt-6 space-y-4">
+          <div className="space-y-3 pt-2">
             {homePageData.whyParticipate.map((item, index) => (
-              <article
+              <div
                 key={item.title}
-                className="flex gap-4 rounded-[1rem] bg-white/90 p-4 shadow-sm backdrop-blur md:rounded-[1.5rem]"
+                className="flex items-start gap-3 rounded-2xl border border-slate-800 bg-slate-950/80 p-3.5"
               >
-                <div className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-indigo-100 text-sm font-black text-indigo-700">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-cyan-500/10 font-bold text-cyan-400 text-xs">
                   {index + 1}
-                </div>
+                </span>
                 <div>
-                  <h3 className="font-display text-2xl text-slate-900">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{item.body}</p>
+                  <h3 className="font-display text-sm font-bold text-white">{item.title}</h3>
+                  <p className="text-xs leading-relaxed text-slate-400">{item.body}</p>
                 </div>
-              </article>
+              </div>
             ))}
-          </div>
-        </article>
-      </section>
-
-      <section className="motion-rise-in overflow-hidden rounded-[1rem] border border-yellow-200/70 bg-[linear-gradient(135deg,#ffe082,#ffb55a_45%,#ff7f66)] p-6 shadow-[0_26px_60px_rgba(251,146,60,0.18)] md:rounded-[2rem] md:p-8">
-        <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div>
-            <p className="text-xs font-black uppercase tracking-[0.2em] text-slate-900/60">
-              Registration status
-            </p>
-            <h2 className="mt-3 font-display text-4xl text-slate-900 md:text-5xl">
-              Don&apos;t just play. Make history.
-            </h2>
-            <p className="mt-4 max-w-2xl text-base leading-7 text-slate-900/75">
-              {homePageData.registration.description}
-            </p>
-          </div>
-          <div className="rounded-[1rem] bg-white/75 p-5 text-slate-900 shadow-xl backdrop-blur md:rounded-[1.75rem]">
-            <p className="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">
-              Snapshot
-            </p>
-            <p className="mt-3 font-display text-4xl">{homePageData.registration.playersRegistered}</p>
-            <p className="mt-3 inline-flex rounded-full bg-slate-900 px-4 py-2 text-sm font-bold text-white">
-              {homePageData.registration.status}
-            </p>
-            <p className="mt-4 max-w-sm text-sm leading-6 text-slate-700">
-              {homePageData.registration.note}
-            </p>
           </div>
         </div>
       </section>
 
-      <section className="grid gap-6 md:grid-cols-2">
-        <article className="motion-rise-in rounded-[1rem] border border-white/70 bg-white/80 p-6 shadow-[0_24px_60px_rgba(15,23,42,0.08)] backdrop-blur md:rounded-[2rem]">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-emerald-500">Contact</p>
-          <h2 className="mt-3 font-display text-3xl text-slate-900">Need help planning?</h2>
-          <p className="mt-3 text-sm leading-6 text-slate-600">
-            Families, team managers, and players should be able to reach a real person quickly.
-          </p>
-          <div className="mt-5 space-y-3 text-sm leading-6 text-slate-700">
-            <p className="rounded-2xl bg-slate-50 px-4 py-3">{siteConfig.contact.coordinatorName}</p>
-            <p className="rounded-2xl bg-slate-50 px-4 py-3">{siteConfig.contact.phoneLabel}</p>
-            <p className="rounded-2xl bg-slate-50 px-4 py-3">{siteConfig.contact.email}</p>
+      {/* Registration Callout Banner */}
+      <section className="motion-rise-in relative overflow-hidden rounded-3xl border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-slate-900 p-6 shadow-2xl backdrop-blur-xl md:p-10">
+        <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
+          <div className="space-y-3 lg:col-span-8">
+            <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
+              Registration Status
+            </span>
+            <h2 className="font-display text-3xl font-extrabold text-white md:text-4xl">
+              Don&apos;t just play. Make Oceania history.
+            </h2>
+            <p className="text-xs leading-relaxed text-slate-300 md:text-sm">
+              {homePageData.registration.description}
+            </p>
           </div>
-          <div className="mt-5">
-            <Link
-              href="/contact-us"
-              className="inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white"
-            >
-              Contact the organisers
-            </Link>
+          <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-center">
+            <div className="rounded-2xl border border-amber-500/30 bg-slate-950/90 p-5 text-center space-y-2 w-full max-w-xs">
+              <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-400">
+                Entry Status
+              </p>
+              <p className="font-display text-2xl font-bold text-amber-300">
+                {homePageData.registration.playersRegistered}
+              </p>
+              <Link
+                href="/registration"
+                className="block w-full rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 py-2.5 text-xs font-black uppercase text-slate-950 shadow-md transition hover:scale-105"
+              >
+                Pre-Register Interest
+              </Link>
+            </div>
           </div>
-        </article>
+        </div>
+      </section>
 
-        <article className="motion-rise-in-delayed rounded-[1rem] border border-white/70 bg-slate-950 p-6 text-white shadow-[0_24px_60px_rgba(15,23,42,0.16)] md:rounded-[2rem]">
-          <p className="text-xs font-black uppercase tracking-[0.2em] text-cyan-300">Planning & updates</p>
-          <h2 className="mt-3 font-display text-3xl">Current site status</h2>
-          <p className="mt-3 text-sm leading-6 text-white/75">
-            This website is being prepared as the 2027 event home for schedules, venue details, regulations, player information, and official updates.
+      {/* Contact & Support Section */}
+      <section className="grid gap-6 md:grid-cols-2">
+        <div className="motion-rise-in rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-4">
+          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
+            Need Support?
+          </span>
+          <h2 className="font-display text-2xl font-bold text-white">Contact Organising Committee</h2>
+          <p className="text-xs text-slate-400">
+            Have questions about travel, entry conditions, or age group eligibility? Reach out to our organising team.
           </p>
-          <div className="mt-5">
-            <Link
-              href="/regulations"
-              className="inline-flex rounded-full bg-white px-5 py-3 text-sm font-bold text-slate-900"
-            >
-              View regulations
-            </Link>
+          <div className="space-y-2 text-xs text-slate-300">
+            <div className="rounded-xl bg-slate-950/80 p-3 border border-slate-800">
+              {siteConfig.contact.coordinatorName}
+            </div>
+            <div className="rounded-xl bg-slate-950/80 p-3 border border-slate-800">
+              Email: {siteConfig.contact.email}
+            </div>
           </div>
-          <p className="mt-5 text-sm text-white/65">
+          <Link
+            href="/contact-us"
+            className="inline-flex rounded-full border border-slate-700 bg-slate-800 px-5 py-2.5 text-xs font-bold text-white transition hover:bg-slate-700"
+          >
+            Send Inquiry Message →
+          </Link>
+        </div>
+
+        <div className="motion-rise-in-delayed rounded-3xl border border-slate-800 bg-slate-950/90 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-4">
+          <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
+            FIDE Regulations
+          </span>
+          <h2 className="font-display text-2xl font-bold text-white">Tournament Manual</h2>
+          <p className="text-xs text-slate-400">
+            Review published guidelines regarding time controls, tie-breaks, norm eligibility, and player conduct.
+          </p>
+          <Link
+            href="/regulations"
+            className="inline-flex rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-5 py-2.5 text-xs font-bold text-slate-950 shadow-md transition hover:scale-105"
+          >
+            Read Full Regulations →
+          </Link>
+          <p className="text-[0.7rem] text-slate-500 leading-relaxed">
             {siteConfig.organization.legalLine}
           </p>
-        </article>
+        </div>
       </section>
     </div>
   );
 }
+

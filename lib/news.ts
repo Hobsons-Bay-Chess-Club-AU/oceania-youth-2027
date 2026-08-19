@@ -1,9 +1,4 @@
-import fs from "node:fs";
-import path from "node:path";
-
-const newsDirectory = path.join(process.cwd(), "content", "news");
-
-type FrontMatter = {
+export type FrontMatter = {
   title: string;
   date: string;
   author: string;
@@ -20,161 +15,64 @@ export type NewsPostSummary = FrontMatter & {
   slug: string;
 };
 
-function ensureNewsDirectory() {
-  if (!fs.existsSync(newsDirectory)) {
-    fs.mkdirSync(newsDirectory, { recursive: true });
-  }
-}
+const staticNewsPosts: NewsPost[] = [
+  {
+    slug: "2026-07-03-planning-update",
+    title: "Venue planning and operational updates underway",
+    date: "2026-07-03",
+    author: "Organising Committee",
+    summary: "Work is continuing on venue logistics, visitor guidance, and the practical information families will need ahead of the event.",
+    body: `## Venue and travel planning
 
-function parseFrontMatter(fileContent: string): { frontMatter: FrontMatter; body: string } {
-  const normalized = fileContent.replace(/\r\n/g, "\n");
+The organising team is continuing to develop the venue information area so players and families can quickly find travel details, map access, food options, and nearby accommodation.
 
-  if (!normalized.startsWith("---\n")) {
-    throw new Error("News markdown files must begin with front matter delimited by ---");
-  }
+## Information priorities
 
-  const endIndex = normalized.indexOf("\n---\n", 4);
+- clearer arrival guidance for tournament days
+- accommodation options close to the venue
+- food and convenience options for long playing sessions
+- travel notes that are easy to follow on mobile
 
-  if (endIndex === -1) {
-    throw new Error("News markdown files must close front matter with ---");
-  }
+## Next published updates
 
-  const frontMatterBlock = normalized.slice(4, endIndex);
-  const body = normalized.slice(endIndex + 5).trim();
-  const values: Partial<FrontMatter> = {};
+As planning milestones are confirmed, future notices will focus on registration timing, schedule updates, and final visitor information.`,
+    html: `<h2>Venue and travel planning</h2><p>The organising team is continuing to develop the venue information area so players and families can quickly find travel details, map access, food options, and nearby accommodation.</p><h2>Information priorities</h2><ul><li>clearer arrival guidance for tournament days</li><li>accommodation options close to the venue</li><li>food and convenience options for long playing sessions</li><li>travel notes that are easy to follow on mobile</li></ul><h2>Next published updates</h2><p>As planning milestones are confirmed, future notices will focus on registration timing, schedule updates, and final visitor information.</p>`,
+  },
+  {
+    slug: "2026-07-02-welcome-update",
+    title: "Tournament website and information hub now live",
+    date: "2026-07-02",
+    author: "Organising Committee",
+    summary: "The official website is now online with key sections for schedules, regulations, venue planning, player information, and event updates.",
+    body: `## Website launch
 
-  for (const line of frontMatterBlock.split("\n")) {
-    const separatorIndex = line.indexOf(":");
+The Oceania Youth Zonal 2027 event website is now live and will be the main place for official announcements and tournament planning information.
 
-    if (separatorIndex === -1) {
-      continue;
-    }
+Visitors can already browse:
 
-    const key = line.slice(0, separatorIndex).trim() as keyof FrontMatter;
-    const rawValue = line.slice(separatorIndex + 1).trim();
-    const value = rawValue.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1");
-    values[key] = value;
-  }
+- tournament schedule information
+- regulations and event structure
+- venue and travel planning details
+- player and broadcast sections
+- official news and updates
 
-  const requiredFields: Array<keyof FrontMatter> = ["title", "date", "author", "summary"];
+## What to expect next
 
-  for (const field of requiredFields) {
-    if (!values[field]) {
-      throw new Error(`Missing required front matter field: ${field}`);
-    }
-  }
+Over the coming updates, this page will publish confirmed dates, entry reminders, federation notices, accommodation guidance, and operational announcements as they are approved.
 
-  return {
-    frontMatter: values as FrontMatter,
-    body,
-  };
-}
+## For players and families
 
-function escapeHtml(value: string) {
-  return value
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#39;");
-}
-
-function renderInlineMarkdown(text: string) {
-  const escaped = escapeHtml(text);
-
-  return escaped
-    .replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>')
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
-    .replace(/`([^`]+)`/g, "<code>$1</code>");
-}
-
-function renderMarkdown(markdown: string) {
-  const lines = markdown.split("\n");
-  const html: string[] = [];
-  let paragraphLines: string[] = [];
-  let listItems: string[] = [];
-
-  const flushParagraph = () => {
-    if (!paragraphLines.length) {
-      return;
-    }
-
-    html.push(`<p>${renderInlineMarkdown(paragraphLines.join(" "))}</p>`);
-    paragraphLines = [];
-  };
-
-  const flushList = () => {
-    if (!listItems.length) {
-      return;
-    }
-
-    html.push(`<ul>${listItems.map((item) => `<li>${renderInlineMarkdown(item)}</li>`).join("")}</ul>`);
-    listItems = [];
-  };
-
-  for (const line of lines) {
-    const trimmed = line.trim();
-
-    if (!trimmed) {
-      flushParagraph();
-      flushList();
-      continue;
-    }
-
-    if (trimmed.startsWith("## ")) {
-      flushParagraph();
-      flushList();
-      html.push(`<h2>${renderInlineMarkdown(trimmed.slice(3))}</h2>`);
-      continue;
-    }
-
-    if (trimmed.startsWith("### ")) {
-      flushParagraph();
-      flushList();
-      html.push(`<h3>${renderInlineMarkdown(trimmed.slice(4))}</h3>`);
-      continue;
-    }
-
-    if (trimmed.startsWith("- ")) {
-      flushParagraph();
-      listItems.push(trimmed.slice(2));
-      continue;
-    }
-
-    paragraphLines.push(trimmed);
-  }
-
-  flushParagraph();
-  flushList();
-
-  return html.join("");
-}
+Please check this page regularly before booking travel or making tournament-day plans, as it will be used for the latest event information.`,
+    html: `<h2>Website launch</h2><p>The Oceania Youth Zonal 2027 event website is now live and will be the main place for official announcements and tournament planning information.</p><p>Visitors can already browse:</p><ul><li>tournament schedule information</li><li>regulations and event structure</li><li>venue and travel planning details</li><li>player and broadcast sections</li><li>official news and updates</li></ul><h2>What to expect next</h2><p>Over the coming updates, this page will publish confirmed dates, entry reminders, federation notices, accommodation guidance, and operational announcements as they are approved.</p><h2>For players and families</h2><p>Please check this page regularly before booking travel or making tournament-day plans, as it will be used for the latest event information.</p>`,
+  },
+];
 
 export function getAllNewsPosts(): NewsPost[] {
-  ensureNewsDirectory();
-
-  return fs
-    .readdirSync(newsDirectory)
-    .filter((fileName) => fileName.endsWith(".md"))
-    .map((fileName) => {
-      const slug = fileName.replace(/\.md$/, "");
-      const filePath = path.join(newsDirectory, fileName);
-      const fileContent = fs.readFileSync(filePath, "utf8");
-      const { frontMatter, body } = parseFrontMatter(fileContent);
-
-      return {
-        slug,
-        ...frontMatter,
-        body,
-        html: renderMarkdown(body),
-      };
-    })
-    .sort((left, right) => new Date(right.date).getTime() - new Date(left.date).getTime());
+  return staticNewsPosts;
 }
 
 export function getAllNewsPostSummaries(): NewsPostSummary[] {
-  return getAllNewsPosts().map(({ slug, title, date, author, summary }) => ({
+  return staticNewsPosts.map(({ slug, title, date, author, summary }) => ({
     slug,
     title,
     date,
@@ -184,7 +82,6 @@ export function getAllNewsPostSummaries(): NewsPostSummary[] {
 }
 
 export function getNewsPostBySlug(slug: string): NewsPost | null {
-  const posts = getAllNewsPosts();
-
-  return posts.find((post) => post.slug === slug) ?? null;
+  return staticNewsPosts.find((post) => post.slug === slug) ?? null;
 }
+
