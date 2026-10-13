@@ -105,6 +105,13 @@ export function buildRegulationsPdf() {
       pushWrappedBlock(pages, paragraph, y);
     }
 
+    if (section.table) {
+      pushWrappedBlock(pages, section.table.headers.join(" | "), y, { fontKey: "F2" });
+      for (const row of section.table.rows) {
+        pushWrappedBlock(pages, row.join(" | "), y);
+      }
+    }
+
     if (section.list) {
       for (const item of section.list) {
         pushWrappedBlock(pages, `- ${item}`, y);
@@ -115,6 +122,16 @@ export function buildRegulationsPdf() {
       for (const [index, item] of section.orderedList.entries()) {
         pushWrappedBlock(pages, `${index + 1}. ${item}`, y);
       }
+    }
+
+    if ("paragraphsAfterTable" in section && Array.isArray((section as { paragraphsAfterTable?: string[] }).paragraphsAfterTable)) {
+      for (const paragraph of (section as { paragraphsAfterTable?: string[] }).paragraphsAfterTable ?? []) {
+        pushWrappedBlock(pages, paragraph, y);
+      }
+    }
+
+    if (section.callout) {
+      pushWrappedBlock(pages, `${section.callout.title ? section.callout.title + ": " : ""}${section.callout.text}`, y);
     }
 
     y.value -= sectionGap;
