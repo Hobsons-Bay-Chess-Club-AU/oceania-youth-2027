@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 import { homePageData } from "@/app/data";
 import { siteConfig } from "@/lib/site-config";
 import { HomeHeroCountdown } from "@/components/home-hero-countdown";
@@ -19,78 +20,149 @@ const ageDivisions = [
 
 export function HomePage() {
   const [selectedGroup, setSelectedGroup] = useState(ageDivisions[3]); // Default U14
+  const [activeSlide, setActiveSlide] = useState<0 | 1>(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    if (isPaused) return;
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev === 0 ? 1 : 0));
+    }, 10000);
+    return () => clearInterval(timer);
+  }, [isPaused]);
 
   return (
     <div className="space-y-10 md:space-y-14">
-      {/* Hero Championship Section */}
-      <section className="relative overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-b from-slate-900/90 via-slate-900/80 to-slate-950/95 p-6 shadow-2xl backdrop-blur-2xl md:p-10 lg:p-12">
+      {/* Hero Championship Section with 10s auto-switch */}
+      <section
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+        className="relative overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-b from-slate-900/95 via-slate-900/90 to-slate-950/95 shadow-2xl backdrop-blur-2xl"
+      >
         <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-amber-500/15 blur-3xl" />
         <div className="pointer-events-none absolute -right-20 top-1/3 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl" />
 
-        <div className="relative z-10 grid gap-10 lg:grid-cols-12 lg:items-center">
-          <div className="space-y-6 motion-rise-in lg:col-span-7">
-            <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-amber-300 backdrop-blur-md">
-              <span className="text-sm">♟️</span>
-              {homePageData.heroKicker}
-            </div>
+        {/* Slide 0: Interactive Hub */}
+        <div
+          className={`transition-all duration-700 ease-in-out p-6 md:p-10 lg:p-12 ${
+            activeSlide === 0
+              ? "opacity-100 relative z-10"
+              : "opacity-0 absolute inset-0 z-0 pointer-events-none"
+          }`}
+        >
+          <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
+            <div className="space-y-6 motion-rise-in lg:col-span-7">
+              <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-amber-300 backdrop-blur-md">
+                <span className="text-sm">♟️</span>
+                {homePageData.heroKicker}
+              </div>
 
-            <div className="space-y-3">
-              <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-cyan-400">
-                Presented by Hobsons Bay Chess Club AU
-              </p>
-              <h1 className="font-display text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl">
-                Oceania Youth Chess Zonal 2027
-              </h1>
-              <p className="max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
-                Welcome to the official digital portal for the 2027 Oceania Youth Zonal Championship. Access full tournament schedules, regulations, player lists, live board broadcasts, and venue travel guides for federations across Zone 3.6.
-              </p>
-            </div>
+              <div className="space-y-3">
+                <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-cyan-400">
+                  Presented by Hobsons Bay Chess Club AU
+                </p>
+                <h1 className="font-display text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl">
+                  Oceania Youth Chess Zonal 2027
+                </h1>
+                <p className="max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
+                  Welcome to the official digital portal for the 2027 Oceania Youth Zonal Championship. Access full tournament schedules, regulations, player lists, live board broadcasts, and venue travel guides for federations across Zone 3.6.
+                </p>
+              </div>
 
-            <div className="flex flex-wrap gap-3">
-              <span className="inline-flex items-center rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 px-5 py-2.5 text-xs font-black uppercase tracking-wider text-slate-950 shadow-lg shadow-amber-500/20">
-                {homePageData.dateLabel}
-              </span>
-              <a
-                href="/OceaniaYouth%202027%20Tournament%20Pack.pdf"
-                download="OceaniaYouth 2027 Tournament Pack.pdf"
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-5 py-2.5 text-xs font-bold text-amber-300 transition hover:bg-amber-500/20 hover:-translate-y-0.5"
-              >
-                <span>📥 Download Tournament Pack (PDF)</span>
-              </a>
-              <Link
-                href="/schedule"
-                className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/90 px-5 py-2.5 text-xs font-bold text-white transition hover:border-amber-400 hover:bg-slate-800 hover:-translate-y-0.5"
-              >
-                <span>Explore Schedule</span>
-                <span>→</span>
-              </Link>
-            </div>
-
-            <div className="grid gap-3 sm:grid-cols-3 pt-2">
-              {homePageData.quickFacts.map((fact) => (
-                <div
-                  key={fact.label}
-                  className="glass-card-hover rounded-2xl border border-slate-800 bg-slate-950/60 p-4 backdrop-blur-md"
+              <div className="flex flex-wrap gap-3">
+                <span className="inline-flex items-center rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 px-5 py-2.5 text-xs font-black uppercase tracking-wider text-slate-950 shadow-lg shadow-amber-500/20">
+                  {homePageData.dateLabel}
+                </span>
+                <a
+                  href="/OceaniaYouth%202027%20Tournament%20Pack.pdf"
+                  download="OceaniaYouth 2027 Tournament Pack.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-5 py-2.5 text-xs font-bold text-amber-300 transition hover:bg-amber-500/20 hover:-translate-y-0.5"
                 >
-                  <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-400">
-                    {fact.label}
-                  </p>
-                  <p className="mt-1 font-display text-3xl font-extrabold text-amber-400">{fact.value}</p>
-                  <p className="mt-1 text-xs text-slate-300 leading-snug">{fact.note}</p>
-                </div>
-              ))}
+                  <span>📥 Download Tournament Pack (PDF)</span>
+                </a>
+                <Link
+                  href="/schedule"
+                  className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/90 px-5 py-2.5 text-xs font-bold text-white transition hover:border-amber-400 hover:bg-slate-800 hover:-translate-y-0.5"
+                >
+                  <span>Explore Schedule</span>
+                  <span>→</span>
+                </Link>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-3 pt-2">
+                {homePageData.quickFacts.map((fact) => (
+                  <div
+                    key={fact.label}
+                    className="glass-card-hover rounded-2xl border border-slate-800 bg-slate-950/60 p-4 backdrop-blur-md"
+                  >
+                    <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-400">
+                      {fact.label}
+                    </p>
+                    <p className="mt-1 font-display text-3xl font-extrabold text-amber-400">{fact.value}</p>
+                    <p className="mt-1 text-xs text-slate-300 leading-snug">{fact.note}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="motion-rise-in-delayed lg:col-span-5">
+              <HomeHeroCountdown
+                dateLabel={homePageData.dateLabel}
+                eventStartDate={homePageData.eventStartDate}
+                registrationHref={siteConfig.links.registrations}
+              />
             </div>
           </div>
+        </div>
 
-          <div className="motion-rise-in-delayed lg:col-span-5">
-            <HomeHeroCountdown
-              dateLabel={homePageData.dateLabel}
-              eventStartDate={homePageData.eventStartDate}
-              registrationHref={siteConfig.links.registrations}
+        {/* Slide 1: Official Banner Image */}
+        <div
+          className={`transition-all duration-700 ease-in-out p-2 sm:p-4 md:p-6 lg:p-8 flex items-center justify-center min-h-[380px] md:min-h-[500px] lg:min-h-[560px] ${
+            activeSlide === 1
+              ? "opacity-100 relative z-10"
+              : "opacity-0 absolute inset-0 z-0 pointer-events-none"
+          }`}
+        >
+          <div className="w-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/80 shadow-2xl">
+            <Image
+              src="/hero.png"
+              alt="Oceania Youth Chess Zonal Championship 2027"
+              width={1600}
+              height={900}
+              priority
+              className="w-full h-auto object-cover"
             />
           </div>
+        </div>
+
+        {/* Slide Switcher Controls */}
+        <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 rounded-full border border-slate-800/90 bg-slate-950/90 p-1 backdrop-blur-md shadow-xl">
+          <button
+            type="button"
+            onClick={() => setActiveSlide(0)}
+            className={`rounded-full px-3 py-1 text-[0.7rem] font-bold transition-all ${
+              activeSlide === 0
+                ? "bg-amber-400 text-slate-950 shadow-md"
+                : "text-slate-400 hover:text-white"
+            }`}
+            aria-label="Show Overview & Countdown"
+          >
+            Overview
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveSlide(1)}
+            className={`rounded-full px-3 py-1 text-[0.7rem] font-bold transition-all ${
+              activeSlide === 1
+                ? "bg-amber-400 text-slate-950 shadow-md"
+                : "text-slate-400 hover:text-white"
+            }`}
+            aria-label="Show Championship Banner"
+          >
+            Banner
+          </button>
         </div>
       </section>
 
