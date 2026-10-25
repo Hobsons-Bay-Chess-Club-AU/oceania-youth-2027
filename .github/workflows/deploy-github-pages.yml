@@ -73,6 +73,11 @@ jobs:
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+      - name: Fetch latest players data
+        continue-on-error: true
+        env:
+          TINYHQ_COOKIE: ${{ secrets.TINYHQ_COOKIE }}
+        run: npm run fetch:players
       - name: Build with Next.js
         env:
           GITHUB_PAGES_CUSTOM_DOMAIN: "true"

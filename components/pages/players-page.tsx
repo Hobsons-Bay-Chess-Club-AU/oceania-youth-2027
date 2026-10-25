@@ -1,24 +1,56 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Hero, SearchInput } from "@/components/ui";
-import { playersData } from "@/app/players/data";
+import { DEFAULT_DIVISIONS } from "@/app/players/data";
+import type { Player, PlayersData, PlayerCategory } from "@/app/players/types";
 
 export function PlayersPage() {
+  const [data, setData] = useState<PlayersData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState<"All" | "Open" | "Girls">("All");
+  const [category, setCategory] = useState<"All" | PlayerCategory>("All");
   const [division, setDivision] = useState<string>("All");
   const [federation, setFederation] = useState<string>("All");
 
+  const fetchPlayers = useCallback(async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const res = await fetch("/players.json", { cache: "no-store" });
+      if (!res.ok) {
+        throw new Error(`Failed to load players list (HTTP ${res.status})`);
+      }
+      const json: PlayersData = await res.json();
+      setData(json);
+    } catch (err) {
+      console.error("Error loading players.json:", err);
+      setError(
+        err instanceof Error ? err.message : "Unable to load player directory data."
+      );
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPlayers();
+  }, [fetchPlayers]);
+
+  const divisions = data?.divisions || DEFAULT_DIVISIONS;
+  const allPlayers = useMemo(() => data?.players || [], [data]);
+
   const federations = useMemo(
-    () => Array.from(new Set(playersData.players.map((player) => player.federation))).sort(),
-    []
+    () => Array.from(new Set(allPlayers.map((player) => player.federation))).sort(),
+    [allPlayers]
   );
 
   const filteredPlayers = useMemo(() => {
     const search = query.trim().toLowerCase();
 
-    return playersData.players.filter((player) => {
+    return allPlayers.filter((player) => {
       const matchesQuery =
         !search ||
         player.name.toLowerCase().includes(search) ||
@@ -31,10 +63,10 @@ export function PlayersPage() {
 
       return matchesQuery && matchesCategory && matchesDivision && matchesFederation;
     });
-  }, [category, division, federation, query]);
+  }, [allPlayers, category, division, federation, query]);
 
   const groupedPlayers = useMemo(() => {
-    return playersData.divisions.map((divisionName) => ({
+    return divisions.map((divisionName) => ({
       division: divisionName,
       open: filteredPlayers.filter(
         (player) => player.division === divisionName && player.category === "Open"
@@ -43,7 +75,23 @@ export function PlayersPage() {
         (player) => player.division === divisionName && player.category === "Girls"
       ),
     }));
-  }, [filteredPlayers]);
+  }, [divisions, filteredPlayers]);
+
+  const formattedLastUpdated = useMemo(() => {
+    if (!data?.lastUpdated) return null;
+    try {
+      const d = new Date(data.lastUpdated);
+      return isNaN(d.getTime())
+        ? data.lastUpdated
+        : d.toLocaleDateString("en-AU", {
+            day: "numeric",
+            month: "short",
+            year: "numeric",
+          });
+    } catch {
+      return data.lastUpdated;
+    }
+  }, [data?.lastUpdated]);
 
   return (
     <div className="space-y-8">
@@ -73,7 +121,7 @@ export function PlayersPage() {
             </span>
             <select
               value={category}
-              onChange={(e) => setCategory(e.target.value as "All" | "Open" | "Girls")}
+              onChange={(e) => setCategory(e.target.value as "All" | PlayerCategory)}
               className="w-full rounded-full border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs text-white outline-none focus:border-amber-500"
             >
               <option value="All">All Categories</option>
@@ -92,7 +140,7 @@ export function PlayersPage() {
               className="w-full rounded-full border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs text-white outline-none focus:border-amber-500"
             >
               <option value="All">All Divisions (U8 - U20)</option>
-              {playersData.divisions.map((div) => (
+              {divisions.map((div) => (
                 <option key={div} value={div}>
                   {div} Division
                 </option>
@@ -121,8 +169,8 @@ export function PlayersPage() {
 
         {/* Division Quick Tabs */}
         <div className="flex flex-wrap gap-2">
-          {playersData.divisions.map((divName) => {
-            const count = filteredPlayers.filter((p) => p.division === divName).length;
+          {divisions.map((divName) => {
+            const count = allPlayers.filter((p) => p.division === divName).length;
             const active = division === divName;
 
             return (
@@ -146,10 +194,22 @@ export function PlayersPage() {
         </div>
 
         {/* Active Filter Summary */}
-        <div className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-xs text-slate-400">
-          <p>
-            Displaying <span className="font-bold text-white">{filteredPlayers.length}</span> registered player profiles
-          </p>
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-xs text-slate-400">
+          <div className="flex flex-wrap items-center gap-3">
+            <p>
+              Displaying <span className="font-bold text-white">{filteredPlayers.length}</span>{" "}
+              {filteredPlayers.length !== allPlayers.length && (
+                <span>of {allPlayers.length} </span>
+              )}
+              registered player profiles
+            </p>
+            {formattedLastUpdated && (
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-800 bg-slate-900 px-2.5 py-0.5 text-[0.7rem] text-slate-300">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400"></span>
+                Updated: {formattedLastUpdated}
+              </span>
+            )}
+          </div>
           {(query || category !== "All" || division !== "All" || federation !== "All") && (
             <button
               onClick={() => {
@@ -165,38 +225,70 @@ export function PlayersPage() {
           )}
         </div>
 
-        {/* Division Groups */}
-        <div className="space-y-6">
-          {groupedPlayers.map((group) => {
-            if (group.open.length === 0 && group.girls.length === 0) return null;
+        {/* Loading State */}
+        {isLoading && (
+          <div className="space-y-4 py-8">
+            <div className="flex items-center justify-center gap-3 text-sm text-amber-400">
+              <span className="h-4 w-4 animate-spin rounded-full border-2 border-amber-400 border-t-transparent" />
+              <span>Loading player directory...</span>
+            </div>
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="h-48 animate-pulse rounded-2xl border border-slate-800 bg-slate-950/40" />
+              <div className="h-48 animate-pulse rounded-2xl border border-slate-800 bg-slate-950/40" />
+            </div>
+          </div>
+        )}
 
-            return (
-              <div
-                key={group.division}
-                className="rounded-2xl border border-slate-800 bg-slate-950/70 p-5 backdrop-blur-md space-y-4"
-              >
-                <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-                  <h3 className="font-display text-xl font-bold text-white">{group.division} Championship</h3>
-                  <div className="flex gap-2 text-xs">
-                    <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-3 py-1 font-bold text-amber-300">
-                      Open: {group.open.length}
-                    </span>
-                    <span className="rounded-full bg-pink-500/10 border border-pink-500/20 px-3 py-1 font-bold text-pink-300">
-                      Girls: {group.girls.length}
-                    </span>
+        {/* Error State */}
+        {!isLoading && error && (
+          <div className="rounded-2xl border border-red-500/30 bg-red-950/30 p-6 text-center space-y-3">
+            <p className="text-sm font-semibold text-red-300">{error}</p>
+            <button
+              type="button"
+              onClick={fetchPlayers}
+              className="inline-flex items-center gap-2 rounded-full border border-red-500/40 bg-red-900/40 px-4 py-2 text-xs font-bold text-red-200 transition hover:bg-red-900/60"
+            >
+              🔄 Retry Loading
+            </button>
+          </div>
+        )}
+
+        {/* Division Groups */}
+        {!isLoading && !error && (
+          <div className="space-y-6">
+            {groupedPlayers.map((group) => {
+              if (group.open.length === 0 && group.girls.length === 0) return null;
+
+              return (
+                <div
+                  key={group.division}
+                  className="rounded-2xl border border-slate-800 bg-slate-950/70 p-5 backdrop-blur-md space-y-4"
+                >
+                  <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h3 className="font-display text-xl font-bold text-white">
+                      {group.division} Championship
+                    </h3>
+                    <div className="flex gap-2 text-xs">
+                      <span className="rounded-full bg-amber-500/10 border border-amber-500/20 px-3 py-1 font-bold text-amber-300">
+                        Open: {group.open.length}
+                      </span>
+                      <span className="rounded-full bg-pink-500/10 border border-pink-500/20 px-3 py-1 font-bold text-pink-300">
+                        Girls: {group.girls.length}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="grid gap-4 xl:grid-cols-2">
+                    <PlayerCategoryTable title="Open" players={group.open} />
+                    <PlayerCategoryTable title="Girls" players={group.girls} />
                   </div>
                 </div>
+              );
+            })}
+          </div>
+        )}
 
-                <div className="grid gap-4 xl:grid-cols-2">
-                  <PlayerCategoryTable title="Open" players={group.open} />
-                  <PlayerCategoryTable title="Girls" players={group.girls} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {filteredPlayers.length === 0 && (
+        {!isLoading && !error && filteredPlayers.length === 0 && (
           <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-950 p-8 text-center text-xs text-slate-400">
             No player records match your active search filters.
           </div>
@@ -211,15 +303,7 @@ function PlayerCategoryTable({
   players,
 }: {
   title: "Open" | "Girls";
-  players: Array<{
-    name: string;
-    division: string;
-    category: string;
-    federation: string;
-    flag: string;
-    fideId: string;
-    fideRating: number;
-  }>;
+  players: Player[];
 }) {
   return (
     <div className="rounded-xl border border-slate-800 bg-slate-900/80 p-4 space-y-3">
@@ -229,7 +313,9 @@ function PlayerCategoryTable({
       </div>
 
       {players.length === 0 ? (
-        <div className="p-4 text-center text-xs text-slate-500">No entrants registered in this division yet</div>
+        <div className="p-4 text-center text-xs text-slate-500">
+          No entrants registered in this division yet
+        </div>
       ) : (
         <div className="divide-y divide-slate-800/80 overflow-hidden rounded-lg border border-slate-800 bg-slate-950">
           {players.map((p) => (
@@ -242,10 +328,16 @@ function PlayerCategoryTable({
                 <div className="flex items-center gap-2 text-slate-400 text-[0.7rem]">
                   <span>{countryCodeToFlag(p.flag)}</span>
                   <span>{p.federation}</span>
+                  {(p.yob || p.dob) && (
+                    <>
+                      <span className="text-slate-600">•</span>
+                      <span>YOB: {p.yob || p.dob?.match(/\d{4}/)?.[0]}</span>
+                    </>
+                  )}
                 </div>
               </div>
 
-              <div className="text-right space-y-0.5">
+              <div className="text-right space-y-1">
                 <a
                   href={`https://ratings.fide.com/profile/${p.fideId}`}
                   target="_blank"
@@ -254,7 +346,26 @@ function PlayerCategoryTable({
                 >
                   ID #{p.fideId}
                 </a>
-                <p className="font-bold text-amber-300 text-xs">Rating: {p.fideRating}</p>
+                <div className="flex items-center justify-end gap-1 text-[0.68rem] font-semibold">
+                  <span
+                    className="rounded bg-amber-500/10 border border-amber-500/20 px-1.5 py-0.5 text-amber-300"
+                    title="Classical / Standard Rating"
+                  >
+                    Std: {p.fideRating > 0 ? p.fideRating : "—"}
+                  </span>
+                  <span
+                    className="rounded bg-sky-500/10 border border-sky-500/20 px-1.5 py-0.5 text-sky-300"
+                    title="Rapid Rating"
+                  >
+                    Rpd: {p.rapidRating && p.rapidRating > 0 ? p.rapidRating : "—"}
+                  </span>
+                  <span
+                    className="rounded bg-purple-500/10 border border-purple-500/20 px-1.5 py-0.5 text-purple-300"
+                    title="Blitz Rating"
+                  >
+                    Blz: {p.blitzRating && p.blitzRating > 0 ? p.blitzRating : "—"}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
@@ -269,4 +380,3 @@ function countryCodeToFlag(code: string) {
     .toUpperCase()
     .replace(/./g, (char) => String.fromCodePoint(127397 + char.charCodeAt(0)));
 }
-
