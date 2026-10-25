@@ -10,7 +10,6 @@ const ROOT_DIR = path.resolve(__dirname, "..");
 const ENV_FILE = path.join(ROOT_DIR, ".env");
 dotenv.config({ path: ENV_FILE });
 const FETCH_TXT = path.join(__dirname, "fetch.txt");
-const SAMPLE_TXT = path.join(__dirname, "sample.txt");
 const OUTPUT_FILE = path.join(ROOT_DIR, "public", "players.json");
 
 const FEDERATION_MAP = {
@@ -189,11 +188,25 @@ async function fetchPageHtml(baseUrl, page, cookie) {
   urlObj.searchParams.set("page", String(page));
 
   const headers = {
-    "User-Agent":
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+    accept: "text/html",
+    "accept-language": "en-AU,en-GB;q=0.9,en-US;q=0.8,en;q=0.7",
+    "cache-control": "no-cache",
+    pragma: "no-cache",
+    priority: "u=1, i",
+    referer: "https://hbcc.tidyhq.com/schedule/events/87244-oceania-youth-championship-2027",
+    "sec-ch-ua": '"Google Chrome";v="155", "Chromium";v="155", "Not(A:Brand";v="24"',
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": '"macOS"',
+    "sec-fetch-dest": "empty",
+    "sec-fetch-mode": "cors",
+    "sec-fetch-site": "same-origin",
+    "user-agent":
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "x-requested-with": "XMLHttpRequest",
   };
+
   if (cookie) {
-    headers["Cookie"] = cookie;
+    headers["cookie"] = cookie;
   }
 
   const res = await fetch(urlObj.toString(), { headers });
@@ -209,62 +222,53 @@ async function fetchPageHtml(baseUrl, page, cookie) {
 
 async function main() {
   console.log("=== Oceania Youth 2027: Fetching Registered Players ===");
-  const args = process.argv.slice(2);
-  const forceSample = args.includes("--sample") || args.includes("--file");
 
-  let allPlayers = [];
   const cookie = getCookieFromEnv();
   const baseUrl = getBaseUrl();
 
-  let fetchedLive = false;
-
-  if (!forceSample && cookie) {
-    console.log(`Fetching from TidyHQ: ${baseUrl}`);
-    try {
-      let page = 1;
-      let totalExpected = null;
-
-      while (true) {
-        console.log(`Fetching page ${page}...`);
-        const html = await fetchPageHtml(baseUrl, page, cookie);
-        const { players, baseCount } = parseAttendeesHtml(html);
-
-        if (totalExpected === null && baseCount !== null) {
-          totalExpected = baseCount;
-          console.log(`Total active registered attendees expected: ${totalExpected}`);
-        }
-
-        if (players.length === 0) {
-          break;
-        }
-
-        allPlayers.push(...players);
-        console.log(`Page ${page}: parsed ${players.length} players (Total so far: ${allPlayers.length})`);
-
-        if (totalExpected !== null && allPlayers.length >= totalExpected) {
-          break;
-        }
-
-        page++;
-        // Safety guard
-        if (page > 50) break;
-      }
-      fetchedLive = true;
-    } catch (err) {
-      console.warn(`[Live Fetch Failed]: ${err.message}`);
-      console.log("Falling back to local scripts/sample.txt...");
-    }
+  if (!cookie) {
+    console.error("❌ Error: No TINYHQ_COOKIE found in environment or .env file.");
+    console.error("Please set the TINYHQ_COOKIE secret in GitHub Repository Settings -> Secrets and variables -> Actions.");
+    process.exit(1);
   }
 
-  if (!fetchedLive) {
-    if (!fs.existsSync(SAMPLE_TXT)) {
-      console.error(`Sample file not found at ${SAMPLE_TXT}`);
-      process.exit(1);
+  console.log(`Fetching from TidyHQ: ${baseUrl}`);
+  let allPlayers = [];
+
+  try {
+    let page = 1;
+    let totalExpected = null;
+
+    while (true) {
+      console.log(`Fetching page ${page}...`);
+      const html = await fetchPageHtml(baseUrl, page, cookie);
+      const { players, baseCount } = parseAttendeesHtml(html);
+
+      if (totalExpected === null && baseCount !== null) {
+        totalExpected = baseCount;
+        console.log(`Total active registered attendees expected: ${totalExpected}`);
+      }
+
+      if (players.length === 0) {
+        break;
+      }
+
+      allPlayers.push(...players);
+      console.log(
+        `Page ${page}: parsed ${players.length} players (Total so far: ${allPlayers.length})`
+      );
+
+      if (totalExpected !== null && allPlayers.length >= totalExpected) {
+        break;
+      }
+
+      page++;
+      // Safety guard
+      if (page > 50) break;
     }
-    console.log(`Parsing local sample file: ${SAMPLE_TXT}`);
-    const html = fs.readFileSync(SAMPLE_TXT, "utf8");
-    const { players } = parseAttendeesHtml(html);
-    allPlayers = players;
+  } catch (err) {
+    console.error(`❌ Fetch failed: ${err.message}`);
+    process.exit(1);
   }
 
   console.log(`\nSuccessfully parsed ${allPlayers.length} registered player(s).`);
