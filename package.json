@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "fetch:players": "node scripts/fetch-players.mjs"
+    "fetch:players": "node scripts/fetch-players.mjs",
+    "download:fide": "node scripts/download-fide-ratings.mjs"
   },
   "dependencies": {
     "next": "15.4.1",

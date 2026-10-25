@@ -1,7 +1,6 @@
-#!/usr/bin/env node
-
 import fs from "node:fs";
 import path from "node:path";
+import { execSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import dotenv from "dotenv";
 
@@ -72,35 +71,69 @@ function parseAgeGroupCategory(raw) {
   return { division, category };
 }
 
-async function fetchFideRatings(fideId) {
-  const result = { standard: 0, rapid: 0, blitz: 0 };
-  if (!fideId || fideId === "0" || fideId.toLowerCase() === "n/a") return result;
-  try {
-    const res = await fetch(`https://ratings.fide.com/profile/${fideId}`, {
-      headers: {
-        "User-Agent":
-          "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
-      },
-    });
-    if (!res.ok) return result;
-    const html = await res.text();
-    const parse = (className) => {
-      const reg = new RegExp(
-        `<div class="${className}[^"]*">[\\s\\S]*?<p>([^<]+)<\\/p>`,
-        "i"
-      );
-      const m = html.match(reg);
-      if (!m) return 0;
-      const v = parseInt(m[1].trim(), 10);
-      return isNaN(v) ? 0 : v;
-    };
-    result.standard = parse("profile-standart");
-    result.rapid = parse("profile-rapid");
-    result.blitz = parse("profile-blitz");
-  } catch (err) {
-    console.warn(`[FIDE] Could not fetch ratings for FIDE ID ${fideId}: ${err.message}`);
+function getDataDir() {
+  const candidates = [
+    path.join(__dirname, "data"),
+    path.join(ROOT_DIR, "data"),
+    path.join(ROOT_DIR, "scripts", "data"),
+  ];
+  for (const dir of candidates) {
+    if (fs.existsSync(dir)) return dir;
   }
-  return result;
+  return path.join(__dirname, "data");
+}
+
+function lookupLocalRatings(fideIds) {
+  const dataDir = getDataDir();
+  const stdZip = path.join(dataDir, "standard_rating_list.zip");
+  const rpdZip = path.join(dataDir, "rapid_rating_list.zip");
+  const blzZip = path.join(dataDir, "blitz_rating_list.zip");
+
+  const results = {};
+  for (const id of fideIds) {
+    results[id] = { standard: 0, rapid: 0, blitz: 0, yob: null };
+  }
+
+  const queryZip = (zipPath, field) => {
+    if (!fs.existsSync(zipPath)) {
+      console.warn(`[Local Ratings] Warning: Rating zip file not found at ${zipPath}`);
+      return;
+    }
+    const validIds = fideIds.filter(
+      (id) => id && id !== "0" && id.toLowerCase() !== "n/a"
+    );
+    if (!validIds.length) return;
+
+    const pattern = validIds.join("|");
+    try {
+      const stdout = execSync(
+        `unzip -p "${zipPath}" | grep -E "^(${pattern})[[:space:]]"`,
+        { maxBuffer: 20 * 1024 * 1024 }
+      ).toString();
+
+      for (const line of stdout.split("\n")) {
+        if (!line.trim()) continue;
+        const id = line.slice(0, 15).trim();
+        const rating = parseInt(line.slice(113, 118).trim(), 10) || 0;
+        const bday = parseInt(line.slice(125, 131).trim(), 10) || 0;
+
+        if (results[id]) {
+          results[id][field] = rating;
+          if (bday > 1900 && bday < 2100) {
+            results[id].yob = bday;
+          }
+        }
+      }
+    } catch {
+      // grep exits with 1 if no matches found
+    }
+  };
+
+  queryZip(stdZip, "standard");
+  queryZip(rpdZip, "rapid");
+  queryZip(blzZip, "blitz");
+
+  return results;
 }
 
 function parseAttendeesHtml(html) {
@@ -273,17 +306,27 @@ async function main() {
 
   console.log(`\nSuccessfully parsed ${allPlayers.length} registered player(s).`);
 
-  // Enrich with FIDE Ratings (Standard, Rapid, Blitz)
-  console.log("\nEnriching FIDE ratings (Standard, Rapid, Blitz) from ratings.fide.com...");
+  // Enrich with FIDE Ratings (Standard, Rapid, Blitz) from local rating lists
+  console.log("\nEnriching FIDE ratings (Standard, Rapid, Blitz) from local rating lists...");
+  const registeredFideIds = allPlayers
+    .map((p) => p.fideId)
+    .filter((id) => id && id !== "0" && id.toLowerCase() !== "n/a");
+
+  const ratingsMap = lookupLocalRatings(registeredFideIds);
+
   for (let i = 0; i < allPlayers.length; i++) {
     const p = allPlayers[i];
-    if (p.fideId) {
-      process.stdout.write(`[${i + 1}/${allPlayers.length}] Looking up FIDE ID ${p.fideId} (${p.name})... `);
-      const ratings = await fetchFideRatings(p.fideId);
-      p.fideRating = ratings.standard;
-      p.rapidRating = ratings.rapid;
-      p.blitzRating = ratings.blitz;
-      console.log(`Std: ${ratings.standard || "—"} | Rpd: ${ratings.rapid || "—"} | Blz: ${ratings.blitz || "—"}`);
+    if (p.fideId && ratingsMap[p.fideId]) {
+      const r = ratingsMap[p.fideId];
+      p.fideRating = r.standard;
+      p.rapidRating = r.rapid;
+      p.blitzRating = r.blitz;
+      if (!p.yob && r.yob) {
+        p.yob = r.yob;
+      }
+      console.log(
+        `[${i + 1}/${allPlayers.length}] ${p.name} (FIDE #${p.fideId}) -> Std: ${r.standard || "—"} | Rpd: ${r.rapid || "—"} | Blz: ${r.blitz || "—"}`
+      );
     } else {
       console.log(`[${i + 1}/${allPlayers.length}] ${p.name}: No FIDE ID (Unrated)`);
     }
