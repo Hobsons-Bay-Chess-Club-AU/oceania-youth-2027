@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-25T03:25:18.325Z",
+  "lastUpdated": "2026-10-25T07:54:48.900Z",
   "description": "Official registered Oceania junior entrants for the 2027 Oceania Youth Chess Championship.",
   "divisions": [
     "U8",
@@ -22,7 +22,7 @@
       "federation": "AUS",
       "flag": "AU",
       "fideId": "573006246",
-      "fideRating": 1585,
+      "fideRating": 0,
       "rapidRating": 0,
       "blitzRating": 0,
       "yob": 2014
@@ -34,8 +34,8 @@
       "federation": "AUS",
       "flag": "AU",
       "fideId": "3256359",
-      "fideRating": 1753,
-      "rapidRating": 1752,
+      "fideRating": 0,
+      "rapidRating": 0,
       "blitzRating": 0,
       "yob": 2014
     },
