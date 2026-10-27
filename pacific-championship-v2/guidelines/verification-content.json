@@ -1,0 +1,114 @@
+[
+  {
+    "route": "/",
+    "checked_copy_blocks": 77,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/location",
+    "checked_copy_blocks": 34,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/schedule",
+    "checked_copy_blocks": 23,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/regulations",
+    "checked_copy_blocks": 68,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/players",
+    "checked_copy_blocks": 3,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/registration",
+    "checked_copy_blocks": 16,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/news",
+    "checked_copy_blocks": 11,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/organizer",
+    "checked_copy_blocks": 16,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/sponsors",
+    "checked_copy_blocks": 16,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/dgt-boards",
+    "checked_copy_blocks": 18,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/contact-us",
+    "checked_copy_blocks": 10,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/news/2026-08-19-the-road-to-oceania-2027-begins",
+    "checked_copy_blocks": 50,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/news/2026-07-03-planning-update",
+    "checked_copy_blocks": 16,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  },
+  {
+    "route": "/news/2026-07-02-welcome-update",
+    "checked_copy_blocks": 24,
+    "missing_copy": [],
+    "missing_original_links": {},
+    "duplicate_ids": [],
+    "one_main_landmark": true
+  }
+]

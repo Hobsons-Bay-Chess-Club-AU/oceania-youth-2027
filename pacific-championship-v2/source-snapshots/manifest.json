@@ -1,0 +1,86 @@
+[
+  {
+    "route": "/",
+    "file": "home.html",
+    "title": "Oceania Youth Chess Zonal 2027",
+    "bytes": 46779
+  },
+  {
+    "route": "/location",
+    "file": "location.html",
+    "title": "Location & Venue Information",
+    "bytes": 30981
+  },
+  {
+    "route": "/schedule",
+    "file": "schedule.html",
+    "title": "Tournament Schedule",
+    "bytes": 46833
+  },
+  {
+    "route": "/regulations",
+    "file": "regulations.html",
+    "title": "Official Tournament Regulations",
+    "bytes": 54826
+  },
+  {
+    "route": "/players",
+    "file": "players.html",
+    "title": "Registered Player Directory",
+    "bytes": 26184
+  },
+  {
+    "route": "/registration",
+    "file": "registration.html",
+    "title": "Registration & Fee Calculator",
+    "bytes": 28185
+  },
+  {
+    "route": "/news",
+    "file": "news.html",
+    "title": "News & Event Announcements",
+    "bytes": 25631
+  },
+  {
+    "route": "/organizer",
+    "file": "organizer.html",
+    "title": "Organising Committee",
+    "bytes": 24890
+  },
+  {
+    "route": "/sponsors",
+    "file": "sponsors.html",
+    "title": "Event Sponsors & Partners",
+    "bytes": 24066
+  },
+  {
+    "route": "/dgt-boards",
+    "file": "dgt-boards.html",
+    "title": "DGT Live Board Broadcast Hub",
+    "bytes": 36976
+  },
+  {
+    "route": "/contact-us",
+    "file": "contact-us.html",
+    "title": "Contact Organising Committee",
+    "bytes": 26418
+  },
+  {
+    "route": "/news/2026-08-19-the-road-to-oceania-2027-begins",
+    "file": "news__2026-08-19-the-road-to-oceania-2027-begins.html",
+    "title": "The Road to Oceania 2027 Begins: Official Championship Announcement",
+    "bytes": 27073
+  },
+  {
+    "route": "/news/2026-07-03-planning-update",
+    "file": "news__2026-07-03-planning-update.html",
+    "title": "Venue planning and operational updates underway",
+    "bytes": 23994
+  },
+  {
+    "route": "/news/2026-07-02-welcome-update",
+    "file": "news__2026-07-02-welcome-update.html",
+    "title": "Official Launch: Oceania Youth 2027 Digital Portal",
+    "bytes": 25118
+  }
+]

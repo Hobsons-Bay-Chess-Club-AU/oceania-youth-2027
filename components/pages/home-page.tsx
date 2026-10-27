@@ -1,433 +1,150 @@
 "use client";
-
 import Link from "next/link";
-import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { homePageData } from "@/app/data";
 import { siteConfig } from "@/lib/site-config";
 import { HomeHeroCountdown } from "@/components/home-hero-countdown";
-import { HomeTournamentStats } from "@/components/home-tournament-stats";
-
-const ageDivisions = [
-  { group: "U8", open: "Under 8 Open", girls: "Under 8 Girls", note: "Born 2019 or later" },
-  { group: "U10", open: "Under 10 Open", girls: "Under 10 Girls", note: "Born 2017 or later" },
-  { group: "U12", open: "Under 12 Open", girls: "Under 12 Girls", note: "Born 2015 or later" },
-  { group: "U14", open: "Under 14 Open", girls: "Under 14 Girls", note: "Born 2013 or later" },
-  { group: "U16", open: "Under 16 Open", girls: "Under 16 Girls", note: "Born 2011 or later" },
-  { group: "U18", open: "Under 18 Open", girls: "Under 18 Girls", note: "Born 2009 or later" },
-  { group: "U20", open: "Under 20 Open", girls: "Under 20 Girls", note: "Junior Premier Championship" },
-];
-
 export function HomePage() {
-  const [selectedGroup, setSelectedGroup] = useState(ageDivisions[3]); // Default U14
-  const [activeSlide, setActiveSlide] = useState<0 | 1>(0);
-  const [isPaused, setIsPaused] = useState(false);
-
-  useEffect(() => {
-    if (isPaused) return;
-    const timer = setInterval(() => {
-      setActiveSlide((prev) => (prev === 0 ? 1 : 0));
-    }, 10000);
-    return () => clearInterval(timer);
-  }, [isPaused]);
-
-  return (
-    <div className="space-y-10 md:space-y-14">
-      {/* Hero Championship Section with 10s auto-switch */}
-      <section
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => setIsPaused(false)}
-        className="relative overflow-hidden rounded-3xl border border-amber-500/30 bg-gradient-to-b from-slate-900/95 via-slate-900/90 to-slate-950/95 shadow-2xl backdrop-blur-2xl"
-      >
-        <div className="pointer-events-none absolute -left-20 -top-20 h-72 w-72 rounded-full bg-amber-500/15 blur-3xl" />
-        <div className="pointer-events-none absolute -right-20 top-1/3 h-80 w-80 rounded-full bg-cyan-500/10 blur-3xl" />
-
-        {/* Slide 0: Interactive Hub */}
-        <div
-          className={`transition-all duration-700 ease-in-out p-6 md:p-10 lg:p-12 ${
-            activeSlide === 0
-              ? "opacity-100 relative z-10"
-              : "opacity-0 absolute inset-0 z-0 pointer-events-none"
-          }`}
-        >
-          <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
-            <div className="space-y-6 motion-rise-in lg:col-span-7">
-              <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-widest text-amber-300 backdrop-blur-md">
-                <span className="text-sm">♟️</span>
-                {homePageData.heroKicker}
-              </div>
-
-              <div className="space-y-3">
-                <p className="text-xs font-extrabold uppercase tracking-[0.25em] text-cyan-400">
-                  Presented by Hobsons Bay Chess Club AU
-                </p>
-                <h1 className="font-display text-3xl font-black tracking-tight text-white md:text-5xl lg:text-6xl">
-                  Oceania Youth Chess Zonal 2027
-                </h1>
-                <p className="max-w-2xl text-sm leading-relaxed text-slate-300 md:text-base">
-                  Welcome to the official digital portal for the 2027 Oceania Youth Zonal Championship. Access full tournament schedules, regulations, player lists, live board broadcasts, and venue travel guides for federations across Zone 3.6.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-3">
-                <span className="inline-flex items-center rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 px-5 py-2.5 text-xs font-black uppercase tracking-wider text-slate-950 shadow-lg shadow-amber-500/20">
-                  {homePageData.dateLabel}
-                </span>
-                <a
-                  href="/OceaniaYouth%202027%20Tournament%20Pack.pdf"
-                  download="OceaniaYouth 2027 Tournament Pack.pdf"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/10 px-5 py-2.5 text-xs font-bold text-amber-300 transition hover:bg-amber-500/20 hover:-translate-y-0.5"
-                >
-                  <span>📥 Download Tournament Pack (PDF)</span>
-                </a>
-                <Link
-                  href="/schedule"
-                  className="inline-flex items-center gap-2 rounded-full border border-slate-700 bg-slate-800/90 px-5 py-2.5 text-xs font-bold text-white transition hover:border-amber-400 hover:bg-slate-800 hover:-translate-y-0.5"
-                >
-                  <span>Explore Schedule</span>
-                  <span>→</span>
-                </Link>
-              </div>
-
-              <div className="grid gap-3 sm:grid-cols-3 pt-2">
-                {homePageData.quickFacts.map((fact) => (
-                  <div
-                    key={fact.label}
-                    className="glass-card-hover rounded-2xl border border-slate-800 bg-slate-950/60 p-4 backdrop-blur-md"
-                  >
-                    <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-400">
-                      {fact.label}
-                    </p>
-                    <p className="mt-1 font-display text-3xl font-extrabold text-amber-400">{fact.value}</p>
-                    <p className="mt-1 text-xs text-slate-300 leading-snug">{fact.note}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="motion-rise-in-delayed lg:col-span-5">
-              <HomeHeroCountdown
-                dateLabel={homePageData.dateLabel}
-                eventStartDate={homePageData.eventStartDate}
-                registrationHref={siteConfig.links.registrations}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Slide 1: Official Banner Image */}
-        <div
-          className={`transition-all duration-700 ease-in-out p-2 sm:p-4 md:p-6 lg:p-8 flex items-center justify-center min-h-[380px] md:min-h-[500px] lg:min-h-[560px] ${
-            activeSlide === 1
-              ? "opacity-100 relative z-10"
-              : "opacity-0 absolute inset-0 z-0 pointer-events-none"
-          }`}
-        >
-          <div className="w-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-950/80 shadow-2xl">
-            <Image
-              src="/hero.png"
-              alt="Oceania Youth Chess Zonal Championship 2027"
-              width={1600}
-              height={900}
-              priority
-              className="w-full h-auto object-cover"
-            />
-          </div>
-        </div>
-
-        {/* Slide Switcher Controls */}
-        <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 rounded-full border border-slate-800/90 bg-slate-950/90 p-1 backdrop-blur-md shadow-xl">
-          <button
-            type="button"
-            onClick={() => setActiveSlide(0)}
-            className={`rounded-full px-3 py-1 text-[0.7rem] font-bold transition-all ${
-              activeSlide === 0
-                ? "bg-amber-400 text-slate-950 shadow-md"
-                : "text-slate-400 hover:text-white"
-            }`}
-            aria-label="Show Overview & Countdown"
-          >
-            Overview
-          </button>
-          <button
-            type="button"
-            onClick={() => setActiveSlide(1)}
-            className={`rounded-full px-3 py-1 text-[0.7rem] font-bold transition-all ${
-              activeSlide === 1
-                ? "bg-amber-400 text-slate-950 shadow-md"
-                : "text-slate-400 hover:text-white"
-            }`}
-            aria-label="Show Championship Banner"
-          >
-            Banner
-          </button>
-        </div>
-      </section>
-
-      {/* Live Notice & Stats Section */}
-      <section className="grid gap-6 lg:grid-cols-12">
-        <div className="motion-rise-in rounded-3xl border border-cyan-500/30 bg-gradient-to-b from-slate-900/90 to-slate-950/90 p-6 shadow-xl backdrop-blur-xl lg:col-span-5 md:p-8">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-              Official Bulletin
-            </span>
-            <span className="flex h-2 w-2 rounded-full bg-cyan-400 animate-ping" />
-          </div>
-          <h2 className="mt-3 font-display text-2xl font-bold text-white md:text-3xl">
-            {homePageData.alert.title}
-          </h2>
-          <ul className="mt-4 space-y-2.5">
-            {homePageData.alert.items.map((item, index) => (
-              <li
-                key={item}
-                className="flex items-start gap-3 rounded-2xl border border-slate-800 bg-slate-950/60 p-3 text-xs leading-relaxed text-slate-300"
-              >
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan-500/10 font-bold text-cyan-400 text-[0.7rem]">
-                  0{index + 1}
-                </span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="lg:col-span-7">
-          <HomeTournamentStats {...homePageData.tournamentStats} />
-        </div>
-      </section>
-
-      {/* Interactive Age Division Pathways Preview */}
-      <section className="motion-rise-in rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl md:p-8">
-        <div className="flex flex-wrap items-end justify-between gap-4 border-b border-slate-800 pb-4">
-          <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
-              14 Championship Categories
-            </span>
-            <h2 className="mt-1 font-display text-2xl font-bold text-white md:text-3xl">
-              Age Divisions & FIDE Pathways
-            </h2>
-          </div>
-          <p className="max-w-md text-xs text-slate-400">
-            Click on an age category to inspect Open and Girls divisional structures and qualification paths.
-          </p>
-        </div>
-
-        {/* Division Selector Buttons */}
-        <div className="mt-6 flex flex-wrap gap-2">
-          {ageDivisions.map((div) => (
-            <button
-              key={div.group}
-              onClick={() => setSelectedGroup(div)}
-              className={`rounded-full px-4 py-2 text-xs font-bold transition ${
-                selectedGroup.group === div.group
-                  ? "bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20"
-                  : "border border-slate-800 bg-slate-950 text-slate-300 hover:border-amber-500/40 hover:text-white"
-              }`}
-            >
-              Category {div.group}
-            </button>
-          ))}
-        </div>
-
-        {/* Selected Category Details */}
-        <div className="mt-6 grid gap-4 md:grid-cols-3">
-          <div className="rounded-2xl border border-amber-500/20 bg-slate-950/80 p-5 space-y-2">
-            <span className="text-[0.65rem] font-bold uppercase tracking-wider text-amber-400">
-              Category Focus
-            </span>
-            <h3 className="font-display text-2xl font-bold text-white">{selectedGroup.group} Division</h3>
-            <p className="text-xs text-slate-400">{selectedGroup.note}</p>
-          </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-5 space-y-2">
-            <span className="text-[0.65rem] font-bold uppercase tracking-wider text-cyan-400">
-              Open Tournament
-            </span>
-            <h3 className="font-display text-xl font-bold text-white">{selectedGroup.open}</h3>
-            <p className="text-xs text-slate-400">
-              9 Rounds Swiss Classical (90m + 30s increment). FIDE Rated with title norm pathways.
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-slate-800 bg-slate-950/80 p-5 space-y-2">
-            <span className="text-[0.65rem] font-bold uppercase tracking-wider text-pink-400">
-              Girls Tournament
-            </span>
-            <h3 className="font-display text-xl font-bold text-white">{selectedGroup.girls}</h3>
-            <p className="text-xs text-slate-400">
-              Dedicated 9-round championship for female players across Zone 3.6 federations.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Quick Look & Features Grid */}
-      <section className="motion-rise-in rounded-3xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl backdrop-blur-md md:p-8">
-        <div className="mb-6">
-          <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-            Quick Reference
-          </span>
-          <h2 className="mt-1 font-display text-2xl font-bold text-white md:text-3xl">
-            Everything Families & Players Need
-          </h2>
-        </div>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-          {homePageData.eventDetails.map((item, index) => (
-            <div
-              key={item.title}
-              className="glass-card-hover rounded-2xl border border-slate-800 bg-slate-950/70 p-5 backdrop-blur-md space-y-3"
-            >
-              <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-amber-500/10 font-bold text-amber-400 text-xs">
-                0{index + 1}
-              </span>
-              <h3 className="font-display text-lg font-bold text-white">{item.title}</h3>
-              <p className="text-xs leading-relaxed text-slate-400">{item.body}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Stakes & Why Participate */}
-      <section className="grid gap-6 lg:grid-cols-2">
-        <div className="motion-rise-in rounded-3xl border border-amber-500/20 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
-            Championship Honors
-          </span>
-          <h2 className="font-display text-2xl font-bold text-white md:text-3xl">
-            Titles, Medals & Norm Opportunities
-          </h2>
-          <div className="grid gap-3 sm:grid-cols-2 pt-2">
-            {homePageData.stakes.map((item) => (
-              <div
-                key={item.title}
-                className="rounded-2xl border border-slate-800 bg-slate-950/80 p-4 space-y-1"
-              >
-                <h3 className="font-display text-base font-bold text-amber-300">{item.title}</h3>
-                <p className="text-xs leading-relaxed text-slate-400">{item.body}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="motion-rise-in-delayed rounded-3xl border border-cyan-500/20 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-cyan-400">
-            The Oceania Experience
-          </span>
-          <h2 className="font-display text-2xl font-bold text-white md:text-3xl">
-            Why Players & Families Attend
-          </h2>
-          <div className="space-y-3 pt-2">
-            {homePageData.whyParticipate.map((item, index) => (
-              <div
-                key={item.title}
-                className="flex items-start gap-3 rounded-2xl border border-slate-800 bg-slate-950/80 p-3.5"
-              >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-cyan-500/10 font-bold text-cyan-400 text-xs">
-                  {index + 1}
-                </span>
-                <div>
-                  <h3 className="font-display text-sm font-bold text-white">{item.title}</h3>
-                  <p className="text-xs leading-relaxed text-slate-400">{item.body}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Registration Callout Banner */}
-      <section className="motion-rise-in relative overflow-hidden rounded-3xl border border-amber-500/40 bg-gradient-to-r from-amber-500/15 via-yellow-500/10 to-slate-900 p-6 shadow-2xl backdrop-blur-xl md:p-10">
-        <div className="grid gap-6 lg:grid-cols-12 lg:items-center">
-          <div className="space-y-3 lg:col-span-8">
-            <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
-              Registration Status
-            </span>
-            <h2 className="font-display text-3xl font-extrabold text-white md:text-4xl">
-              Don&apos;t just play. Make Oceania history.
-            </h2>
-            <p className="text-xs leading-relaxed text-slate-300 md:text-sm">
-              {homePageData.registration.description}
-            </p>
-          </div>
-          <div className="lg:col-span-4 flex flex-col items-start lg:items-end justify-center">
-            <div className="rounded-2xl border border-amber-500/30 bg-slate-950/90 p-5 text-center space-y-2 w-full max-w-xs">
-              <p className="text-[0.65rem] font-bold uppercase tracking-wider text-slate-400">
-                Entry Status
-              </p>
-              <p className="font-display text-2xl font-bold text-amber-300">
-                {homePageData.registration.playersRegistered}
-              </p>
-              <Link
-                href="/registration"
-                className="block w-full rounded-full bg-gradient-to-r from-amber-400 to-yellow-300 py-2.5 text-xs font-black uppercase text-slate-950 shadow-md transition hover:scale-105"
-              >
-                Pre-Register Interest
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Contact & Support Section */}
-      <section className="grid gap-6 md:grid-cols-2">
-        <div className="motion-rise-in rounded-3xl border border-slate-800 bg-slate-900/70 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-400">
-            Need Support?
-          </span>
-          <h2 className="font-display text-2xl font-bold text-white">Contact Organising Committee</h2>
-          <p className="text-xs text-slate-400">
-            Have questions about travel, entry conditions, or age group eligibility? Reach out to our organising team.
-          </p>
-          <div className="space-y-2 text-xs text-slate-300">
-            <div className="rounded-xl bg-slate-950/80 p-3 border border-slate-800">
-              {siteConfig.contact.coordinatorName}
-            </div>
-            <div className="rounded-xl bg-slate-950/80 p-3 border border-slate-800">
-              Email: {siteConfig.contact.email}
-            </div>
-          </div>
-          <Link
-            href="/contact-us"
-            className="inline-flex rounded-full border border-slate-700 bg-slate-800 px-5 py-2.5 text-xs font-bold text-white transition hover:bg-slate-700"
-          >
-            Send Inquiry Message →
-          </Link>
-        </div>
-
-        <div className="motion-rise-in-delayed rounded-3xl border border-slate-800 bg-slate-950/90 p-6 shadow-xl backdrop-blur-xl md:p-8 space-y-4">
-          <span className="text-xs font-bold uppercase tracking-widest text-amber-400">
-            FIDE Regulations
-          </span>
-          <h2 className="font-display text-2xl font-bold text-white">Tournament Manual</h2>
-          <p className="text-xs text-slate-400">
-            Review published guidelines regarding time controls, tie-breaks, norm eligibility, and player conduct.
-          </p>
-          <div className="flex flex-wrap gap-2 pt-2">
-            <Link
-              href="/regulations"
-              className="inline-flex rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 px-5 py-2.5 text-xs font-bold text-slate-950 shadow-md transition hover:scale-105"
-            >
-              Read Regulations →
-            </Link>
-            <a
-              href="/OceaniaYouth%202027%20Tournament%20Pack.pdf"
-              download="OceaniaYouth 2027 Tournament Pack.pdf"
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-1.5 rounded-full border border-slate-700 bg-slate-900 px-4 py-2.5 text-xs font-bold text-slate-300 hover:border-amber-400 hover:text-white transition"
-            >
-              <span>📥 Download Pack (PDF)</span>
-            </a>
-          </div>
-          <p className="text-[0.7rem] text-slate-500 leading-relaxed">
-            {siteConfig.organization.legalLine}
-          </p>
-        </div>
-      </section>
+    const [selectedAge, setSelectedAge] = useState(14);
+    return (<div className="page-home">
+    <section className="home-lead">
+    <div className="home-copy">
+    <div className="home-eyebrow">
+    <span>♟️</span>{homePageData.heroKicker}</div>
+    <div>
+    <p className="eyebrow">Presented by Hobsons Bay Chess Club AU</p><h1>Oceania Youth <span className="title-second">Chess Zonal </span><span className="title-year">2027</span></h1><p>Welcome to the official digital portal for the 2027 Oceania Youth Zonal Championship. Access full tournament schedules, regulations, player lists, live board broadcasts, and venue travel guides for federations across Zone 3.6.</p></div>
+    <div className="hero-actions">
+    <span className="eyebrow">{homePageData.dateLabel}</span><a href="/OceaniaYouth%202027%20Tournament%20Pack.pdf" download="OceaniaYouth 2027 Tournament Pack.pdf" target="_blank" rel="noreferrer" className="action"><span>📥 Download Tournament Pack (PDF)</span></a><Link href="/schedule" className="action"><span>Explore Schedule</span><span>→</span></Link></div>
     </div>
-  );
+    <div aria-hidden="true" className="home-art">
+    </div>
+    </section>
+    <div className="home-stats">{homePageData.quickFacts.map(fact => <div key={fact.label}><p className="eyebrow">{fact.label}</p><p className="metric">{fact.value}</p><p>{fact.note}</p></div>)}</div>
+    <section className="entry-banner">
+    <div className="subgrid">
+    <div>
+    <span className="eyebrow">Registration Status</span><h2>Don't just play. Make Oceania history.</h2><p>{homePageData.registration.description}</p></div>
+    <div className="flexline">
+    <div>
+    <p className="eyebrow">Entry Status</p><p className="metric">{homePageData.registration.playersRegistered}</p><Link href="/registration" className="action">Pre-Register Interest</Link></div>
+    </div>
+    </div>
+    </section>
+    <HomeHeroCountdown dateLabel={homePageData.dateLabel} eventStartDate={homePageData.eventStartDate} registrationHref={siteConfig.links.registrations}/><div className="bulletin">
+    <div className="flexline">
+    <span className="eyebrow">Official Bulletin</span><span></span></div>
+    <h2>{homePageData.alert.title}</h2><ul>{homePageData.alert.items.map((item, index) => <li key={item}><span>{String(index + 1).padStart(2, "0")}</span><span>{item}</span></li>)}</ul></div>
+    <section className="age-explorer" data-age-explorer="true">
+    <div className="flexline">
+    <div>
+    <span className="eyebrow">14 Championship Categories</span><h2>Age Divisions &amp; FIDE Pathways</h2></div>
+    <p>Click on an age category to inspect Open and Girls divisional structures and qualification paths.</p></div>
+    <div className="flexline">
+    {[8, 10, 12, 14, 16, 18, 20].map(age => <button key={age} type="button" aria-pressed={selectedAge === age} onClick={() => setSelectedAge(age)}>U{age}</button>)}</div>
+    <div className="subgrid">
+    <div>
+    <span className="eyebrow">Category Focus</span><h3>U{selectedAge} Division</h3><p>{selectedAge === 20 ? "Junior Premier Championship" : `Born ${2027 - selectedAge} or later`}</p></div>
+    <div>
+    <span className="eyebrow">Open Tournament</span><h3>Under {selectedAge} Open</h3><p>9 Rounds Swiss Classical (90m + 30s increment). FIDE Rated with title norm pathways.</p></div>
+    <div>
+    <span className="eyebrow">Girls Tournament</span><h3>Under {selectedAge} Girls</h3><p>Dedicated 9-round championship for female players across Zone 3.6 federations.</p></div>
+    </div>
+    </section>
+    <section className="quick-reference">
+    <div>
+    <span className="eyebrow">Quick Reference</span><h2>Everything Families &amp; Players Need</h2></div>
+    <div className="subgrid">
+    <div>
+    <span>01</span><h3>{homePageData.eventDetails[0].title}</h3><p>{homePageData.eventDetails[0].body}</p></div>
+    <div>
+    <span>02</span><h3>{homePageData.eventDetails[1].title}</h3><p>{homePageData.eventDetails[1].body}</p></div>
+    <div>
+    <span>03</span><h3>{homePageData.eventDetails[2].title}</h3><p>{homePageData.eventDetails[2].body}</p></div>
+    <div>
+    <span>04</span><h3>{homePageData.eventDetails[3].title}</h3><p className="region-names">{homePageData.eventDetails[3].body}</p><div aria-hidden="true" className="region-portrait">
+    <img src="/pacific/countries/au.svg" alt=""/><img src="/pacific/countries/nz.svg" alt=""/><img src="/pacific/countries/fj.svg" alt=""/><img src="/pacific/countries/pg.svg" alt=""/><img src="/pacific/countries/sb.svg" alt=""/><img src="/pacific/countries/pw.svg" alt=""/><img src="/pacific/countries/gu.svg" alt=""/><img src="/pacific/countries/nr.svg" alt=""/><img src="/pacific/countries/nc.svg" alt=""/><img src="/pacific/countries/to.svg" alt=""/><img src="/pacific/countries/vu.svg" alt=""/><img src="/pacific/countries/ki.svg" alt=""/><img src="/pacific/countries/mh.svg" alt=""/></div>
+    </div>
+    </div>
+    </section>
+    <div className="editorial-pair">
+    <div className="honours">
+    <span className="eyebrow">Championship Honors</span><h2>Titles, Medals &amp; Norm Opportunities</h2><div className="subgrid">
+    <div>
+    <h3>{homePageData.stakes[0].title}</h3><p>{homePageData.stakes[0].body}</p></div>
+    <div>
+    <h3>{homePageData.stakes[1].title}</h3><p>{homePageData.stakes[1].body}</p></div>
+    <div>
+    <h3>{homePageData.stakes[2].title}</h3><p>{homePageData.stakes[2].body}</p></div>
+    <div>
+    <h3>{homePageData.stakes[3].title}</h3><p>{homePageData.stakes[3].body}</p></div>
+    </div>
+    </div>
+    <div className="experience">
+    <span className="eyebrow">The Oceania Experience</span><h2>Why Players &amp; Families Attend</h2><div>
+    <div className="flexline">
+    <span>1</span><div>
+    <h3>{homePageData.whyParticipate[0].title}</h3><p>{homePageData.whyParticipate[0].body}</p></div>
+    </div>
+    <div className="flexline">
+    <span>2</span><div>
+    <h3>{homePageData.whyParticipate[1].title}</h3><p>{homePageData.whyParticipate[1].body}</p></div>
+    </div>
+    <div className="flexline">
+    <span>3</span><div>
+    <h3>{homePageData.whyParticipate[2].title}</h3><p>{homePageData.whyParticipate[2].body}</p></div>
+    </div>
+    <div className="flexline">
+    <span>4</span><div>
+    <h3>{homePageData.whyParticipate[3].title}</h3><p>{homePageData.whyParticipate[3].body}</p></div>
+    </div>
+    </div>
+    </div>
+    </div>
+    <div className="snapshot">
+    <article>
+    <div className="flexline">
+    <div>
+    <span className="eyebrow">{homePageData.tournamentStats.heading}</span><h2>{homePageData.tournamentStats.title}</h2></div>
+    <span>{homePageData.tournamentStats.badge}</span></div>
+    <p>{homePageData.tournamentStats.description}</p><div className="subgrid">
+    <div>
+    <div className="flexline">
+    <span>🌐</span><span className="eyebrow">Target</span></div>
+    <p className="metric">13</p><p>Federations</p></div>
+    <div>
+    <div className="flexline">
+    <span>🏆</span><span className="eyebrow">Target</span></div>
+    <p className="metric">14</p><p>{homePageData.quickFacts[0].label}</p></div>
+    <div>
+    <div className="flexline">
+    <span>♟️</span><span className="eyebrow">Target</span></div>
+    <p className="metric">25</p><p>Rounds</p></div>
+    <div>
+    <div className="flexline">
+    <span>🎯</span><span className="eyebrow">Target</span></div>
+    <p className="metric">7</p><p>Age Divisions</p></div>
+    </div>
+    </article>
+    </div>
+    <div className="original-banner" id="championship-banner">
+    <div>
+    <img alt="Oceania Youth Chess Zonal Championship 2027" width="1600" height="900" decoding="async" src="/hero.png" loading="lazy"/></div>
+    <div className="banner-controls">
+    <a className="action" href="#main">Overview</a><a className="action" href="#championship-banner">Banner</a></div>
+    </div>
+    <section className="support-split">
+    <div>
+    <span className="eyebrow">Need Support?</span><h2>Contact Organising Committee</h2><p>Have questions about travel, entry conditions, or age group eligibility? Reach out to our organising team.</p><div>
+    <div>
+IA Casey Goh (Event Director) &amp; HBCC Committee</div>
+    <div>
+Email: major_tournaments@hobsonsbaychess.com</div>
+    </div>
+    <Link href="/contact-us" className="action">Send Inquiry Message →</Link></div>
+    <div>
+    <span className="eyebrow">FIDE Regulations</span><h2>Tournament Manual</h2><p>Review published guidelines regarding time controls, tie-breaks, norm eligibility, and player conduct.</p><div className="flexline">
+    <Link href="/regulations" className="action">Read Regulations →</Link><a href="/OceaniaYouth%202027%20Tournament%20Pack.pdf" download="OceaniaYouth 2027 Tournament Pack.pdf" target="_blank" rel="noreferrer" className="action"><span>📥 Download Pack (PDF)</span></a></div>
+    <p>Official championship platform for player registration, schedules, regulations, and live broadcasts.</p></div>
+    </section>
+    </div>);
 }
-

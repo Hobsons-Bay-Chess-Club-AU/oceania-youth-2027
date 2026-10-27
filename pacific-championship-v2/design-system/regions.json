@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Australia",
+    "code": "au",
+    "flag": "assets/flags/au.svg",
+    "silhouette": "assets/countries/au.svg"
+  },
+  {
+    "name": "New Zealand",
+    "code": "nz",
+    "flag": "assets/flags/nz.svg",
+    "silhouette": "assets/countries/nz.svg"
+  },
+  {
+    "name": "Fiji",
+    "code": "fj",
+    "flag": "assets/flags/fj.svg",
+    "silhouette": "assets/countries/fj.svg"
+  },
+  {
+    "name": "Papua New Guinea",
+    "code": "pg",
+    "flag": "assets/flags/pg.svg",
+    "silhouette": "assets/countries/pg.svg"
+  },
+  {
+    "name": "Solomon Islands",
+    "code": "sb",
+    "flag": "assets/flags/sb.svg",
+    "silhouette": "assets/countries/sb.svg"
+  },
+  {
+    "name": "Palau",
+    "code": "pw",
+    "flag": "assets/flags/pw.svg",
+    "silhouette": "assets/countries/pw.svg"
+  },
+  {
+    "name": "Guam",
+    "code": "gu",
+    "flag": "assets/flags/gu.svg",
+    "silhouette": "assets/countries/gu.svg"
+  },
+  {
+    "name": "Nauru",
+    "code": "nr",
+    "flag": "assets/flags/nr.svg",
+    "silhouette": "assets/countries/nr.svg"
+  },
+  {
+    "name": "New Caledonia",
+    "code": "nc",
+    "flag": "assets/flags/nc.svg",
+    "silhouette": "assets/countries/nc.svg"
+  },
+  {
+    "name": "Tonga",
+    "code": "to",
+    "flag": "assets/flags/to.svg",
+    "silhouette": "assets/countries/to.svg"
+  },
+  {
+    "name": "Vanuatu",
+    "code": "vu",
+    "flag": "assets/flags/vu.svg",
+    "silhouette": "assets/countries/vu.svg"
+  },
+  {
+    "name": "Kiribati",
+    "code": "ki",
+    "flag": "assets/flags/ki.svg",
+    "silhouette": "assets/countries/ki.svg"
+  },
+  {
+    "name": "Marshall Islands",
+    "code": "mh",
+    "flag": "assets/flags/mh.svg",
+    "silhouette": "assets/countries/mh.svg"
+  }
+]

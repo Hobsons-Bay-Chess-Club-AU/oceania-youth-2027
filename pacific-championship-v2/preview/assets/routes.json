@@ -1,0 +1,58 @@
+[
+  {
+    "route": "/",
+    "title": "Oceania Youth Chess Zonal 2027"
+  },
+  {
+    "route": "/location",
+    "title": "Location & Venue Information"
+  },
+  {
+    "route": "/schedule",
+    "title": "Tournament Schedule"
+  },
+  {
+    "route": "/regulations",
+    "title": "Official Tournament Regulations"
+  },
+  {
+    "route": "/players",
+    "title": "Registered Player Directory"
+  },
+  {
+    "route": "/registration",
+    "title": "Registration & Fee Calculator"
+  },
+  {
+    "route": "/news",
+    "title": "News & Event Announcements"
+  },
+  {
+    "route": "/organizer",
+    "title": "Organising Committee"
+  },
+  {
+    "route": "/sponsors",
+    "title": "Event Sponsors & Partners"
+  },
+  {
+    "route": "/dgt-boards",
+    "title": "DGT Live Board Broadcast Hub"
+  },
+  {
+    "route": "/contact-us",
+    "title": "Contact Organising Committee"
+  },
+  {
+    "route": "/news/2026-08-19-the-road-to-oceania-2027-begins",
+    "title": "The Road to Oceania 2027 Begins: Official Championship Announcement"
+  },
+  {
+    "route": "/news/2026-07-03-planning-update",
+    "title": "Venue planning and operational updates underway"
+  },
+  {
+    "route": "/news/2026-07-02-welcome-update",
+    "title": "Official Launch: Oceania Youth 2027 Digital Portal"
+  }
+]

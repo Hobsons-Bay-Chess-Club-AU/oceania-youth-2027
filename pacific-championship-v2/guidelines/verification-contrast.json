@@ -1,0 +1,18 @@
+{
+  "light": {
+    "ink/paper": 12.87,
+    "muted/paper": 5.41,
+    "blue/paper": 6.27,
+    "on-blue/blue": 6.96,
+    "orange/paper": 5.35,
+    "ink/sea": 11.3
+  },
+  "dark": {
+    "ink/paper": 14.58,
+    "muted/paper": 9.24,
+    "blue/paper": 8.28,
+    "on-blue/blue": 8.28,
+    "orange/paper": 7.91,
+    "ink/sea": 10.51
+  }
+}

@@ -1,0 +1,2 @@
+:root{color-scheme:light;--paper:#f4f1e9;--surface:#fffdf7;--ink:#0c2d37;--muted:#4e666b;--rule:#bec5bf;--blue:#0047df;--orange:#b3371b;--orange-art:#ff603b;--sea:#d9e6df;--on-blue:#fffdf7;--display:Barlow,'Arial Narrow',sans-serif;--body:Manrope,'Helvetica Neue',Arial,sans-serif;--gutter:clamp(20px,4.5vw,72px);--max:1512px;--space:clamp(64px,7vw,112px)}
+html[data-theme=dark]{color-scheme:dark;--paper:#09232b;--surface:#102e37;--ink:#f5f2e9;--muted:#b2c7c8;--rule:#466169;--blue:#99b8ff;--orange:#ff9a7f;--sea:#173d43;--on-blue:#09232b}

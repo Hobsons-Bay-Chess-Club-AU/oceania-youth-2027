@@ -1,0 +1,96 @@
+[
+  {
+    "route": "/",
+    "source_tokens": 763,
+    "output_tokens": 755,
+    "missing_tokens": {
+      "3": 2,
+      "4": 2,
+      "2": 2,
+      "1": 2,
+      "0": 12
+    }
+  },
+  {
+    "route": "/location",
+    "source_tokens": 378,
+    "output_tokens": 378,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/schedule",
+    "source_tokens": 435,
+    "output_tokens": 435,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/regulations",
+    "source_tokens": 1792,
+    "output_tokens": 1792,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/players",
+    "source_tokens": 79,
+    "output_tokens": 76,
+    "missing_tokens": {
+      "player": 1,
+      "Loading": 1,
+      "directory": 1
+    }
+  },
+  {
+    "route": "/registration",
+    "source_tokens": 253,
+    "output_tokens": 253,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/news",
+    "source_tokens": 204,
+    "output_tokens": 204,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/organizer",
+    "source_tokens": 164,
+    "output_tokens": 164,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/sponsors",
+    "source_tokens": 117,
+    "output_tokens": 117,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/dgt-boards",
+    "source_tokens": 252,
+    "output_tokens": 252,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/contact-us",
+    "source_tokens": 103,
+    "output_tokens": 103,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/news/2026-08-19-the-road-to-oceania-2027-begins",
+    "source_tokens": 532,
+    "output_tokens": 532,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/news/2026-07-03-planning-update",
+    "source_tokens": 205,
+    "output_tokens": 205,
+    "missing_tokens": {}
+  },
+  {
+    "route": "/news/2026-07-02-welcome-update",
+    "source_tokens": 358,
+    "output_tokens": 358,
+    "missing_tokens": {}
+  }
+]
