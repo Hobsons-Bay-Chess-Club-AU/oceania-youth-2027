@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-25T08:14:34.666Z",
+  "lastUpdated": "2026-10-29T15:51:26.287Z",
   "description": "Official registered Oceania junior entrants for the 2027 Oceania Youth Chess Championship.",
   "divisions": [
     "U8",
@@ -15,6 +15,18 @@
     "Girls"
   ],
   "players": [
+    {
+      "name": "Mochen Gao",
+      "division": "U12",
+      "category": "Open",
+      "federation": "AUS",
+      "flag": "AU",
+      "fideId": "3296989",
+      "fideRating": 0,
+      "rapidRating": 0,
+      "blitzRating": 0,
+      "yob": 2016
+    },
     {
       "name": "Rohan Aditya Panchaparvala",
       "division": "U14",
