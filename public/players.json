@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-29T15:51:26.287Z",
+  "lastUpdated": "2026-10-31T02:00:12.572Z",
   "description": "Official registered Oceania junior entrants for the 2027 Oceania Youth Chess Championship.",
   "divisions": [
     "U8",
@@ -15,6 +15,18 @@
     "Girls"
   ],
   "players": [
+    {
+      "name": "Akshobhya Rathore",
+      "division": "U14",
+      "category": "Open",
+      "federation": "AUS",
+      "flag": "AU",
+      "fideId": "3276589",
+      "fideRating": 1739,
+      "rapidRating": 1582,
+      "blitzRating": 0,
+      "yob": 2013
+    },
     {
       "name": "Mochen Gao",
       "division": "U12",
