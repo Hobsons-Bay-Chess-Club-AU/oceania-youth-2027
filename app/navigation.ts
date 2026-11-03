@@ -19,6 +19,7 @@ export const navItems: NavItem[] = [
     label: "Information",
     children: [
       { href: "/organizer", label: "Organizer" },
+      { href: "/federation-support", label: "Federation Support" },
       { href: "/sponsors", label: "Sponsors" },
       { href: "/dgt-boards", label: "Broadcasts" },
       { href: "/contact-us", label: "Contact Us" },

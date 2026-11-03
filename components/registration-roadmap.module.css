@@ -1,0 +1,65 @@
+/* Hallmark · component: registration roadmap · genre: editorial · theme: existing Pacific
+ * SVG flow diagram with accessible notes and a scrollable narrow-screen view.
+ * Pre-emit critique: P4 H4 E4 S5 R4 V4
+ */
+.section {
+  padding-block: 32px;
+  border-bottom: 1px solid var(--rule);
+}
+.figure {
+  margin: 0;
+}
+.scroll {
+  overflow-x: auto;
+  border: 1px solid var(--rule);
+}
+.scroll:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 4px;
+}
+.scroll img {
+  display: block;
+  width: 100%;
+  min-width: 1200px;
+  height: auto;
+  max-width: none;
+}
+.hint {
+  margin-bottom: 12px;
+  color: var(--muted);
+}
+.caption {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 16px 32px;
+  margin-top: 24px;
+  color: var(--muted);
+}
+.caption a {
+  grid-column: 1 / -1;
+  justify-self: start;
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  min-height: 32px;
+}
+.caption a:hover {
+  text-decoration-thickness: 2px;
+}
+.caption a:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 4px;
+}
+.caption a:active {
+  color: var(--ink);
+}
+@media (min-width: 1340px) {
+  .hint {
+    display: none;
+  }
+}
+@media (max-width: 700px) {
+  .caption {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

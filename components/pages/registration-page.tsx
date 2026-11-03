@@ -1,5 +1,8 @@
 "use client";
+import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
+import { RegistrationRoadmap } from "@/components/registration-roadmap";
+import { RegistrationTimeline } from "@/components/registration-timeline";
 import { useState } from "react";
 const OFFICIAL_REGISTRATION_URL = siteConfig.links.registrations;
 export function RegistrationPage() {
@@ -21,6 +24,12 @@ export function RegistrationPage() {
     <div className="flexline">
     <a href={OFFICIAL_REGISTRATION_URL} target="_blank" rel="noreferrer" className="action"><span>Open Official Registration Portal</span><span>↗</span></a><a href="/OceaniaYouth%202027%20Tournament%20Pack.pdf" download="OceaniaYouth 2027 Tournament Pack.pdf" target="_blank" rel="noreferrer" className="action"><span>📥 Download Tournament Pack (PDF)</span></a></div>
     </div>
+    </section>
+    <RegistrationRoadmap/>
+    <RegistrationTimeline/>
+    <section className="support-split">
+    <div><span className="eyebrow">Federation Support Programme</span><h2>Registration and federation support</h2><p>Explore official delegation packages, accommodation support, Pacific Island travel grants, visa assistance and special prizes.</p></div>
+    <div><p>Support is subject to available funding, sponsorship and organiser capacity. Review the full eligibility requirements and payment conditions before applying.</p><Link href="/federation-support" className="action">View Federation Support →</Link></div>
     </section>
     <section className="entry-workspace">
     <div className="fee-calculator" data-calculator="true">
@@ -74,7 +83,7 @@ export function RegistrationPage() {
     <div>
     <div className="flexline">
     <span className="eyebrow">✈️ Federation Support</span><span>$1,000 AUD Grant</span></div>
-    <h3>Pacific Island Assistance Scheme</h3><p>First 3 Pacific Island federations (outside Australia &amp; New Zealand) registering 5+ players by <strong>1 March 2027</strong> receive a <strong>$1,000 AUD travel grant</strong>.</p></div>
+    <h3>Pacific Island Assistance Scheme</h3><p>First 3 Pacific Island federations (outside Australia &amp; New Zealand) registering 5+ players by <strong>1 March 2027</strong> receive a <strong>$1,000 AUD travel grant</strong>.</p><Link href="/federation-support#travel-assistance" className="action">Eligibility &amp; Conditions →</Link></div>
     </section>
     </div>);
 }

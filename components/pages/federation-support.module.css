@@ -1,0 +1,146 @@
+/* Hallmark · page scope: federation support · genre: editorial · theme: existing Pacific
+ * Document layout with section navigation and a concise comparison strip.
+ * Pre-emit critique: P4 H5 E4 S5 R4 V4
+ */
+.overview {
+  padding-block: 40px;
+  border-bottom: 1px solid var(--rule);
+}
+.overview h2 {
+  margin: 8px 0 24px;
+  font-size: 40px;
+}
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px;
+}
+.summary>div {
+  border-top: 1px solid var(--ink);
+  padding-top: 20px;
+  min-width: 0;
+}
+.summary h3 {
+  font-size: 28px;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.summary p+p {
+  margin-top: 12px;
+}
+.summary a {
+  display: inline-block;
+  margin-top: 12px;
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.layout {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(0, 2.5fr);
+  gap: 64px;
+  padding-top: 48px;
+}
+.contents nav {
+  position: sticky;
+  top: 32px;
+  display: grid;
+  gap: 16px;
+  max-width: 32ch;
+}
+.contents a {
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr);
+  gap: 8px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+.contents a span {
+  color: var(--muted);
+}
+.contents a:last-child {
+  display: block;
+  color: var(--blue);
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+}
+.content {
+  max-width: 70ch;
+  min-width: 0;
+}
+.intro h2, .section h2 {
+  margin: 12px 0 24px;
+  font-size: clamp(30px, 3vw, 42px);
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+}
+.content p+p, .content ul+p {
+  margin-top: 16px;
+}
+.content ul {
+  list-style: disc;
+  padding-left: 24px;
+  margin: 16px 0;
+}
+.content li+li {
+  margin-top: 8px;
+}
+.content h3 {
+  margin: 28px 0 12px;
+  font-size: 26px;
+}
+.content .condition {
+  padding: 20px;
+  background: var(--sea);
+  color: var(--ink);
+  margin-top: 24px;
+}
+.section {
+  border-top: 1px solid var(--rule);
+  padding-top: 32px;
+  margin-top: 40px;
+  scroll-margin-top: 32px;
+}
+.section .action {
+  margin-top: 24px;
+}
+.page a:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 4px;
+}
+.contents a:hover, .summary a:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.contents a:active, .summary a:active {
+  color: var(--orange);
+}
+@media (max-width: 1100px) {
+  .summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .layout {
+    gap: 32px;
+  }
+}
+@media (max-width: 800px) {
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .contents nav {
+    position: static;
+    max-width: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .contents nav>span, .contents a:last-child {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 540px) {
+  .summary, .contents nav {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .overview {
+    padding-block: 32px;
+  }
+}
