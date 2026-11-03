@@ -83,7 +83,7 @@ export function SiteShell({ children }: {
     <a href="#main" className="skip-link">Skip to content</a>
     <header className="site-header">
       <Link href="/" className="brand">
-        <img src="/pacific/mark.svg" alt="" className="brand-symbol" width="36" height="44"/>
+        <img src="/oceania-logo.png" alt="" className="brand-symbol" width="44" height="44"/>
         <div className="subgrid"><span>Oceania Youth 2027</span><span>Melbourne, Australia | Zone 3.6</span></div>
       </Link>
       <nav aria-label="Main navigation" className={`site-nav${menuOpen ? " open" : ""}`} id="site-navigation">
@@ -149,7 +149,7 @@ export function SiteShell({ children }: {
     </div>
     <div>
     <h4 className="eyebrow">Organising Committee</h4><p>{siteConfig.contact.coordinatorName}</p><a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a><div>
-Oceania Youth Zonal 2027 takes place 27 September – 4 October 2027 at Bacchus Marsh Grammar – Woodlea Campus in Melbourne, Australia.</div>
+{siteConfig.footer.statusText}</div>
     </div>
     </div>
     <div className="flexline">

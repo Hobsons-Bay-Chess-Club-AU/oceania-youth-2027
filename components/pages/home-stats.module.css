@@ -1,0 +1,113 @@
+/* Hallmark · component: championship stats · genre: editorial · theme: existing Pacific
+ * Compact metric strip; inherited type and colour tokens.
+ * Pre-emit critique: P4 H5 E4 S4 R5 V4
+ */
+.stats {
+  --stats-space: 24px;
+  padding-block: 32px;
+  border-bottom: 1px solid var(--ink);
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0;
+}
+.item {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-width: 0;
+  padding-inline: var(--stats-space);
+  border-left: 1px solid var(--rule);
+}
+.item:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+.item:last-child {
+  padding-right: 0;
+}
+.item dt {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.value {
+  margin: 12px 0;
+  font-family: var(--display);
+  font-size: clamp(48px, 4.5vw, 72px);
+  font-weight: 700;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.caption {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.players .value {
+  color: var(--blue);
+}
+.caption a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 24px;
+  color: var(--blue);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.caption a:hover {
+  text-decoration-thickness: 2px;
+}
+.caption a:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 4px;
+}
+.caption a:active {
+  color: var(--ink);
+}
+@media (max-width: 800px) {
+  .stats {
+    --stats-space: 20px;
+    padding-block: 24px;
+  }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: var(--stats-space);
+  }
+  .item:nth-child(odd) {
+    border-left: 0;
+    padding-left: 0;
+  }
+  .item:nth-child(even) {
+    padding-right: 0;
+  }
+  .item:nth-child(n+3) {
+    padding-top: var(--stats-space);
+    border-top: 1px solid var(--rule);
+  }
+  .value {
+    font-size: 52px;
+  }
+}
+@media (max-width: 375px) {
+  .stats {
+    --stats-space: 12px;
+  }
+  .item dt {
+    font-size: 9px;
+    letter-spacing: .04em;
+  }
+  .caption {
+    font-size: 11px;
+  }
+}

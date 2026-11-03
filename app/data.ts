@@ -1,14 +1,14 @@
 import { siteConfig } from "@/lib/site-config";
 
 export const homePageData = {
-  dateLabel: "27 September – 4 October 2027",
-  eventStartDate: "2027-09-27T09:00:00+10:00",
+  dateLabel: "29 September – 3 October 2027",
+  eventStartDate: "2027-09-29T09:30:00+10:00",
   heroKicker: "FIDE Zone 3.6 Championship | Melbourne 2027",
   heroImage: siteConfig.heroImage,
   alert: {
     title: "Official Tournament Bulletin",
     items: [
-      "Official Dates Confirmed: Oceania Youth Zonal 2027 will be held 27 September – 4 October 2027 at Bacchus Marsh Grammar – Woodlea Campus in Melbourne, Australia.",
+      "Official Dates Confirmed: Oceania Youth Zonal 2027 will be held 29 September – 3 October 2027 at Bacchus Marsh Grammar – Woodlea Campus in Melbourne, Australia.",
       "3-in-1 Championship Package: Registration includes entry into all three championships (Classical 9 Rounds, Rapid 7 Rounds, and Blitz 9 Rounds) with NO extra event fees.",
       "Pacific Island Assistance Scheme: The first 3 eligible federations (outside AUS & NZ) registering 5+ players by 1 March 2027 will receive a $1,000 AUD travel grant.",
       "Official Federation Delegations receive complimentary twin-share accommodation for 1 Official Player per category plus 1 Head of Delegation.",
@@ -54,7 +54,7 @@ export const homePageData = {
     },
     {
       title: "Official Dates",
-      body: "27 September – 4 October 2027. Classical rounds run Sep 28 – Oct 3. Rapid & Blitz run Oct 3.",
+      body: "29 September – 3 October 2027. Classical rounds run 29 September – 3 October. Rapid & Blitz run Oct 3.",
     },
     {
       title: "Championship Format",

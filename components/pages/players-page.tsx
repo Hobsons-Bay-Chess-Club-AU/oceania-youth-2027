@@ -1,9 +1,11 @@
 "use client";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Hero, SearchInput } from "@/components/ui";
 import { DEFAULT_DIVISIONS } from "@/app/players/data";
 import type { Player, PlayersData, PlayerCategory } from "@/app/players/types";
 export function PlayersPage() {
+    const searchParams = useSearchParams();
     const [data, setData] = useState<PlayersData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -11,6 +13,12 @@ export function PlayersPage() {
     const [category, setCategory] = useState<"All" | PlayerCategory>("All");
     const [division, setDivision] = useState<string>("All");
     const [federation, setFederation] = useState<string>("All");
+    useEffect(() => {
+        const requestedDivision = searchParams.get("division") || "All";
+        const requestedCategory = searchParams.get("category");
+        setDivision(DEFAULT_DIVISIONS.includes(requestedDivision) ? requestedDivision : "All");
+        setCategory(requestedCategory === "Open" || requestedCategory === "Girls" ? requestedCategory : "All");
+    }, [searchParams]);
     const fetchPlayers = useCallback(async () => {
         setIsLoading(true);
         setError(null);

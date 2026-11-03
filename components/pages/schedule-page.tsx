@@ -20,7 +20,7 @@ export function SchedulePage() {
         window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}${start ? `&dates=${start}/${start}` : ""}`, "_blank", "noopener,noreferrer");
     }
     return <div className="page-schedule">
-    <Hero eyebrow="Official Timetable" title="Tournament Schedule" description="Comprehensive 9-round classical championship schedule, technical meetings, opening ceremonies, blitz side events, and prize distribution."/>
+    <Hero eyebrow="Official Timetable" title="Tournament Schedule" description="Championship play runs 29 September – 3 October 2027, covering 9 classical rounds, rapid, blitz, and prize-giving. Arrival is 28 September; departure is 4 October."/>
     <section className="schedule-workspace">
       <div className="schedule-toolbar"><div className="flexline">{categories.map(item => <button type="button" key={item.value} aria-pressed={filter === item.value} onClick={() => setFilter(item.value)}>{item.label}</button>)}</div><div><SearchInput value={search} onChange={setSearch} placeholder="Search schedule events..."/></div></div>
       <aside className="day-selector" aria-label="Filter by day"><span className="eyebrow">Filter by Day:</span><button type="button" aria-pressed={day === "all"} onClick={() => setDay("all")}>All Days</button>{days.map(value => <button type="button" key={value} aria-pressed={day === value} onClick={() => setDay(value)}>{value}</button>)}</aside>

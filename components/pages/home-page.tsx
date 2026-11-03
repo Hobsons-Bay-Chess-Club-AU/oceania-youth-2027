@@ -1,18 +1,68 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { homePageData } from "@/app/data";
 import { siteConfig } from "@/lib/site-config";
+import { PlayerCount } from "@/components/player-count";
+import type { PlayersData } from "@/app/players/types";
+import statsStyles from "./home-stats.module.css";
 import { HomeHeroCountdown } from "@/components/home-hero-countdown";
 export function HomePage() {
     const [selectedAge, setSelectedAge] = useState(14);
+    const [playersData, setPlayersData] = useState<PlayersData | null>(null);
+    const [playersError, setPlayersError] = useState(false);
+    useEffect(() => {
+        const controller = new AbortController();
+        fetch("/players.json", { cache: "no-store", signal: controller.signal })
+            .then(response => {
+                if (!response.ok) throw new Error("Unable to load player counts");
+                return response.json();
+            })
+            .then((data: PlayersData) => setPlayersData(data))
+            .catch(() => { if (!controller.signal.aborted) setPlayersError(true); });
+        return () => controller.abort();
+    }, []);
+    const players = playersData?.players;
+    const divisionPlayers = players?.filter(player => player.division === `U${selectedAge}`);
+    const openCount = divisionPlayers?.filter(player => player.category === "Open").length;
+    const girlsCount = divisionPlayers?.filter(player => player.category === "Girls").length;
+    const countLabel = (count: number | undefined) => count === undefined
+        ? (playersError ? "Player count unavailable" : "Loading player count…")
+        : `${count} registered ${count === 1 ? "player" : "players"}`;
+    const [yearColors, setYearColors] = useState([0, 1, 2, 3]);
+    useEffect(() => {
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let timer: ReturnType<typeof setInterval> | undefined;
+        function syncAnimation() {
+            clearInterval(timer);
+            if (reducedMotion.matches) return;
+            timer = setInterval(() => {
+                setYearColors(previous => {
+                    const next = [...previous];
+                    for (let i = next.length - 1; i > 0; i--) {
+                        const j = Math.floor(Math.random() * (i + 1));
+                        [next[i], next[j]] = [next[j], next[i]];
+                    }
+                    // Ensure each interval produces a visible change.
+                    return next.every((color, index) => color === previous[index])
+                        ? [...next.slice(1), next[0]] : next;
+                });
+            }, 5000);
+        }
+        syncAnimation();
+        reducedMotion.addEventListener("change", syncAnimation);
+        return () => {
+            clearInterval(timer);
+            reducedMotion.removeEventListener("change", syncAnimation);
+        };
+    }, []);
     return (<div className="page-home">
     <section className="home-lead">
     <div className="home-copy">
     <div className="home-eyebrow">
     <span>♟️</span>{homePageData.heroKicker}</div>
     <div>
-    <p className="eyebrow">Presented by Hobsons Bay Chess Club AU</p><h1>Oceania Youth <span className="title-second">Chess Zonal </span><span className="title-year">2027</span></h1><p>Welcome to the official digital portal for the 2027 Oceania Youth Zonal Championship. Access full tournament schedules, regulations, player lists, live board broadcasts, and venue travel guides for federations across Zone 3.6.</p></div>
+    <p className="eyebrow">Presented by Hobsons Bay Chess Club AU</p><h1>Oceania Youth <span className="title-second">Chess Zonal </span><span className="title-year">{"2027".split("").map((digit, index) => <span key={index} className={`year-digit year-color-${yearColors[index]}`}>{digit}</span>)}</span></h1><p>Welcome to the official digital portal for the 2027 Oceania Youth Zonal Championship. Access full tournament schedules, regulations, player lists, live board broadcasts, and venue travel guides for federations across Zone 3.6.</p></div>
     <div className="hero-actions">
     <span className="eyebrow">{homePageData.dateLabel}</span><a href="/OceaniaYouth%202027%20Tournament%20Pack.pdf" download="OceaniaYouth 2027 Tournament Pack.pdf" target="_blank" rel="noreferrer" className="action"><span>📥 Download Tournament Pack (PDF)</span></a><Link href="/schedule" className="action"><span>Explore Schedule</span><span>→</span></Link></div>
     </div>
@@ -20,7 +70,22 @@ export function HomePage() {
     <img src="/hero.png" alt="Oceania Youth Zonal Championship 2027 event banner" width="1600" height="900" fetchPriority="high"/>
     </div>
     </section>
-    <div className="home-stats">{homePageData.quickFacts.map(fact => <div key={fact.label}><p className="eyebrow">{fact.label}</p><p className="metric">{fact.value}</p><p>{fact.note}</p></div>)}</div>
+    <section className={statsStyles.stats} aria-label="Championship at a glance">
+    <dl className={statsStyles.grid}>
+    <div className={statsStyles.item}>
+    <dt>Championships</dt><dd className={statsStyles.value}>{homePageData.tournamentStats.stats.Championships}</dd><dd className={statsStyles.caption}>Open &amp; Girls</dd>
+    </div>
+    <div className={statsStyles.item}>
+    <dt>Rounds</dt><dd className={statsStyles.value}>{homePageData.tournamentStats.stats.Rounds}</dd><dd className={statsStyles.caption}>Classical · Rapid · Blitz</dd>
+    </div>
+    <div className={statsStyles.item}>
+    <dt>Age Groups</dt><dd className={statsStyles.value}>{homePageData.tournamentStats.stats.AgeGroups}</dd><dd className={statsStyles.caption}>Under 8 to Under 20</dd>
+    </div>
+    <div className={`${statsStyles.item} ${statsStyles.players}`}>
+    <dt>Registered Players</dt><dd className={statsStyles.value}><PlayerCount value={players?.length ?? null}/></dd><dd className={statsStyles.caption}>{playersError ? <span>Count unavailable</span> : <Link href="/players">View players <span aria-hidden="true">↗</span></Link>}</dd>
+    </div>
+    </dl>
+    </section>
     <section className="entry-banner">
     <div className="subgrid">
     <div>
@@ -39,16 +104,16 @@ export function HomePage() {
     <div className="flexline">
     <div>
     <span className="eyebrow">14 Championship Categories</span><h2>Age Divisions &amp; FIDE Pathways</h2></div>
-    <p>Click on an age category to inspect Open and Girls divisional structures and qualification paths.</p></div>
+    <p>Select an age group to see registered player counts. Click an Open or Girls championship to view its players.</p></div>
     <div className="flexline">
     {[8, 10, 12, 14, 16, 18, 20].map(age => <button key={age} type="button" aria-pressed={selectedAge === age} onClick={() => setSelectedAge(age)}>U{age}</button>)}</div>
     <div className="subgrid">
     <div>
-    <span className="eyebrow">Category Focus</span><h3>U{selectedAge} Division</h3><p>{selectedAge === 20 ? "Junior Premier Championship" : `Born ${2027 - selectedAge} or later`}</p></div>
+    <span className="eyebrow">Category Focus</span><h3>U{selectedAge} Division</h3><p className="category-player-count">{countLabel(divisionPlayers?.length)}</p><p>{selectedAge === 20 ? "Junior Premier Championship" : `Born ${2027 - selectedAge} or later`}</p></div>
     <div>
-    <span className="eyebrow">Open Tournament</span><h3>Under {selectedAge} Open</h3><p>9 Rounds Swiss Classical (90m + 30s increment). FIDE Rated with title norm pathways.</p></div>
+    <span className="eyebrow">Open Tournament</span><h3><Link href={`/players?division=U${selectedAge}&category=Open`}>Under {selectedAge} Open ↗</Link></h3><p className="category-player-count">{countLabel(openCount)}</p><p>9 Rounds Swiss Classical (90m + 30s increment). FIDE Rated with title norm pathways.</p></div>
     <div>
-    <span className="eyebrow">Girls Tournament</span><h3>Under {selectedAge} Girls</h3><p>Dedicated 9-round championship for female players across Zone 3.6 federations.</p></div>
+    <span className="eyebrow">Girls Tournament</span><h3><Link href={`/players?division=U${selectedAge}&category=Girls`}>Under {selectedAge} Girls ↗</Link></h3><p className="category-player-count">{countLabel(girlsCount)}</p><p>Dedicated 9-round championship for female players across Zone 3.6 federations.</p></div>
     </div>
     </section>
     <section className="quick-reference">

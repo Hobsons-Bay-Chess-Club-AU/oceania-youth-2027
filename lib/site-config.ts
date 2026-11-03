@@ -48,7 +48,7 @@ export const siteConfig = {
   footer: {
     statusLabel: "Official Event Dates Confirmed",
     statusText:
-      "Oceania Youth Zonal 2027 takes place 27 September – 4 October 2027 at Bacchus Marsh Grammar – Woodlea Campus in Melbourne, Australia.",
+      "Oceania Youth Zonal 2027 takes place 29 September – 3 October 2027 at Bacchus Marsh Grammar – Woodlea Campus in Melbourne, Australia.",
     coverageTitle: "Key Sections",
     coverageLinks: [
       { label: "News & Updates", href: "/news" },

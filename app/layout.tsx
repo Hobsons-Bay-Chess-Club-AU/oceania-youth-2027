@@ -12,8 +12,12 @@ export const metadata: Metadata = {
     keywords: siteConfig.keywords,
     applicationName: siteConfig.name,
     icons: {
-        icon: { url: "/pacific/mark.svg", type: "image/svg+xml" },
-        shortcut: "/pacific/mark.svg",
+        icon: [
+            { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+            { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+        ],
+        shortcut: "/favicon-32.png",
+        apple: { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     },
     alternates: {
         canonical: "/",

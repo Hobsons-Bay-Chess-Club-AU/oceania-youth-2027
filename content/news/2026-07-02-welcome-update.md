@@ -16,7 +16,7 @@ This digital portal serves as the single source of truth for all participating j
 The platform is structured into clear navigation hubs to help users quickly access essential information:
 
 ## Schedule & Calendar
-Inspect the 7-day tournament timetable for Classical (Rounds 1–9), Rapid, and Blitz events, with direct export buttons for Google Calendar.
+Inspect the five-day championship timetable (29 September – 3 October 2027) for Classical (Rounds 1–9), Rapid, and Blitz events, with direct export buttons for Google Calendar.
 
 ## Regulations & Direct Titles
 Review official FIDE Zone 3.6 regulations, tiebreak criteria, age cutoffs, and direct title/norm pathways (GM, WGM, IM, WIM, FM, WFM, CM, WCM).

@@ -259,7 +259,7 @@ strong {
   white-space: nowrap;
 }
 .brand-symbol {
-  width: 36px;
+  width: 44px;
   height: 44px;
   object-fit: contain;
 }
@@ -463,6 +463,17 @@ main>div>*:not(.home-lead):not(.home-stats):not(.entry-banner):not(.clock-strip)
   letter-spacing: -.02em;
   margin-top: 8px;
 }
+.year-digit {
+  transition: color 500ms ease;
+}
+.year-color-0 { color: #003d40; }
+.year-color-1 { color: #16848a; }
+.year-color-2 { color: #a16b16; }
+.year-color-3 { color: #b44727; }
+html[data-theme=dark] .year-color-0 { color: #65bdb7; }
+html[data-theme=dark] .year-color-1 { color: #37ced3; }
+html[data-theme=dark] .year-color-2 { color: #e3b253; }
+html[data-theme=dark] .year-color-3 { color: #f28c60; }
 .home-copy h1+p {
   font-size: 12px;
   max-width: 49ch;
@@ -500,15 +511,16 @@ main>div>*:not(.home-lead):not(.home-stats):not(.entry-banner):not(.clock-strip)
 }
 .home-stats {
   display: grid;
-  grid-template-columns: repeat(3,1fr);
+  grid-template-columns: repeat(4,minmax(0,1fr));
   border-bottom: 1px solid var(--ink);
   padding: 30px var(--gutter);
   gap: 40px;
 }
 .home-stats>div {
   display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
+  grid-template-columns: 1fr;
+  align-content: start;
+  align-items: start;
   gap: 10px 24px;
 }
 .home-stats .eyebrow {
@@ -2204,7 +2216,7 @@ html[data-theme=dark] .region-portrait img {
     padding-bottom: 12px;
   }
   .brand-symbol {
-    width: 30px;
+    width: 36px;
     height: 36px;
   }
   .brand>.subgrid>span:first-child {
@@ -2991,9 +3003,6 @@ main p:not(.metric):not(.eyebrow) {
 .schedule-toolbar>div:last-child>div>svg {
   flex: none;
 }
-html[data-theme=dark] .brand-symbol {
-  filter: brightness(0) invert(1);
-}
 @media(max-width:700px) {
   .event-description .flexline>span:first-child {
     font-size: 27px;
@@ -3283,5 +3292,24 @@ select option {
 @media (max-width: 700px) {
   .home-art {
     height: auto;
+  }
+}
+
+.home-stats .metric {
+  font-variant-numeric: tabular-nums;
+}
+.age-explorer h3 a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+}
+.age-explorer .category-player-count {
+  color: var(--blue);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+@media (min-width: 701px) and (max-width: 1200px) {
+  .home-stats {
+    grid-template-columns: repeat(2,minmax(0,1fr));
   }
 }
