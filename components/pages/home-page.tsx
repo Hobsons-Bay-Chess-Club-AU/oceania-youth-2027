@@ -16,7 +16,8 @@ export function HomePage() {
     <div className="hero-actions">
     <span className="eyebrow">{homePageData.dateLabel}</span><a href="/OceaniaYouth%202027%20Tournament%20Pack.pdf" download="OceaniaYouth 2027 Tournament Pack.pdf" target="_blank" rel="noreferrer" className="action"><span>📥 Download Tournament Pack (PDF)</span></a><Link href="/schedule" className="action"><span>Explore Schedule</span><span>→</span></Link></div>
     </div>
-    <div aria-hidden="true" className="home-art">
+    <div className="home-art">
+    <img src="/hero.png" alt="Oceania Youth Zonal Championship 2027 event banner" width="1600" height="900" fetchPriority="high"/>
     </div>
     </section>
     <div className="home-stats">{homePageData.quickFacts.map(fact => <div key={fact.label}><p className="eyebrow">{fact.label}</p><p className="metric">{fact.value}</p><p>{fact.note}</p></div>)}</div>
@@ -125,12 +126,6 @@ export function HomePage() {
     <p className="metric">7</p><p>Age Divisions</p></div>
     </div>
     </article>
-    </div>
-    <div className="original-banner" id="championship-banner">
-    <div>
-    <img alt="Oceania Youth Chess Zonal Championship 2027" width="1600" height="900" decoding="async" src="/hero.png" loading="lazy"/></div>
-    <div className="banner-controls">
-    <a className="action" href="#main">Overview</a><a className="action" href="#championship-banner">Banner</a></div>
     </div>
     <section className="support-split">
     <div>

@@ -17,3 +17,4 @@ export function NewsPage() {
     </section>
   </div>;
 }
+ 

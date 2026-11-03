@@ -106,6 +106,16 @@ export function SiteShell({ children }: {
     <main id="main">{children}</main>
     <footer className="site-footer">
     <div>
+    <a className="footer-banner" href="/hero.png" target="_blank" rel="noreferrer" aria-label="View full championship banner">
+    <img src="/hero.png" alt="Oceania Youth Zonal Championship 2027 event banner" width="1600" height="900" loading="lazy" decoding="async"/>
+    </a>
+    <section className="footer-sponsors" aria-labelledby="footer-sponsors-title">
+    <h4 className="eyebrow" id="footer-sponsors-title">Our Sponsors</h4>
+    <a className="sponsor-link" href="https://www.bmg.vic.edu.au/" target="_blank" rel="noreferrer">
+    <img className="sponsor-logo" src="/bgm.svg" alt="" width="322" height="427" loading="lazy"/>
+    <span>Bacchus Marsh Grammar</span>
+    </a>
+    </section>
     <div className="subgrid">
     <div>
     <div className="flexline">

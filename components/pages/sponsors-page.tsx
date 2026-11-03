@@ -7,6 +7,13 @@ export function SponsorsPage() {
     <h1>Event Sponsors &amp; Partners</h1><p>Supporting junior chess excellence across Oceania. We extend our deepest gratitude to the federations, clubs, and partners supporting Oceania Youth 2027.</p></section>
     <section className="partners-sheet">
     <div>
+    <h2>Our Sponsors</h2>
+    <a className="sponsor-link" href="https://www.bmg.vic.edu.au/" target="_blank" rel="noreferrer">
+    <img className="sponsor-logo" src="/bgm.svg" alt="" width="322" height="427" loading="lazy"/>
+    <h3>Bacchus Marsh Grammar</h3>
+    </a>
+    </div>
+    <div className="host-partners">
     <div className="flexline">
     <h2>Host Organiser &amp; Governing Bodies</h2><span>Principal Host</span></div>
     <div className="subgrid">
