@@ -27,7 +27,7 @@ export function HomePage() {
     <span className="eyebrow">Registration Status</span><h2>Don't just play. Make Oceania history.</h2><p>{homePageData.registration.description}</p></div>
     <div className="flexline">
     <div>
-    <p className="eyebrow">Entry Status</p><p className="metric">{homePageData.registration.playersRegistered}</p><Link href="/registration" className="action">Pre-Register Interest</Link></div>
+    <p className="eyebrow">Entry Status</p><p className="metric">{homePageData.registration.playersRegistered}</p><Link href="/registration" className="action">Register Now</Link></div>
     </div>
     </div>
     </section>

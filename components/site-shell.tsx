@@ -93,12 +93,12 @@ export function SiteShell({ children }: {
             <div className="dropdown-panel" id="information-links" hidden={!informationOpen}>{item.children.map(child => <Link key={child.href} href={child.href} aria-current={isActive(child.href) ? "page" : undefined}>{child.label}</Link>)}</div>
           </div> :
             <Link key={item.href} href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>{item.label}</Link>)}
-        <Link className="mobile-nav-action" href="/registration">Register Interest ↗</Link>
+        <Link className="mobile-nav-action" href="/registration">Register Now ↗</Link>
         <button className="mobile-nav-action" type="button" onClick={openSearch}>Search website</button>
       </nav>
       <div className="header-tools">
         <button className="search-trigger" onClick={openSearch} aria-label="Search website (Cmd+K)"><svg className="ui-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></button>
-        <Link href="/registration" className="register-link">Register Interest</Link>
+        <Link href="/registration" className="register-link">Register Now</Link>
         <button type="button" className="theme-toggle" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} onClick={toggleTheme}>◐</button>
         <button type="button" className="mobile-menu" aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-controls="site-navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>☰</button>
       </div>

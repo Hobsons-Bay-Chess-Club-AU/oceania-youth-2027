@@ -71,7 +71,7 @@ Over the coming months, we will be revealing much more about:
 
 This is our first announcement — and there is much more to come.
 
-Registration opens 1 September 2026. Save the dates, share the news with your chess community and join us on the Road to Oceania 2027!
+Registration is now open through the official Hobsons Bay Chess Club portal. Register for Oceania Youth 2027 and share the news with your chess community!
 
 13 Federations. One Region. One Championship.
 

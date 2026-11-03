@@ -103,8 +103,8 @@ export const homePageData = {
   ],
   registration: {
     description:
-      "Registration opens 1 September 2026. Early Bird registration ($260 AUD total) is available until 1 August 2027. Official Federation invited players pay $130 AUD (registration fee waived).",
-    playersRegistered: "Opens 1 Sept 2026",
+      "Registration is now open. Early Bird registration ($260 AUD total) is available until 1 August 2027. Official Federation invited players pay $130 AUD (registration fee waived).",
+    playersRegistered: "Registration Open",
     status: "Early Bird Cutoff: 1 Aug 2027",
     note: "Official entries are processed directly through the Hobsons Bay Chess Club portal.",
   },
