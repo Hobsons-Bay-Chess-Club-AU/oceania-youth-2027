@@ -8,10 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "fetch:players": "node scripts/fetch-players.mjs",
     "download:fide": "node scripts/download-fide-ratings.mjs"
   },
   "dependencies": {
+    "chess.js": "^1.4.0",
     "next": "15.4.1",
     "react": "19.1.0",
     "react-dom": "19.1.0"

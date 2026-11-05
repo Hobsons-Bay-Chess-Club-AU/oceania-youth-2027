@@ -1,0 +1,28 @@
+/* Hallmark · macrostructure: broadcast console · tone: calm editorial · anchor hue: existing ocean teal */
+:root {
+  --color-broadcast-paper: var(--paper);
+  --color-broadcast-surface: var(--surface);
+  --color-broadcast-ink: var(--ink);
+  --color-broadcast-muted: var(--muted);
+  --color-broadcast-rule: var(--rule);
+  --color-broadcast-selection: var(--sea);
+  --color-broadcast-accent: var(--blue);
+  --color-broadcast-error: var(--orange);
+  --color-broadcast-white: #fffdf7;
+  --color-broadcast-black: #17343a;
+  --color-broadcast-board-light: #e7e8da;
+  --color-broadcast-board-dark: #72958b;
+  --color-broadcast-last-move: #dbb75b;
+  --font-broadcast-display: var(--display);
+  --font-broadcast-body: var(--body);
+  --space-broadcast-xs: 6px;
+  --space-broadcast-sm: 12px;
+  --space-broadcast-md: 20px;
+  --space-broadcast-lg: 32px;
+  --space-broadcast-xl: 48px;
+  --text-broadcast-caption: 11px;
+  --text-broadcast-body: 13px;
+  --text-broadcast-player: 15px;
+  --rule-broadcast-width: 1px;
+  --radius-broadcast-control: 3px;
+}

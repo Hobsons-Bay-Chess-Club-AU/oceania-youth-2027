@@ -1880,6 +1880,186 @@ html[data-theme=dark] .region-portrait img {
 .broadcast-directory>.flexline {
   margin-top: 40px;
 }
+.page-broadcast .broadcast-tournaments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 30px 0 20px;
+}
+.page-broadcast .broadcast-tournaments button {
+  display: grid;
+  gap: 8px;
+  min-width: 200px;
+  max-width: 100%;
+  padding: 18px 22px;
+  border: 1px solid var(--rule);
+  text-align: left;
+  overflow-wrap: anywhere;
+}
+.page-broadcast button[aria-pressed=true] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.page-broadcast .broadcast-feed-status,
+.page-broadcast .broadcast-round-picker,
+.page-broadcast .broadcast-actions,
+.page-broadcast .broadcast-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.page-broadcast .broadcast-feed-status {
+  justify-content: space-between;
+  font-size: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.page-broadcast .broadcast-feed-status button,
+.page-broadcast .broadcast-actions button,
+.page-broadcast .broadcast-controls button {
+  padding: 8px 12px;
+  border: 1px solid var(--rule);
+  font-size: 12px;
+}
+.page-broadcast button:disabled {
+  opacity: .45;
+  cursor: default;
+}
+.page-broadcast button:focus-visible,
+.page-broadcast select:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+}
+.page-broadcast .broadcast-notice {
+  margin: 20px 0;
+  padding: 18px;
+  border: 1px solid var(--rule);
+  border-left: 4px solid var(--ink);
+  overflow-wrap: anywhere;
+}
+.page-broadcast .broadcast-notice p + p {
+  margin-top: 8px;
+}
+.page-broadcast .broadcast-cache-note,
+.page-broadcast .broadcast-copy-status {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin-top: 10px;
+}
+.page-broadcast .broadcast-round-picker {
+  margin-top: 24px;
+  font-size: 13px;
+}
+.page-broadcast .broadcast-round-picker select {
+  padding: 8px 28px 8px 12px;
+  border: 1px solid var(--rule);
+  background: var(--paper);
+  color: var(--ink);
+  max-width: 100%;
+}
+.page-broadcast .broadcast-stage > .subgrid {
+  gap: 36px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+}
+.page-broadcast .broadcast-player {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  padding: 14px 0;
+  font-size: 12px;
+}
+.page-broadcast .broadcast-player > span {
+  color: var(--muted);
+}
+.page-broadcast .broadcast-player time {
+  margin-left: auto;
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.page-broadcast .chessboard > div {
+  position: relative;
+}
+.page-broadcast .chessboard > div[data-highlight=true] {
+  box-shadow: inset 0 0 0 4px #c38b28;
+}
+.page-broadcast .broadcast-piece {
+  font-family: "Arial Unicode MS", "Segoe UI Symbol", sans-serif;
+  font-variant-emoji: text;
+}
+.page-broadcast .piece-w {
+  color: #fff;
+  text-shadow: 0 1px 2px #09232b, 1px 0 1px #09232b, -1px 0 1px #09232b;
+}
+.page-broadcast .piece-b {
+  color: #09232b;
+}
+.page-broadcast .board-rank,
+.page-broadcast .board-file {
+  position: absolute;
+  font: 600 10px/1 sans-serif;
+  color: #09232b;
+}
+.page-broadcast .board-rank { top: 4px; left: 4px; }
+.page-broadcast .board-file { bottom: 3px; right: 4px; }
+.page-broadcast .broadcast-controls {
+  gap: 6px;
+  margin: 10px 0;
+  font-size: 12px;
+}
+.page-broadcast .broadcast-notation .broadcast-moves {
+  display: flex;
+  align-content: start;
+  flex-wrap: wrap;
+  gap: 4px;
+  max-height: 290px;
+  overflow-y: auto;
+  margin-top: 12px;
+}
+.page-broadcast .broadcast-moves button {
+  padding: 6px 8px;
+  font-size: 13px;
+  border: 1px solid transparent;
+  line-height: 1.5;
+}
+.page-broadcast .broadcast-moves button span {
+  color: var(--muted);
+  font-size: 10px;
+}
+.page-broadcast .broadcast-moves button[aria-current=step] {
+  border-color: var(--ink);
+  font-weight: 800;
+}
+.page-broadcast .broadcast-notation .broadcast-comment {
+  font-size: 13px;
+  line-height: 1.7;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  margin: 16px 0 0;
+}
+.page-broadcast .broadcast-pairings > .subgrid {
+  max-height: 480px;
+  overflow-y: auto;
+}
+.page-broadcast .broadcast-pairings button[data-board] {
+  padding: 16px 10px;
+  overflow-wrap: anywhere;
+}
+.page-broadcast .broadcast-pairings .broadcast-rating {
+  font-size: 10px;
+  opacity: .75;
+}
+@media (max-width: 900px) {
+  .page-broadcast .broadcast-stage > .subgrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 25px;
+  }
+  .page-broadcast .chessboard { max-width: none; }
+  .page-broadcast .chessboard > div { font-size: clamp(25px, 7vw, 60px); }
+}
 .site-footer {
   background: var(--ink);
   color: var(--paper);
