@@ -13,7 +13,7 @@ Use comma-separated eight-character tournament IDs, not full URLs. Whitespace an
 
 Restart the development server after changing `.env`. Production values are embedded at build time, so rebuild and redeploy after changing them.
 
-For the GitHub Pages workflow, set the repository Actions **variable** `NEXT_PUBLIC_LICHESS_TOURNAMENTS` to the list of IDs. If needed, set the repository Actions **secret** `NEXT_PUBLIC_LICHESS_TOKEN`. The workflow passes these values into the static build; the token is still included in the browser bundle.
+For the GitHub Pages workflow, set the repository Actions **secret** `NEXT_PUBLIC_LICHESS_TOURNAMENTS` to the list of IDs and, if needed, the **secret** `NEXT_PUBLIC_LICHESS_TOKEN`. The tournament list falls back to the same-named Actions variable if the secret is unset. The workflow injects these values into the environment of the Next.js build step; the token is still included in the browser bundle.
 
 Each configured tournament is a division in the viewer. The division picker uses the broadcast's name once loaded. Round buttons appear on desktop and a round dropdown appears on narrow mobile screens. Each division remembers its selected round, board, and replay position while switching between divisions. Only the visible division refreshes its feed.
 
