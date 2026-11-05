@@ -57,7 +57,6 @@ export const siteConfig = {
       { label: "Player Directory", href: "/players" },
       { label: "Venue & Travel", href: "/location" },
       { label: "Registration Portal", href: "/registration" },
-      { label: "Live DGT Boards", href: "/dgt-boards" },
     ],
     note:
       "Hosted by Hobsons Bay Chess Club Inc. (Est. 1974) under the auspices of the Oceania Chess Confederation (OCC) and Australian Chess Federation (ACF).",

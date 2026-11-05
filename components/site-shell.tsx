@@ -139,8 +139,6 @@ export function SiteShell({ children }: {
     <Link href="/location">Venue &amp; Travel</Link></li>
     <li>
     <Link href="/registration">Registration Portal</Link></li>
-    <li>
-    <Link href="/dgt-boards">Live DGT Boards</Link></li>
     </ul>
     </div>
     <div>
