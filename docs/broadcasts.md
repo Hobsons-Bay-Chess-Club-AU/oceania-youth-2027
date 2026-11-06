@@ -19,6 +19,12 @@ Each configured tournament is a division in the viewer. The division picker uses
 
 Rounds open to an overview of every board, showing the latest position, players, results, and recorded clocks. Select any board to open its detailed viewer with move replay. The All boards button returns to the overview and restores keyboard focus to the board preview. Changing rounds returns to the overview for that round.
 
+The last move highlights only its starting square and draws an arrow to the destination. The indicator scales with each board and follows its orientation during replay or when flipped.
+
+In the individual-board viewer, **Left arrow** replays the previous move and **Right arrow** advances to the next move, in both normal and fullscreen views. Shortcuts do not affect text fields, dropdowns, open dialogs, or hidden divisions. Use **Latest** to resume following incoming moves.
+
+Select **Fullscreen** in All boards for a board wall showing only the tournament name, round selector, exit control, and compact board previews. The grid adapts to the screen dimensions and board count, fitting all games where readable and scrolling when needed. Opening a board keeps its detailed viewer in fullscreen; **All boards** returns to the fullscreen grid. Changing rounds updates the same fullscreen view. **Exit** or **Escape** restores the current overview or individual board to the normal page. Individual boards also have a Fullscreen button. Browsers without native fullscreen use a page-filling view instead.
+
 The viewer follows the latest position until a historical move is selected. Clock readings are recorded PGN values, not continuously running clocks. Automatic refresh uses each game's PGN `Variant` tag: `Standard` refreshes every 60 seconds, `Rapid` every 15 seconds, and `Blitz` every 5 seconds (case-insensitive). Missing tags default to 60 seconds. A feed containing several speeds uses the fastest interval. The configured tag is used directly; a game tagged `Standard` refreshes every 60 seconds even if its time control is shorter. Browser caching is disabled for these fetches, but upstream delays can still apply. Transient failures retain the last successful games, and rate-limit responses delay subsequent requests. The Broadcast timing disclosure explains the update interval.
 
 Chessnut SVG pieces are distributed under the Apache 2.0 license. Attribution and license are in `public/chess/NOTICE.md` and `public/chess/LICENSE`.

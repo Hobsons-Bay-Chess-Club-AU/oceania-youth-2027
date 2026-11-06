@@ -13,6 +13,7 @@
   --color-broadcast-board-light: #e7e8da;
   --color-broadcast-board-dark: #72958b;
   --color-broadcast-last-move: #dbb75b;
+  --color-broadcast-move-arrow: #134d32;
   --font-broadcast-display: var(--display);
   --font-broadcast-body: var(--body);
   --space-broadcast-xs: 6px;

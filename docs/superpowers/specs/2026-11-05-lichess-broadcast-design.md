@@ -23,10 +23,13 @@ A private server proxy was considered, but would require additional hosting. Bui
 - Retain the site's existing board-centered layout and responsive visual style.
 - Replace all fictional players, evaluations, and moves with PGN data.
 - Open each round to an overview grid showing every game's latest position, players, result, and recorded clocks. Selecting a board opens its detailed viewer. Provide an All boards control to return to the grid and restore focus to the selected preview. Changing rounds returns to the overview.
+- Provide a fullscreen All boards mode with only the tournament name, round selector, exit control, and board grid. Adapt card sizes and column count to the available width, height, and number of games. Keep a readable minimum size and scroll if the complete feed cannot fit. Support native fullscreen with a fixed-layout fallback, Escape/exit, focus restoration, and continued feed refresh. Opening a board keeps its detail in the same fullscreen container; All boards returns to the fullscreen grid. Exiting fullscreen retains the current board or overview in the normal page.
 - Select a tournament, then a round and game when available. The supplied URL contains several rounds; games from different rounds must remain distinguishable.
 - Present each configured tournament as a division. Put division and round controls together above the board. Use round buttons on desktop and a select on narrow screens; preserve each division's round, board, and replay selection when switching divisions. Keep keyboard focus on the division control after switching.
 - Show White and Black names, available ratings, event/round, result, opening, and recorded clock values.
 - Render actual chess positions using a maintained chess rules/PGN library. Support move selection, start/previous/next/latest controls, and board orientation.
+- Support Left/Right arrow keys for move replay in the visible individual viewer, including fullscreen. Ignore modified keys, typing/editable controls, open dialogs, and hidden divisions. Clamp navigation to available moves and retain latest-follow mode when Right is pressed at the end.
+- Highlight only the last move's source square and draw a translucent arrow to its destination, consistently in previews, fullscreen, and detail. Rotate the arrow with board orientation and omit it for initial positions.
 - Follow new moves when viewing the latest position; preserve the selected historical move during refreshes.
 - Allow copying the selected game's PGN and opening its Lichess game link. Handle clipboard failures visibly.
 - Treat PGN comments as text. Support initial FEN positions; report unsupported variants or malformed games instead of displaying an invented position.
