@@ -47,6 +47,18 @@ function BroadcastBoard({ position, label, flipped = false, miniature = false }:
   </span>;
 }
 
+function PlayerIdentity({ headers, color }: { headers: BroadcastGame["headers"]; color: "w" | "b" }) {
+  const side = color === "w" ? "White" : "Black";
+  const title = (headers[`${side}Title`] || "").trim().toUpperCase();
+  const recognizedTitle = /^(W?CM|W?FM|W?IM|W?GM)$/.test(title);
+  const rating = (headers[`${side}Elo`] || "").trim();
+  return <span className={styles.playerIdentity}>
+    {recognizedTitle && <span className={styles.titleBadge} data-title={title}>{title}</span>}
+    <strong className={styles.playerName}>{headers[side] || `${side} player`}</strong>
+    {/^\d+$/.test(rating) && rating !== "0" && <span className={styles.playerElo}>({rating})</span>}
+  </span>;
+}
+
 function boardPreviewId(tournamentId: string, gameId: string) {
   return `board-preview-${tournamentId}-${encodeURIComponent(gameId)}`;
 }
@@ -162,9 +174,9 @@ function BoardOverview({ games, game, round, rounds, tournamentId, tournamentNam
       const result = game.headers.Result === "*" ? "In progress" : game.headers.Result || "Awaiting result";
       return <button type="button" key={game.id} id={boardPreviewId(tournamentId, game.id)} className={styles.boardCard} aria-label={`View board ${game.board}: ${white} versus ${black}`} onClick={() => onSelect(game.id)}>
         <span className={styles.cardHeading}><span className="eyebrow">Board {game.board.padStart(2, "0")}</span><span className={styles.cardResult} data-live={game.headers.Result === "*"}>{result}</span></span>
-        <span className={styles.miniPlayer}><span className={styles.blackMarker} /><strong>{black}</strong><span className={styles.miniClock}>{position.blackClock || "—"}</span></span>
+        <span className={styles.miniPlayer}><span className={styles.blackMarker} /><PlayerIdentity headers={game.headers} color="b" /><span className={styles.miniClock}>{position.blackClock || "—"}</span></span>
         <BroadcastBoard position={position} label={`Latest position: ${white} versus ${black}`} miniature />
-        <span className={styles.miniPlayer}><span className={styles.whiteMarker} /><strong>{white}</strong><span className={styles.miniClock}>{position.whiteClock || "—"}</span></span>
+        <span className={styles.miniPlayer}><span className={styles.whiteMarker} /><PlayerIdentity headers={game.headers} color="w" /><span className={styles.miniClock}>{position.whiteClock || "—"}</span></span>
         <span className={styles.cardFooter}><span>{position.san ? `${position.moveNumber}${position.color === "w" ? "." : "…"} ${position.san}` : "Awaiting first move"}</span><span>View board <span aria-hidden="true">↗</span></span></span>
       </button>;
     })}</div>}</div>
@@ -334,7 +346,7 @@ function GameViewer({ game, games, onSelect }: {
 
   const player = (color: "w" | "b") => <div className={`broadcast-player broadcast-player-${color}`}>
     <PieceImage color={color} type="k" width="32" height="32" alt={color === "w" ? "White" : "Black"} />
-    <div><strong>{color === "w" ? white : black}</strong><span>{game.headers[color === "w" ? "WhiteTitle" : "BlackTitle"]} {game.headers[color === "w" ? "WhiteElo" : "BlackElo"] || "Unrated"}</span></div>
+    <PlayerIdentity headers={game.headers} color={color} />
     <time aria-label={`${color === "w" ? "White" : "Black"} recorded clock`}>{(color === "w" ? position.whiteClock : position.blackClock) || "—"}</time>
   </div>;
 
@@ -375,8 +387,8 @@ function GameViewer({ game, games, onSelect }: {
           <h3 className="eyebrow">Boards in this round <span className={styles.boardCount}>{games.length}</span></h3>
           <div className="subgrid">{games.map(candidate => <button type="button" key={candidate.id} data-board={candidate.board} aria-pressed={candidate.id === game.id} onClick={() => onSelect(candidate.id)}>
             <div className="flexline"><span>Board {candidate.board}</span><span>{candidate.headers.Result === "*" ? "In progress" : candidate.headers.Result || "—"}</span></div>
-            <p><span className={styles.whiteMarker} aria-label="White" /><span className={styles.pairingName}>{candidate.headers.White || "White player"}</span><span className="broadcast-rating">{candidate.headers.WhiteElo}</span></p>
-            <p><span className={styles.blackMarker} aria-label="Black" /><span className={styles.pairingName}>{candidate.headers.Black || "Black player"}</span><span className="broadcast-rating">{candidate.headers.BlackElo}</span></p>
+            <p><span className={styles.whiteMarker} aria-label="White" /><PlayerIdentity headers={candidate.headers} color="w" /></p>
+            <p><span className={styles.blackMarker} aria-label="Black" /><PlayerIdentity headers={candidate.headers} color="b" /></p>
           </button>)}</div>
         </div>
       </div>
