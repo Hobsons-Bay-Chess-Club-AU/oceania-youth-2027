@@ -213,7 +213,7 @@
   height: 100%;
   pointer-events: none;
   color: var(--color-broadcast-move-arrow);
-  opacity: .8;
+  opacity: .35;
 }
 .room :global(.board-rank), .room :global(.board-file) { color: var(--color-broadcast-black); font-family: var(--font-broadcast-body); font-size: 9px; z-index: 1; }
 .room :global(.broadcast-player) { padding: var(--space-broadcast-sm) 0; gap: var(--space-broadcast-sm); align-items: center; flex-wrap: nowrap; }
