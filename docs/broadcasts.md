@@ -27,6 +27,16 @@ Select **Fullscreen** in All boards for a board wall showing only the tournament
 
 The viewer follows the latest position until a historical move is selected. Clock readings are recorded PGN values, not continuously running clocks. Automatic refresh uses each game's PGN `Variant` tag: `Standard` refreshes every 60 seconds, `Rapid` every 15 seconds, and `Blitz` every 5 seconds (case-insensitive). Missing tags default to 60 seconds. A feed containing several speeds uses the fastest interval. The configured tag is used directly; a game tagged `Standard` refreshes every 60 seconds even if its time control is shorter. Browser caching is disabled for these fetches, but upstream delays can still apply. Transient failures retain the last successful games, and rate-limit responses delay subsequent requests. The Broadcast timing disclosure explains the update interval.
 
-Chessnut SVG pieces are distributed under the Apache 2.0 license. Attribution and license are in `public/chess/NOTICE.md` and `public/chess/LICENSE`.
+Use **Piece style** to open Board settings from the overview, individual viewer, or fullscreen header. The selection applies immediately to all boards and player icons. It is saved under `oy27-broadcast-piece-set` in local storage and synchronizes between tabs. Oceania Youth 2027 is the default for viewers without a saved preference; existing choices are preserved; unavailable storage still allows changes for the current visit.
+
+The official Oceania set is featured above a two-column grid of four alternatives. Five sets are included:
+
+- **Chessnut**: the original SVG set, Apache 2.0. Attribution and license are in `public/chess/NOTICE.md` and `public/chess/LICENSE`.
+- **Staunton 3D**: traditional ivory and ebony pieces by James Clarke, MIT, sourced from [Staunton Pieces](https://github.com/clarkerubber/Staunton-Pieces) through Lichess.
+- **Celtic**: decorative traditional SVG pieces by Maurizio Monge, MIT, sourced from [chess-art](https://github.com/maurimo/chess-art) through Lichess.
+- **Spatial**: sculpted SVG pieces by Maurizio Monge, MIT, sourced from [chess-art](https://github.com/maurimo/chess-art) through Lichess.
+- **Oceania Youth 2027**: original SVG artwork with recognizable chess silhouettes, ocean waves, ivory, teal and gold, plus the thirteen federation flags on a shared base. Regenerate with `python3 scripts/generate-oceania-pieces.py`. Federation flag sources follow `public/pacific/README.md`.
+
+Downloaded sets include their licenses and source notices in their respective `public/chess/` folders. [Preview the custom set](assets/oceania-piece-set-preview.png).
 
 Run `npm test` with Node.js 22.6 or newer, `npm run typecheck`, and `npm run build` to validate changes.

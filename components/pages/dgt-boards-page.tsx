@@ -5,6 +5,7 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSPrope
 import { boardMoveArrow } from "@/lib/broadcast-arrow";
 import { replayPlyForKey } from "@/lib/broadcast-replay";
 import { fullscreenBoardLayout } from "@/lib/broadcast-layout";
+import { PieceImage, PieceSetProvider, PieceSetSettings } from "@/components/broadcast-piece-settings";
 import styles from "./dgt-boards.module.css";
 import { broadcastConfig } from "@/app/dgt-boards/data";
 import {
@@ -34,7 +35,7 @@ function BroadcastBoard({ position, label, flipped = false, miniature = false }:
       const rank = flipped ? Math.floor(index / 8) + 1 : 8 - Math.floor(index / 8);
       const square = `${"abcdefgh"[file]}${rank}`;
       return <span key={square} className={styles.square} data-square={(file + rank) % 2 ? "dark" : "light"} data-highlight={square === position.from || undefined} aria-hidden="true">
-        {piece && <img className={styles.piece} src={`/chess/${piece.color}${piece.type.toUpperCase()}.svg`} width="80" height="80" alt="" title={`${piece.color === "w" ? "White" : "Black"} ${pieceNames[piece.type]}`} draggable={false} />}
+        {piece && <PieceImage className={styles.piece} color={piece.color} type={piece.type} width="80" height="80" alt="" title={`${piece.color === "w" ? "White" : "Black"} ${pieceNames[piece.type]}`} draggable={false} />}
         {index % 8 === 0 && <small className="board-rank">{rank}</small>}
         {index >= 56 && <small className="board-file">{"abcdefgh"[file]}</small>}
       </span>;
@@ -111,6 +112,7 @@ function BoardOverview({ games, game, round, rounds, tournamentId, tournamentNam
     if (gridViewport.current) observer?.observe(gridViewport.current);
     window.addEventListener("resize", measure);
     function keyboard(event: KeyboardEvent) {
+      if (document.querySelector("dialog[open]")) return;
       if (event.key === "Escape") { event.preventDefault(); exitFullscreen(); }
       if (event.key !== "Tab") return;
       const controls = panel.current?.querySelectorAll<HTMLElement>("button:not([disabled]), select:not([disabled]), a[href]");
@@ -146,10 +148,11 @@ function BoardOverview({ games, game, round, rounds, tournamentId, tournamentNam
       {game && allBoardsControl}
       <h2 title={tournamentName}>{tournamentName}</h2>
       <label><span>Round</span><select aria-label="Fullscreen round" value={round} onChange={event => onRoundChange(event.target.value)}>{rounds.map(value => <option key={value} value={value}>{value}</option>)}</select></label>
+      <PieceSetSettings />
       <button type="button" ref={exitButton} onClick={exitFullscreen} aria-label="Exit fullscreen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 9h5V4m11 5h-5V4M4 15h5v5m11-5h-5v5"/></svg><span>Exit</span></button>
-    </div> : game ? <div className={`${styles.detailToolbar} ${styles.overviewActions}`}>{allBoardsControl}{fullscreenControl}</div> : <div className={styles.overviewHeading}>
+    </div> : game ? <div className={`${styles.detailToolbar} ${styles.overviewActions}`}>{allBoardsControl}<div className={styles.overviewActions}><PieceSetSettings />{fullscreenControl}</div></div> : <div className={styles.overviewHeading}>
       <div><span className="eyebrow">Round {round}</span><h2>All boards<span>{games.length}</span></h2></div>
-      <div className={styles.overviewActions}><p>Choose a board to follow the game.</p>{fullscreenControl}</div>
+      <div className={styles.overviewActions}><p>Choose a board to follow the game.</p><PieceSetSettings />{fullscreenControl}</div>
     </div>}
     <div ref={gridViewport} className={fullscreen ? `${styles.fullscreenViewport}${game ? ` ${styles.fullscreenDetail}` : ""}` : undefined} style={fullscreen && game ? { "--fullscreen-detail-board-size": `${Math.max(160, viewport.height - 240)}px` } as CSSProperties : undefined}>
     {game ? <GameViewer key={`${round}:${game.id}`} game={game} games={games} onSelect={onSelect} /> : <div className={styles.boardGrid} style={fullscreen ? { "--board-columns": layout.columns, "--board-card-width": `${layout.cardWidth}px` } as CSSProperties : undefined}>{games.map(game => {
@@ -330,7 +333,7 @@ function GameViewer({ game, games, onSelect }: {
   }
 
   const player = (color: "w" | "b") => <div className={`broadcast-player broadcast-player-${color}`}>
-    <img src={`/chess/${color}K.svg`} width="32" height="32" alt={color === "w" ? "White" : "Black"} />
+    <PieceImage color={color} type="k" width="32" height="32" alt={color === "w" ? "White" : "Black"} />
     <div><strong>{color === "w" ? white : black}</strong><span>{game.headers[color === "w" ? "WhiteTitle" : "BlackTitle"]} {game.headers[color === "w" ? "WhiteElo" : "BlackElo"] || "Unrated"}</span></div>
     <time aria-label={`${color === "w" ? "White" : "Black"} recorded clock`}>{(color === "w" ? position.whiteClock : position.blackClock) || "—"}</time>
   </div>;
@@ -388,7 +391,7 @@ export function DgtBoardsPage() {
   const onName = useCallback((id: string, name: string) => {
     setNames(previous => previous[id] === name ? previous : { ...previous, [id]: name });
   }, []);
-  return <div className={`page-broadcast ${styles.room}`}>
+  return <PieceSetProvider><div className={`page-broadcast ${styles.room}`}>
     <section className={`page-title ${styles.title}`}><div className="eyebrow">Oceania Youth 2027 / DGT broadcasts</div>
       <h1>Broadcast room</h1><p>Choose your division. Find your round.<br />Follow the action, one move at a time.</p>
     </section>
@@ -405,5 +408,5 @@ export function DgtBoardsPage() {
         </select>
       </div>} />
     </div>)}
-  </div>;
+  </div></PieceSetProvider>;
 }
