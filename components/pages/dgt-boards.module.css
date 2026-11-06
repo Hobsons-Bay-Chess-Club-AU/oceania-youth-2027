@@ -215,6 +215,21 @@
   color: var(--color-broadcast-move-arrow);
   opacity: .35;
 }
+.resultWatermark {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: .6;
+}
+.resultWatermark text {
+  font-family: var(--font-broadcast-body);
+  font-size: 23px;
+  font-weight: 900;
+  fill: #fff;
+}
 .room :global(.board-rank), .room :global(.board-file) { color: var(--color-broadcast-black); font-family: var(--font-broadcast-body); font-size: 9px; z-index: 1; }
 .room :global(.broadcast-player) { padding: var(--space-broadcast-sm) 0; gap: var(--space-broadcast-sm); align-items: center; flex-wrap: nowrap; }
 .room :global(.broadcast-player) > img { width: 32px; height: 32px; flex-shrink: 0; }
@@ -271,6 +286,10 @@
   scrollbar-width: thin;
 }
 .room :global(.broadcast-pairings) button[data-board] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 16px;
+  text-align: left;
   min-height: 100px;
   min-width: 0;
   padding: var(--space-broadcast-sm);
@@ -283,6 +302,8 @@
   color: var(--color-broadcast-ink);
 }
 .room :global(.broadcast-stage) :global(.broadcast-pairings) button[data-board] p {
+  grid-column: 1;
+  min-width: 0;
   display: flex;
   align-items: center;
   gap: var(--space-broadcast-xs);
@@ -292,6 +313,9 @@
   text-transform: none;
   letter-spacing: 0;
 }
+.pairingBoardLabel { grid-column: 1; font-size: var(--text-broadcast-caption); font-weight: 700; }
+.pairingResult { grid-column: 2; grid-row: 1 / 4; align-self: center; justify-self: end; font-size: clamp(24px, 3vw, 34px); font-weight: 800; line-height: 1.1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pairingResult[data-live=true] { font-size: 12px; font-weight: 600; color: var(--color-broadcast-muted); }
 .pairingName { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .room :global(.broadcast-rating) { margin-left: auto; flex-shrink: 0; }
 .whiteMarker, .blackMarker { width: 8px; height: 8px; border-radius: 50%; border: var(--rule-broadcast-width) solid var(--color-broadcast-muted); flex-shrink: 0; }

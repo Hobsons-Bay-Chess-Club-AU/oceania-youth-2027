@@ -19,17 +19,19 @@ const pieceNames: Record<string, string> = {
 
 type Feed = Awaited<ReturnType<typeof fetchBroadcast>>;
 
-function BroadcastBoard({ position, label, flipped = false, miniature = false }: {
+function BroadcastBoard({ position, label, flipped = false, miniature = false, result }: {
   position: BroadcastPosition;
   label: string;
   flipped?: boolean;
   miniature?: boolean;
+  result?: string;
 }) {
+  const resultText = result === "1-0" ? "1–0" : result === "0-1" ? "0–1" : result === "1/2-1/2" ? "½–½" : undefined;
   const squares = useMemo(() => new Chess(position.fen).board().flat(), [position.fen]);
   const shownSquares = flipped ? [...squares].reverse() : squares;
   const arrow = boardMoveArrow(position.from, position.to, flipped);
   const arrowId = `move-arrow-${useId().replace(/:/g, "")}`;
-  return <span className={`chessboard${miniature ? ` ${styles.miniBoard}` : ""}`} role="img" aria-label={label}>
+  return <span className={`chessboard${miniature ? ` ${styles.miniBoard}` : ""}`} role="img" aria-label={`${label}${resultText ? `. Final result: ${resultText}` : ""}`}>
     {shownSquares.map((piece, index) => {
       const file = flipped ? 7 - index % 8 : index % 8;
       const rank = flipped ? Math.floor(index / 8) + 1 : 8 - Math.floor(index / 8);
@@ -43,6 +45,9 @@ function BroadcastBoard({ position, label, flipped = false, miniature = false }:
     {arrow && <svg className={styles.moveArrow} viewBox="0 0 8 8" aria-hidden="true" focusable="false">
       <defs><marker id={arrowId} viewBox="0 0 3 3" markerWidth="3" markerHeight="3" refX="3" refY="1.5" orient="auto"><path d="M0 0L3 1.5L0 3Z" fill="currentColor" /></marker></defs>
       <line {...arrow} stroke="currentColor" strokeWidth="0.12" strokeLinecap="round" markerEnd={`url(#${arrowId})`} />
+    </svg>}
+    {resultText && <svg className={styles.resultWatermark} viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+      <text x="50" y="50" textAnchor="middle" dominantBaseline="central">{resultText}</text>
     </svg>}
   </span>;
 }
@@ -175,7 +180,7 @@ function BoardOverview({ games, game, round, rounds, tournamentId, tournamentNam
       return <button type="button" key={game.id} id={boardPreviewId(tournamentId, game.id)} className={styles.boardCard} aria-label={`View board ${game.board}: ${white} versus ${black}`} onClick={() => onSelect(game.id)}>
         <span className={styles.cardHeading}><span className="eyebrow">Board {game.board.padStart(2, "0")}</span><span className={styles.cardResult} data-live={game.headers.Result === "*"}>{result}</span></span>
         <span className={styles.miniPlayer}><span className={styles.blackMarker} /><PlayerIdentity headers={game.headers} color="b" /><span className={styles.miniClock}>{position.blackClock || "—"}</span></span>
-        <BroadcastBoard position={position} label={`Latest position: ${white} versus ${black}`} miniature />
+        <BroadcastBoard position={position} label={`Latest position: ${white} versus ${black}`} miniature result={game.headers.Result} />
         <span className={styles.miniPlayer}><span className={styles.whiteMarker} /><PlayerIdentity headers={game.headers} color="w" /><span className={styles.miniClock}>{position.whiteClock || "—"}</span></span>
         <span className={styles.cardFooter}><span>{position.san ? `${position.moveNumber}${position.color === "w" ? "." : "…"} ${position.san}` : "Awaiting first move"}</span><span>View board <span aria-hidden="true">↗</span></span></span>
       </button>;
@@ -359,7 +364,7 @@ function GameViewer({ game, games, onSelect }: {
     <div className="subgrid">
       <div>
         {player(flipped ? "w" : "b")}
-        <BroadcastBoard position={position} flipped={flipped} label={`${white} versus ${black}, ${ply ? `after ${position.moveNumber}${position.color === "b" ? "..." : "."} ${position.san}` : "starting position"}. ${flipped ? "Black" : "White"} at bottom.`} />
+        <BroadcastBoard position={position} flipped={flipped} result={ply === moveCount ? game.headers.Result : undefined} label={`${white} versus ${black}, ${ply ? `after ${position.moveNumber}${position.color === "b" ? "..." : "."} ${position.san}` : "starting position"}. ${flipped ? "Black" : "White"} at bottom.`} />
         {player(flipped ? "b" : "w")}
         <div className="broadcast-controls" aria-label="Replay controls">
           <button type="button" aria-label="Starting position" disabled={ply === 0} onClick={() => setReplayPly(0)}>⏮</button>
@@ -386,9 +391,10 @@ function GameViewer({ game, games, onSelect }: {
         <div className="broadcast-pairings">
           <h3 className="eyebrow">Boards in this round <span className={styles.boardCount}>{games.length}</span></h3>
           <div className="subgrid">{games.map(candidate => <button type="button" key={candidate.id} data-board={candidate.board} aria-pressed={candidate.id === game.id} onClick={() => onSelect(candidate.id)}>
-            <div className="flexline"><span>Board {candidate.board}</span><span>{candidate.headers.Result === "*" ? "In progress" : candidate.headers.Result || "—"}</span></div>
+            <span className={styles.pairingBoardLabel}>Board {candidate.board}</span>
             <p><span className={styles.whiteMarker} aria-label="White" /><PlayerIdentity headers={candidate.headers} color="w" /></p>
             <p><span className={styles.blackMarker} aria-label="Black" /><PlayerIdentity headers={candidate.headers} color="b" /></p>
+            <span className={styles.pairingResult} data-live={candidate.headers.Result === "*"}>{candidate.headers.Result === "*" ? "In progress" : candidate.headers.Result === "1/2-1/2" ? "½–½" : candidate.headers.Result || "—"}</span>
           </button>)}</div>
         </div>
       </div>
