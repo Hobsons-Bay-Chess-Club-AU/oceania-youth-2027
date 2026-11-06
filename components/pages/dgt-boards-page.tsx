@@ -396,10 +396,10 @@ function GameViewer({ game, games, onSelect }: {
   </section>;
 }
 
-export function DgtBoardsPage() {
+export function DgtBoardsPage({ initialNames = {} }: { initialNames?: Record<string, string> }) {
   const { tournaments, invalidIds } = broadcastConfig;
   const [selectedId, setSelectedId] = useState(tournaments[0]?.id || "");
-  const [names, setNames] = useState<Record<string, string>>({});
+  const [names, setNames] = useState<Record<string, string>>(initialNames);
   const onName = useCallback((id: string, name: string) => {
     setNames(previous => previous[id] === name ? previous : { ...previous, [id]: name });
   }, []);

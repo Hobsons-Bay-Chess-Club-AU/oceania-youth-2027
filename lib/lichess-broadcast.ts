@@ -139,3 +139,26 @@ export function lichessGameUrl(value?: string) {
     return url.protocol === "https:" && url.hostname === "lichess.org" && !url.username && !url.password ? url.href : undefined;
   } catch { return undefined; }
 }
+
+// Called by the static page build; failures leave the browser's live fallback intact.
+export async function fetchBroadcastNames(tournaments: BroadcastTournament[], options: {
+  token?: string; fetcher?: typeof fetch;
+} = {}) {
+  const entries = await Promise.all(tournaments.map(async tournament => {
+    try {
+      const headers: Record<string, string> = { Accept: "application/json" };
+      if (options.token?.trim()) headers.Authorization = `Bearer ${options.token.trim()}`;
+      const response = await (options.fetcher || fetch)(`https://lichess.org/api/broadcast/${tournament.id}`, {
+        headers, signal: AbortSignal.timeout(10_000), cache: "no-store",
+      });
+      if (!response.ok) throw new Error("Broadcast metadata unavailable");
+      const metadata = await response.json();
+      const name = typeof metadata?.tour?.name === "string" ? metadata.tour.name.trim() : "";
+      if (name) return [tournament.id, name] as const;
+    } catch {
+      console.warn(`Could not load build-time broadcast name for ${tournament.id}; using the live fallback.`);
+    }
+    return undefined;
+  }));
+  return Object.fromEntries(entries.filter((entry): entry is readonly [string, string] => !!entry));
+}

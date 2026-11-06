@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { Chess } from 'chess.js';
-import { parseTournamentConfig, parseBroadcastPgn, fetchBroadcast } from '../lib/lichess-broadcast.ts';
+import { parseTournamentConfig, parseBroadcastPgn, fetchBroadcast, fetchBroadcastNames } from '../lib/lichess-broadcast.ts';
 
 const game = (headers = '', moves = '1. e4 { [%clk 1:29:57] } e5 { [%clk 1:29:54] } 2. Nf3 *') =>
   `[Event "Club Open"]\n[White "Alice"]\n[Black "Bob"]\n[Result "*"]\n[Round "1.1"]\n${headers}\n\n${moves}`;
@@ -105,4 +105,24 @@ test('uses the fastest refresh interval when a feed contains several game speeds
   assert.equal(feed.refreshAfterMs, 5000);
   const empty = await fetchBroadcast(tournament, { fetcher: async () => new Response('') });
   assert.equal(empty.refreshAfterMs, 60000);
+});
+
+test('build-time names include all divisions before they are selected', async () => {
+  const tournaments = parseTournamentConfig('wsHmdvmw,2sSeYjPm').tournaments;
+  const names = await fetchBroadcastNames(tournaments, { token: 'test-token', fetcher: async (url, options) => {
+    assert.equal(options.headers.Authorization, 'Bearer test-token');
+    assert.ok(options.signal instanceof AbortSignal);
+    assert.equal(options.headers.Accept, 'application/json');
+    return Response.json({ tour: { name: url.includes('wsHmdvmw') ? 'Open division' : 'Girls division' } });
+  } });
+  assert.deepEqual(names, { wsHmdvmw: 'Open division', '2sSeYjPm': 'Girls division' });
+});
+
+test('one unavailable or empty feed does not lose other build-time names', async () => {
+  const tournaments = parseTournamentConfig('wsHmdvmw,2sSeYjPm,abcdefgh').tournaments;
+  const names = await fetchBroadcastNames(tournaments, { fetcher: async url => {
+    if (url.includes('2sSeYjPm')) return new Response('', { status: 503 });
+    return Response.json(url.includes('abcdefgh') ? {} : { tour: { name: 'Club Open' } });
+  } });
+  assert.deepEqual(names, { wsHmdvmw: 'Club Open' });
 });
