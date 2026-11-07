@@ -551,6 +551,8 @@
 }
 
 .playerIdentity { display: inline-flex; align-items: center; gap: 5px; min-width: 0; }
+.playerFlag { width: 22px; height: 16px; object-fit: contain; flex-shrink: 0; }
+.fullscreen .miniPlayer .playerFlag { width: 16px; height: 12px; }
 .playerName { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .playerElo { flex-shrink: 0; color: var(--color-broadcast-muted); font-size: .85em; font-weight: 500; white-space: nowrap; }
 .room :global(.broadcast-player) > .playerIdentity { flex: 1; color: var(--color-broadcast-ink); }

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120">
+<title>Tonga — Black Rook</title>
+<desc>Original federation-inspired chess piece: Red cross and royal bands. Recognizable chess silhouette with an inset flag.</desc>
+<defs><linearGradient id="body"><stop stop-color="#101e2e"/><stop offset=".4" stop-color="#731c31"/><stop offset="1" stop-color="#101e2e"/></linearGradient><linearGradient id="gold"><stop stop-color="#ed6a70"/><stop offset=".5" stop-color="#fff0bb"/><stop offset="1" stop-color="#ed6a70"/></linearGradient></defs>
+<ellipse cx="50" cy="113" rx="35" ry="3" fill="#072c33" opacity=".18"/>
+<g stroke="#eeddb3" stroke-width="1.3" stroke-linejoin="round"><path d="M27 24h12v10h7V24h9v10h7V24h12v22H27z" fill="url(#body)"/><path d="M34 46h32l-3 34 9 9H28l9-9z" fill="url(#body)"/><path d="M31 46h39M35 53h30" stroke="url(#gold)" stroke-width="3"/><path d="M45 61q5-11 10 0v11H45z" fill="url(#gold)"/>
+<path d="M28 88q22-8 44 0l10 18q2 5-4 5H22q-6 0-4-5z" fill="url(#body)"/>
+<ellipse cx="50" cy="89" rx="23" ry="3.5" fill="url(#gold)"/>
+<path d="M22 96h56M20 108h60" stroke="#ed6a70" stroke-width="2.2"/></g>
+<g transform="translate(50 73) scale(.7)" fill="#ed6a70" color="#ed6a70"><path d="M-3-12h6v9h9v6H3v9h-6V3h-9v-6h9z"/></g>
+<ns0:svg xmlns:ns0="http://www.w3.org/2000/svg" width="30" height="10" viewBox="0 0 96 48" x="35" y="97" preserveAspectRatio="xMidYMid meet"><ns0:g fill="#C10000"><ns0:path d="M0 0h96v48H0z" /><ns0:path fill="#fff" d="M0 0h40v24H0z" /><ns0:path d="M17 3h6v18h-6z" /><ns0:path d="M11 9h18v6H11z" /></ns0:g></ns0:svg>
+</svg>

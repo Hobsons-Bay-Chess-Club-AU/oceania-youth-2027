@@ -53,3 +53,13 @@
 .settingsDialog .officialOption .optionHeading strong { font: 700 27px/1.1 var(--display); }
 .settingsDialog .officialOption > .preview { justify-content: center; gap: 12px; }
 .officialOption .preview img { width: min(12%, 70px); height: 88px; }
+
+.settingsDialog .collection { margin-top: 24px; }
+.settingsDialog .adaptiveOption { grid-column: 1 / -1; }
+.settingsDialog .setOption > .adaptivePreview { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 8px; background: var(--paper); }
+.adaptivePreview > span { font-size: 11px; font-weight: 600; text-align: center; }
+.adaptivePreview > span > span { display: inline-block; margin-inline: 6px; color: var(--muted); }
+.optionHeading strong { display: inline-flex; align-items: center; gap: 6px; }
+.searchLabel { display: block; margin-bottom: 6px; font-size: 11px; color: var(--muted); }
+.settingsDialog .searchInput { display: block; width: 100%; min-height: 44px; margin-bottom: 14px; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 3px; background: var(--paper); color: var(--ink); font: inherit; font-size: 13px; }
+.settingsDialog .searchInput:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }

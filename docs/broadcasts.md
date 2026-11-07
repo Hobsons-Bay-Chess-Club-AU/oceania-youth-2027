@@ -29,7 +29,7 @@ The viewer follows the latest position until a historical move is selected. Cloc
 
 Use **Piece style** to open Board settings from the overview, individual viewer, or fullscreen header. The selection applies immediately to all boards and player icons. It is saved under `oy27-broadcast-piece-set` in local storage and synchronizes between tabs. Oceania Youth 2027 is the default for viewers without a saved preference; existing choices are preserved; unavailable storage still allows changes for the current visit.
 
-The official Oceania set is featured above a two-column grid of four alternatives. Five sets are included:
+The official Oceania set is featured above a two-column grid of four alternatives. Five existing styles are retained:
 
 - **Chessnut**: the original SVG set, Apache 2.0. Attribution and license are in `public/chess/NOTICE.md` and `public/chess/LICENSE`.
 - **Staunton 3D**: traditional ivory and ebony pieces by James Clarke, MIT, sourced from [Staunton Pieces](https://github.com/clarkerubber/Staunton-Pieces) through Lichess.
@@ -40,3 +40,11 @@ The official Oceania set is featured above a two-column grid of four alternative
 Downloaded sets include their licenses and source notices in their respective `public/chess/` folders. [Preview the custom set](assets/oceania-piece-set-preview.png).
 
 Run `npm test` with Node.js 22.6 or newer, `npm run typecheck`, and `npm run build` to validate changes.
+
+## Federation collection and Adaptive mode
+
+The thirteen federations currently represented on the site each have an original set of twelve SVG pieces, with flag inlays and distinct regional motifs. Search Board settings by country name, ISO code, or FIDE code to choose a federation set for both sides. Selecting **Adaptive · Follow each player** assigns a federation set separately to White and Black; a move, capture, promotion or board flip retains the correct color's set. The official Oceania Youth 2027 set remains the default.
+
+Adaptive mode prefers explicit PGN `WhiteFederation`/`BlackFederation`, `WhiteFed`/`BlackFed` or `WhiteCountry`/`BlackCountry` tags. Otherwise it matches `WhiteFideId`/`BlackFideId` to a compact lookup built from `public/players.json`. Only ID and federation pairs reach the broadcast page. Contradictory country tags or duplicate FIDE IDs with conflicting federations use the official fallback; unsupported or missing federations also use the fallback. No nationality is inferred from player names. Refresh the player directory and rebuild to update the lookup. Broadcasts of players absent from the directory need explicit PGN federation tags for adaptive sets.
+
+Manual and adaptive choices use the existing local-storage preference and synchronize between tabs. Existing saved choices are preserved. Artwork is generated with `python3 scripts/generate-federation-pieces.py`; country flags follow the existing `public/pacific/README.md` attribution. [View all 156 pieces](assets/federation-piece-sets-preview.png).

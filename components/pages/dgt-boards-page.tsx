@@ -5,8 +5,9 @@ import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSPrope
 import { boardMoveArrow } from "@/lib/broadcast-arrow";
 import { replayPlyForKey } from "@/lib/broadcast-replay";
 import { fullscreenBoardLayout } from "@/lib/broadcast-layout";
-import { PieceImage, PieceSetProvider, PieceSetSettings } from "@/components/broadcast-piece-settings";
+import { PieceImage, PieceSetProvider, PieceSetSettings, usePlayerFederations } from "@/components/broadcast-piece-settings";
 import styles from "./dgt-boards.module.css";
+import { FEDERATION_PIECE_SETS, type FederationLookup } from "@/lib/broadcast-piece-sets";
 import { broadcastConfig } from "@/app/dgt-boards/data";
 import {
   BroadcastFetchError, fetchBroadcast, lichessGameUrl,
@@ -19,13 +20,15 @@ const pieceNames: Record<string, string> = {
 
 type Feed = Awaited<ReturnType<typeof fetchBroadcast>>;
 
-function BroadcastBoard({ position, label, flipped = false, miniature = false, result }: {
+function BroadcastBoard({ position, headers, label, flipped = false, miniature = false, result }: {
   position: BroadcastPosition;
+  headers: BroadcastGame["headers"];
   label: string;
   flipped?: boolean;
   miniature?: boolean;
   result?: string;
 }) {
+  const federations = usePlayerFederations(headers);
   const resultText = result === "1-0" ? "1–0" : result === "0-1" ? "0–1" : result === "1/2-1/2" ? "½–½" : undefined;
   const squares = useMemo(() => new Chess(position.fen).board().flat(), [position.fen]);
   const shownSquares = flipped ? [...squares].reverse() : squares;
@@ -37,7 +40,7 @@ function BroadcastBoard({ position, label, flipped = false, miniature = false, r
       const rank = flipped ? Math.floor(index / 8) + 1 : 8 - Math.floor(index / 8);
       const square = `${"abcdefgh"[file]}${rank}`;
       return <span key={square} className={styles.square} data-square={(file + rank) % 2 ? "dark" : "light"} data-highlight={square === position.from || undefined} aria-hidden="true">
-        {piece && <PieceImage className={styles.piece} color={piece.color} type={piece.type} width="80" height="80" alt="" title={`${piece.color === "w" ? "White" : "Black"} ${pieceNames[piece.type]}`} draggable={false} />}
+        {piece && <PieceImage className={styles.piece} color={piece.color} type={piece.type} federation={federations[piece.color]} width="80" height="80" alt="" title={`${piece.color === "w" ? "White" : "Black"} ${pieceNames[piece.type]}`} draggable={false} />}
         {index % 8 === 0 && <small className="board-rank">{rank}</small>}
         {index >= 56 && <small className="board-file">{"abcdefgh"[file]}</small>}
       </span>;
@@ -53,11 +56,14 @@ function BroadcastBoard({ position, label, flipped = false, miniature = false, r
 }
 
 function PlayerIdentity({ headers, color }: { headers: BroadcastGame["headers"]; color: "w" | "b" }) {
+  const federations = usePlayerFederations(headers);
+  const federation = FEDERATION_PIECE_SETS.find(entry => entry.code === federations[color]);
   const side = color === "w" ? "White" : "Black";
   const title = (headers[`${side}Title`] || "").trim().toUpperCase();
   const recognizedTitle = /^(W?CM|W?FM|W?IM|W?GM)$/.test(title);
   const rating = (headers[`${side}Elo`] || "").trim();
   return <span className={styles.playerIdentity}>
+    {federation && <img className={styles.playerFlag} src={`/pacific/flags/${federation.code}.svg`} width="22" height="16" alt={`${federation.name} federation`} title={federation.name} />}
     {recognizedTitle && <span className={styles.titleBadge} data-title={title}>{title}</span>}
     <strong className={styles.playerName}>{headers[side] || `${side} player`}</strong>
     {/^\d+$/.test(rating) && rating !== "0" && <span className={styles.playerElo}>({rating})</span>}
@@ -180,7 +186,7 @@ function BoardOverview({ games, game, round, rounds, tournamentId, tournamentNam
       return <button type="button" key={game.id} id={boardPreviewId(tournamentId, game.id)} className={styles.boardCard} aria-label={`View board ${game.board}: ${white} versus ${black}`} onClick={() => onSelect(game.id)}>
         <span className={styles.cardHeading}><span className="eyebrow">Board {game.board.padStart(2, "0")}</span><span className={styles.cardResult} data-live={game.headers.Result === "*"}>{result}</span></span>
         <span className={styles.miniPlayer}><span className={styles.blackMarker} /><PlayerIdentity headers={game.headers} color="b" /><span className={styles.miniClock}>{position.blackClock || "—"}</span></span>
-        <BroadcastBoard position={position} label={`Latest position: ${white} versus ${black}`} miniature result={game.headers.Result} />
+        <BroadcastBoard headers={game.headers} position={position} label={`Latest position: ${white} versus ${black}`} miniature result={game.headers.Result} />
         <span className={styles.miniPlayer}><span className={styles.whiteMarker} /><PlayerIdentity headers={game.headers} color="w" /><span className={styles.miniClock}>{position.whiteClock || "—"}</span></span>
         <span className={styles.cardFooter}><span>{position.san ? `${position.moveNumber}${position.color === "w" ? "." : "…"} ${position.san}` : "Awaiting first move"}</span><span>View board <span aria-hidden="true">↗</span></span></span>
       </button>;
@@ -349,8 +355,9 @@ function GameViewer({ game, games, onSelect }: {
     } catch { setCopyStatus("Could not copy PGN. Please allow clipboard access and try again."); }
   }
 
+  const federations = usePlayerFederations(game.headers);
   const player = (color: "w" | "b") => <div className={`broadcast-player broadcast-player-${color}`}>
-    <PieceImage color={color} type="k" width="32" height="32" alt={color === "w" ? "White" : "Black"} />
+    <PieceImage color={color} type="k" federation={federations[color]} width="32" height="32" alt={color === "w" ? "White" : "Black"} />
     <PlayerIdentity headers={game.headers} color={color} />
     <time aria-label={`${color === "w" ? "White" : "Black"} recorded clock`}>{(color === "w" ? position.whiteClock : position.blackClock) || "—"}</time>
   </div>;
@@ -364,7 +371,7 @@ function GameViewer({ game, games, onSelect }: {
     <div className="subgrid">
       <div>
         {player(flipped ? "w" : "b")}
-        <BroadcastBoard position={position} flipped={flipped} result={ply === moveCount ? game.headers.Result : undefined} label={`${white} versus ${black}, ${ply ? `after ${position.moveNumber}${position.color === "b" ? "..." : "."} ${position.san}` : "starting position"}. ${flipped ? "Black" : "White"} at bottom.`} />
+        <BroadcastBoard headers={game.headers} position={position} flipped={flipped} result={ply === moveCount ? game.headers.Result : undefined} label={`${white} versus ${black}, ${ply ? `after ${position.moveNumber}${position.color === "b" ? "..." : "."} ${position.san}` : "starting position"}. ${flipped ? "Black" : "White"} at bottom.`} />
         {player(flipped ? "b" : "w")}
         <div className="broadcast-controls" aria-label="Replay controls">
           <button type="button" aria-label="Starting position" disabled={ply === 0} onClick={() => setReplayPly(0)}>⏮</button>
@@ -402,14 +409,14 @@ function GameViewer({ game, games, onSelect }: {
   </section>;
 }
 
-export function DgtBoardsPage({ initialNames = {} }: { initialNames?: Record<string, string> }) {
+export function DgtBoardsPage({ initialNames = {}, federationLookup = {} }: { initialNames?: Record<string, string>; federationLookup?: FederationLookup }) {
   const { tournaments, invalidIds } = broadcastConfig;
   const [selectedId, setSelectedId] = useState(tournaments[0]?.id || "");
   const [names, setNames] = useState<Record<string, string>>(initialNames);
   const onName = useCallback((id: string, name: string) => {
     setNames(previous => previous[id] === name ? previous : { ...previous, [id]: name });
   }, []);
-  return <PieceSetProvider><div className={`page-broadcast ${styles.room}`}>
+  return <PieceSetProvider federationLookup={federationLookup}><div className={`page-broadcast ${styles.room}`}>
     <section className={`page-title ${styles.title}`}><div className="eyebrow">Oceania Youth 2027 / DGT broadcasts</div>
       <h1>Broadcast room</h1><p>Choose your division. Find your round.<br />Follow the action, one move at a time.</p>
     </section>
