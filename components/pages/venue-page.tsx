@@ -1,11 +1,13 @@
 "use client";
 
+
+import { Translated } from "@/components/i18n-provider";
 import Link from "next/link";
 import { Hero } from "@/components/ui";
 import { venueData } from "@/app/venue/data";
 
 export function VenuePage() {
-  return (
+  return <Translated>{(
     <div className="space-y-8">
       <Hero
         eyebrow="Playing Hall & Logistics"
@@ -79,6 +81,6 @@ export function VenuePage() {
         </div>
       </section>
     </div>
-  );
+  )}</Translated>;
 }
 

@@ -1,4 +1,6 @@
 "use client";
+
+import { Translated } from "@/components/i18n-provider";
 import { useEffect, useRef, useState } from "react";
 
 export function PlayerCount({ value }: { value: number | null }) {
@@ -42,5 +44,5 @@ export function PlayerCount({ value }: { value: number | null }) {
             motion.removeEventListener("change", onMotionChange);
         };
     }, [value]);
-    return <span ref={element}>{value === null ? "—" : displayed}</span>;
+    return <Translated>{<span ref={element}>{value === null ? "—" : displayed}</span>}</Translated>;
 }

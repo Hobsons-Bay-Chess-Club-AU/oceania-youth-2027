@@ -1,5 +1,5 @@
 import { DgtBoardsPage } from "@/components/pages/dgt-boards-page";
-import { broadcastConfig } from "./data";
+import { broadcastConfig } from "@/app/dgt-boards/data";
 import { fetchBroadcastNames } from "@/lib/lichess-broadcast";
 
 import players from "@/public/players.json";

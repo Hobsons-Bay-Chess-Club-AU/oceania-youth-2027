@@ -1,3 +1,5 @@
+
+import { Translated } from "@/components/i18n-provider";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 import styles from "./federation-support.module.css";
@@ -12,7 +14,7 @@ const sections = [
 ];
 
 export function FederationSupportPage() {
-    return <div className={styles.page}>
+    return <Translated>{<div className={styles.page}>
         <section className="page-title">
             <span className="eyebrow">Player entry &amp; federation participation</span>
             <h1>Registration and federation support</h1>
@@ -85,5 +87,5 @@ export function FederationSupportPage() {
                 </section>
             </article>
         </div>
-    </div>;
+    </div>}</Translated>;
 }

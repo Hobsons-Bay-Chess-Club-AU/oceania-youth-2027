@@ -1,5 +1,7 @@
 "use client";
 
+
+import { Translated } from "@/components/i18n-provider";
 import { buildRegulationsPdf } from "@/lib/regulations-pdf";
 
 export function RegulationsPdfDownload({
@@ -23,9 +25,9 @@ export function RegulationsPdfDownload({
     URL.revokeObjectURL(url);
   };
 
-  return (
+  return <Translated>{(
     <button type="button" onClick={handleDownload} className={className}>
       {label}
     </button>
-  );
+  )}</Translated>;
 }

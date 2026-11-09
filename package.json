@@ -10,7 +10,9 @@
     "typecheck": "tsc --noEmit",
     "test": "node --experimental-strip-types --test tests/*.test.mjs",
     "fetch:players": "node scripts/fetch-players.mjs",
-    "download:fide": "node scripts/download-fide-ratings.mjs"
+    "download:fide": "node scripts/download-fide-ratings.mjs",
+    "translations:export": "node scripts/export-translations.mjs",
+    "prebuild": "npm run translations:export"
   },
   "dependencies": {
     "chess.js": "^1.4.0",

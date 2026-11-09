@@ -1,9 +1,13 @@
 "use client";
+
+import { Translated, useI18n } from "@/components/i18n-provider";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { navItems } from "@/app/navigation";
 import { siteConfig } from "@/lib/site-config";
+import { LanguageSwitcher, TranslationNotice, LanguageSuggestion } from "@/components/language-switcher";
+import { I18N_ENABLED, stripLocalePath } from "@/lib/i18n";
 const searchTitles: Record<string, string> = {
     "/schedule": "Tournament Schedule",
     "/regulations": "Official Regulations & FIDE Rules",
@@ -21,6 +25,7 @@ export function SiteShell({ children }: {
     children: React.ReactNode;
 }) {
     const pathname = usePathname();
+    const { translate } = useI18n();
     const [menuOpen, setMenuOpen] = useState(false);
     const [informationOpen, setInformationOpen] = useState(false);
     const [theme, setTheme] = useState("light");
@@ -77,9 +82,9 @@ export function SiteShell({ children }: {
         catch { }
     }
     function isActive(href: string) {
-        return pathname.replace(/\/$/, "") === href.replace(/\/$/, "");
+        return stripLocalePath(pathname).replace(/\/$/, "") === href.replace(/\/$/, "");
     }
-    return <>
+    return <Translated>{<>
     <a href="#main" className="skip-link">Skip to content</a>
     <header className="site-header">
       <Link href="/" className="brand">
@@ -97,13 +102,15 @@ export function SiteShell({ children }: {
         <button className="mobile-nav-action" type="button" onClick={openSearch}>Search website</button>
       </nav>
       <div className="header-tools">
+        {I18N_ENABLED && <LanguageSwitcher />}
         <button className="search-trigger" onClick={openSearch} aria-label="Search website (Cmd+K)"><svg className="ui-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg></button>
         <Link href="/registration" className="register-link">Register Now</Link>
         <button type="button" className="theme-toggle" aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`} onClick={toggleTheme}>◐</button>
         <button type="button" className="mobile-menu" aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-controls="site-navigation" aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}>☰</button>
       </div>
     </header>
-    <main id="main">{children}</main>
+    {I18N_ENABLED && <LanguageSuggestion />}
+    <main id="main"><TranslationNotice />{children}</main>
     <footer className="site-footer">
     <div>
     <a className="footer-banner" href="/hero.png" target="_blank" rel="noreferrer" aria-label="View full championship banner">
@@ -164,7 +171,7 @@ export function SiteShell({ children }: {
       <button type="button" className="dialog-close" aria-label="Close search" onClick={() => dialog.current?.close()}>×</button>
       <h2 id="search-title">Search the website</h2>
       <input ref={searchInput} aria-label="Search pages" placeholder="Search schedule, regulations, players…" value={query} onChange={e => setQuery(e.target.value)}/>
-      <div className="search-results">{searchPages.filter(item => `${item.label} ${item.title}`.toLowerCase().includes(query.toLowerCase())).map(item => <Link key={item.href} href={item.href} onClick={() => dialog.current?.close()}>{item.title}</Link>)}{!searchPages.some(item => `${item.label} ${item.title}`.toLowerCase().includes(query.toLowerCase())) && <p>No pages match your search.</p>}</div>
+      <div className="search-results">{searchPages.filter(item => `${item.label} ${item.title} ${translate(item.label).text} ${translate(item.title).text}`.toLowerCase().includes(query.toLowerCase())).map(item => <Link key={item.href} href={item.href} onClick={() => dialog.current?.close()}>{item.title}</Link>)}{!searchPages.some(item => `${item.label} ${item.title} ${translate(item.label).text} ${translate(item.title).text}`.toLowerCase().includes(query.toLowerCase())) && <p>No pages match your search.</p>}</div>
     </dialog>
-  </>;
+  </>}</Translated>;
 }

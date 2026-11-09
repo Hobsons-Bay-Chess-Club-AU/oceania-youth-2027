@@ -1,4 +1,6 @@
 "use client";
+
+import { Translated } from "@/components/i18n-provider";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { homePageData } from "@/app/data";
@@ -56,7 +58,7 @@ export function HomePage() {
             reducedMotion.removeEventListener("change", syncAnimation);
         };
     }, []);
-    return (<div className="page-home">
+    return <Translated>{(<div className="page-home">
     <section className="home-lead">
     <div className="home-copy">
     <div className="home-eyebrow">
@@ -206,5 +208,5 @@ Email: major_tournaments@hobsonsbaychess.com</div>
     <Link href="/regulations" className="action">Read Regulations →</Link><a href="/OceaniaYouth%202027%20Tournament%20Pack.pdf" download="OceaniaYouth 2027 Tournament Pack.pdf" target="_blank" rel="noreferrer" className="action"><span>📥 Download Pack (PDF)</span></a></div>
     <p>Official championship platform for player registration, schedules, regulations, and live broadcasts.</p></div>
     </section>
-    </div>);
+    </div>)}</Translated>;
 }

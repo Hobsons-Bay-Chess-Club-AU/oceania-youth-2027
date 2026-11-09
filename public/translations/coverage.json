@@ -1,0 +1,72 @@
+{
+  "fr": {
+    "status": "partial-draft",
+    "draftEntries": 948,
+    "sourceEntries": 1013
+  },
+  "mi": {
+    "status": "partial-draft",
+    "draftEntries": 158,
+    "sourceEntries": 1013
+  },
+  "fj": {
+    "status": "partial-draft",
+    "draftEntries": 151,
+    "sourceEntries": 1013
+  },
+  "hif": {
+    "status": "partial-draft",
+    "draftEntries": 158,
+    "sourceEntries": 1013
+  },
+  "tpi": {
+    "status": "partial-draft",
+    "draftEntries": 158,
+    "sourceEntries": 1013
+  },
+  "ho": {
+    "status": "partial-draft",
+    "draftEntries": 3,
+    "sourceEntries": 1013
+  },
+  "pis": {
+    "status": "partial-draft",
+    "draftEntries": 158,
+    "sourceEntries": 1013
+  },
+  "pau": {
+    "status": "partial-draft",
+    "draftEntries": 3,
+    "sourceEntries": 1013
+  },
+  "ch": {
+    "status": "partial-draft",
+    "draftEntries": 3,
+    "sourceEntries": 1013
+  },
+  "na": {
+    "status": "review-template",
+    "draftEntries": 0,
+    "sourceEntries": 1013
+  },
+  "to": {
+    "status": "partial-draft",
+    "draftEntries": 151,
+    "sourceEntries": 1013
+  },
+  "bi": {
+    "status": "partial-draft",
+    "draftEntries": 158,
+    "sourceEntries": 1013
+  },
+  "gil": {
+    "status": "partial-draft",
+    "draftEntries": 4,
+    "sourceEntries": 1013
+  },
+  "mh": {
+    "status": "partial-draft",
+    "draftEntries": 6,
+    "sourceEntries": 1013
+  }
+}

@@ -1,4 +1,6 @@
 "use client";
+
+import { Translated } from "@/components/i18n-provider";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Hero, SearchInput } from "@/components/ui";
@@ -81,7 +83,7 @@ export function PlayersPage() {
             return data.lastUpdated;
         }
     }, [data?.lastUpdated]);
-    return <div className="page-players">
+    return <Translated>{<div className="page-players">
     <Hero eyebrow="Zone 3.6 Competitors" title="Registered Player Directory" description="Filter Oceania junior entrants by age group division, gender category, national federation, or search by FIDE rating & ID."/>
     <section className="players-workspace">
       <div className="directory-filters">
@@ -102,17 +104,17 @@ export function PlayersPage() {
         {!isLoading && !error && !filteredPlayers.length && <p className="directory-empty">No player records match your active search filters.</p>}
       </div>
     </section>
-  </div>;
+  </div>}</Translated>;
 }
 function PlayerRow({ player: p }: {
     player: Player;
 }) {
-    return <div className="directory-row">
-    <span className="name">{p.name}<small>{p.category}{(p.yob || p.dob) && ` · YOB: ${p.yob || p.dob?.match(/\d{4}/)?.[0]}`}</small></span>
+    return <Translated>{<div className="directory-row">
+    <span className="name"><span translate="no">{p.name}</span><small>{p.category}{(p.yob || p.dob) && ` · YOB: ${p.yob || p.dob?.match(/\d{4}/)?.[0]}`}</small></span>
     <span className="federation"><span aria-hidden="true">{countryCodeToFlag(p.flag)}</span>{p.federation}</span>
     <a href={`https://ratings.fide.com/profile/${p.fideId}`} target="_blank" rel="noreferrer">ID #{p.fideId}</a>
     <span className="rating"><span title="Classical / Standard Rating">Std: {p.fideRating > 0 ? p.fideRating : "—"}</span><small>Rpd: {p.rapidRating && p.rapidRating > 0 ? p.rapidRating : "—"} · Blz: {p.blitzRating && p.blitzRating > 0 ? p.blitzRating : "—"}</small></span>
-  </div>;
+  </div>}</Translated>;
 }
 function countryCodeToFlag(code: string) {
     return code.toUpperCase().replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt(0)));

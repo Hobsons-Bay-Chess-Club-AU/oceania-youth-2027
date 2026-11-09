@@ -1,5 +1,7 @@
 "use client";
 
+
+import { Translated } from "@/components/i18n-provider";
 import { useEffect, useState } from "react";
 
 type TournamentStatsProps = {
@@ -48,7 +50,7 @@ export function HomeTournamentStats({
     return () => window.clearInterval(timer);
   }, [entries]);
 
-  return (
+  return <Translated>{(
     <article className="motion-rise-in-delayed rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-2xl backdrop-blur-xl md:p-8">
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
@@ -94,6 +96,6 @@ export function HomeTournamentStats({
         })}
       </div>
     </article>
-  );
+  )}</Translated>;
 }
 

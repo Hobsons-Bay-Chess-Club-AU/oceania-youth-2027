@@ -1,3 +1,5 @@
+
+import { Translated } from "@/components/i18n-provider";
 import styles from "./registration-timeline.module.css";
 
 const milestones = [
@@ -13,7 +15,7 @@ const milestones = [
 ];
 
 export function RegistrationTimeline() {
-    return <section className={styles.timeline} aria-labelledby="registration-schedule-title">
+    return <Translated>{<section className={styles.timeline} aria-labelledby="registration-schedule-title">
         <div className={styles.heading}>
             <div><span className="eyebrow">Key dates</span><h2 id="registration-schedule-title">Registration schedule</h2></div>
             <p>Plan your entry, federation deadlines and journey to Melbourne.</p>
@@ -26,5 +28,5 @@ export function RegistrationTimeline() {
             </li>)}
         </ol>
         <p className={styles.note}>Championship play: <strong>29 September–3 October 2027.</strong> Arrival and departure days are shown separately.</p>
-    </section>;
+    </section>}</Translated>;
 }

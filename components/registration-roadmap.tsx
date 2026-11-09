@@ -1,7 +1,9 @@
+
+import { Translated } from "@/components/i18n-provider";
 import styles from "./registration-roadmap.module.css";
 
 export function RegistrationRoadmap() {
-    return <section className={styles.section} aria-label="Championship schedule diagram">
+    return <Translated>{<section className={styles.section} aria-label="Championship schedule diagram">
         <figure className={styles.figure}>
             <p className={styles.hint} id="roadmap-scroll-hint">Scroll across to view the full schedule →</p>
             <div className={styles.scroll} tabIndex={0} role="region" aria-label="Schedule diagram, scroll horizontally to explore" aria-describedby="roadmap-scroll-hint">
@@ -13,5 +15,5 @@ export function RegistrationRoadmap() {
                 <a href="/registration-roadmap.svg" download="Oceania-Youth-2027-Registration-Schedule.svg">Download schedule diagram ↗</a>
             </figcaption>
         </figure>
-    </section>;
+    </section>}</Translated>;
 }

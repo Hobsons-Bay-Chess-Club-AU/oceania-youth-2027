@@ -80,9 +80,12 @@ jobs:
         run: npm run fetch:players
       - name: Test broadcast data handling
         run: npm test
+      - name: Export translation review sheets
+        run: npm run translations:export
       - name: Build with Next.js
         env:
           GITHUB_PAGES_CUSTOM_DOMAIN: "true"
+          NEXT_PUBLIC_ENABLE_I18N: ${{ vars.NEXT_PUBLIC_ENABLE_I18N || secrets.NEXT_PUBLIC_ENABLE_I18N || 'false' }}
           NEXT_PUBLIC_LICHESS_TOURNAMENTS: ${{ secrets.NEXT_PUBLIC_LICHESS_TOURNAMENTS || vars.NEXT_PUBLIC_LICHESS_TOURNAMENTS }}
           NEXT_PUBLIC_LICHESS_TOKEN: ${{ secrets.NEXT_PUBLIC_LICHESS_TOKEN }}
         run: ${{ steps.detect-package-manager.outputs.runner }} next build

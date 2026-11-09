@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import "../tokens.css";
+import "@/app/globals.css";
+import "@/tokens.css";
 import { SiteShell } from "@/components/site-shell";
 import { siteConfig } from "@/lib/site-config";
-export const metadata: Metadata = {
+import { I18nProvider } from "@/components/i18n-provider";
+import { getMessages, getCatalogueCoverage } from "@/lib/i18n-catalogs";
+import type { Locale } from "@/lib/i18n";
+export const englishMetadata: Metadata = {
     metadataBase: new URL(siteConfig.siteUrl),
     title: {
         default: siteConfig.defaultTitle,
@@ -47,13 +50,10 @@ export const metadata: Metadata = {
     },
     category: "sports",
 };
-export default function RootLayout({ children, }: Readonly<{
-    children: React.ReactNode;
-}>) {
-    return (<html lang="en" suppressHydrationWarning>
-      <head><script dangerouslySetInnerHTML={{ __html: `try { const saved = localStorage.getItem("oy27-v2-theme"); document.documentElement.dataset.theme = saved === "light" || saved === "dark" ? saved : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } catch { document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; }` }}/></head>
-      <body>
-        <SiteShell>{children}</SiteShell>
-      </body>
-    </html>);
+
+export function SiteDocument({ children, locale }: { children: React.ReactNode; locale: Locale }) {
+  return <html lang={locale} suppressHydrationWarning>
+    <head><script dangerouslySetInnerHTML={{ __html: `try { const saved = localStorage.getItem("oy27-v2-theme"); document.documentElement.dataset.theme = saved === "light" || saved === "dark" ? saved : matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; } catch { document.documentElement.dataset.theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"; }` }} /></head>
+    <body><I18nProvider locale={locale} messages={getMessages(locale)} coverage={getCatalogueCoverage()}><SiteShell>{children}</SiteShell></I18nProvider></body>
+  </html>;
 }

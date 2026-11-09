@@ -1,7 +1,9 @@
+
+import { Translated } from "@/components/i18n-provider";
 import Link from "next/link";
 import { ContactForm } from "@/components/contact-form";
 export function ContactUsPage() {
-    return (<div className="page-contact">
+    return <Translated>{(<div className="page-contact">
     <section className="page-title">
     <div className="eyebrow">
     <span></span>Direct Inquiry Hub</div>
@@ -42,5 +44,5 @@ export function ContactUsPage() {
     </div>
     </div>
     </section>
-    </div>);
+    </div>)}</Translated>;
 }

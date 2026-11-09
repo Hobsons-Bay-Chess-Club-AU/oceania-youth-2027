@@ -1,10 +1,12 @@
 "use client";
 
+
+import { Translated } from "@/components/i18n-provider";
 import { siteConfig } from "@/lib/site-config";
 import { Hero } from "@/components/ui";
 
 export function MapPage() {
-  return (
+  return <Translated>{(
     <div className="space-y-8">
       <Hero
         eyebrow="Interactive Location"
@@ -40,6 +42,6 @@ export function MapPage() {
         </div>
       </section>
     </div>
-  );
+  )}</Translated>;
 }
 

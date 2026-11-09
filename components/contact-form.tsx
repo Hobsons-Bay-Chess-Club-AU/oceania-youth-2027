@@ -1,4 +1,6 @@
 "use client";
+
+import { Translated } from "@/components/i18n-provider";
 import { FormEvent, useState } from "react";
 import { siteConfig } from "@/lib/site-config";
 type SubmitState = "idle" | "submitting" | "success" | "error";
@@ -56,7 +58,7 @@ export function ContactForm() {
             setStatusMessage("We could not send your message right now. Please email the organising team directly.");
         }
     }
-    return (<form className="inquiry-form" onSubmit={handleSubmit}>
+    return <Translated>{(<form className="inquiry-form" onSubmit={handleSubmit}>
       <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden"/>
       <input type="hidden" name="_subject" value="Oceania Youth Zonal 2027 contact enquiry"/>
 
@@ -104,5 +106,5 @@ export function ContactForm() {
       {statusMessage && (<p role="status" className={`form-status ${submitState === "error" ? "error" : "success"}`}>
           {statusMessage}
         </p>)}
-    </form>);
+    </form>)}</Translated>;
 }

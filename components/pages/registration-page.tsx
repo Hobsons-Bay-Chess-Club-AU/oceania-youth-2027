@@ -1,4 +1,6 @@
 "use client";
+
+import { Translated } from "@/components/i18n-provider";
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 import { RegistrationRoadmap } from "@/components/registration-roadmap";
@@ -16,7 +18,7 @@ export function RegistrationPage() {
     const registrationFee = isOfficialPlayer ? 0 : 130;
     const entryFee = isEarlyBird ? 130 : 170;
     const totalFee = registrationFee + entryFee;
-    return (<div className="page-registration">
+    return <Translated>{(<div className="page-registration">
     <section className="page-title">
     <div className="eyebrow">
     <span></span>Official Player Entry Portal</div>
@@ -85,5 +87,5 @@ export function RegistrationPage() {
     <span className="eyebrow">✈️ Federation Support</span><span>$1,000 AUD Grant</span></div>
     <h3>Pacific Island Assistance Scheme</h3><p>First 3 Pacific Island federations (outside Australia &amp; New Zealand) registering 5+ players by <strong>1 March 2027</strong> receive a <strong>$1,000 AUD travel grant</strong>.</p><Link href="/federation-support#travel-assistance" className="action">Eligibility &amp; Conditions →</Link></div>
     </section>
-    </div>);
+    </div>)}</Translated>;
 }
