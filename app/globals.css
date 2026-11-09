@@ -412,12 +412,9 @@ main>div>*:not(.home-lead):not(.home-stats):not(.entry-banner):not(.clock-strip)
   position: absolute;
   top: 48px;
   right: var(--gutter);
-  width: 28px;
+  width: 34px;
   height: 34px;
-  background: var(--blue);
-  mask: url(/pacific/mark.svg) center/contain no-repeat;
-  -webkit-mask: url(/pacific/mark.svg) center/contain no-repeat;
-  opacity: .85;
+  background: url(/oceania-logo.png) center/contain no-repeat;
 }
 /* Home introduction and championship artwork. */
 .home-lead {
@@ -1468,9 +1465,7 @@ html[data-theme=dark] .region-portrait img {
   top: 100px;
   bottom: 50px;
   width: 26%;
-  background: var(--blue);
-  mask: url(/pacific/mark.svg) center/contain no-repeat;
-  -webkit-mask: url(/pacific/mark.svg) center/contain no-repeat;
+  background: url(/oceania-logo.png) center/contain no-repeat;
   opacity: 1;
 }
 .feature-story>span,.feature-story>p:first-child {
@@ -3221,10 +3216,8 @@ main a {
   display: block;
   font-size: 0;
   width: 40px;
-  height: 45px;
-  background: var(--blue);
-  mask: url(/pacific/mark.svg) center/contain no-repeat;
-  -webkit-mask: url(/pacific/mark.svg) center/contain no-repeat;
+  height: 40px;
+  background: url(/oceania-logo.png) center/contain no-repeat;
 }
 .partners-sheet>div>.flexline {
   justify-content: space-between;
