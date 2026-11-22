@@ -85,3 +85,8 @@ test('adaptive and manual federation choices persist like existing sets', () => 
     assert.equal(readPieceSet(storage), id);
   }
 });
+
+test('directory fallback validates every FIDE ID alias and rejects conflicts', () => {
+  assert.equal(playerFederation({WhiteFideId:'?',WhiteFIDEID:'101'},'w',{'101':'au'}),'au');
+  assert.equal(playerFederation({WhiteFideId:'101',WhiteFIDEID:'202'},'w',{'101':'au','202':'nz'}),undefined);
+});

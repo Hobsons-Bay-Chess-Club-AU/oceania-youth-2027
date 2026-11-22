@@ -3,24 +3,61 @@
 
 import { Translated } from "@/components/i18n-provider";
 import { Chess } from "chess.js";
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
+import { createContext, useContext, useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
 import { boardMoveArrow } from "@/lib/broadcast-arrow";
+import { BroadcastSoundProvider, BroadcastSoundToggle, useBroadcastSound, useLiveBroadcastSound } from "@/components/broadcast-sound";
+import { replayMoveSound } from "@/lib/broadcast-sound";
+import { enrichBroadcastPlayers, loadBroadcastPlayers, needsBroadcastPlayers, type BroadcastPlayer } from "@/lib/broadcast-players";
 import { replayPlyForKey } from "@/lib/broadcast-replay";
 import { fullscreenBoardLayout } from "@/lib/broadcast-layout";
 import { PieceImage, PieceSetProvider, PieceSetSettings, usePlayerFederations } from "@/components/broadcast-piece-settings";
 import styles from "./dgt-boards.module.css";
-import { FEDERATION_PIECE_SETS, type FederationLookup } from "@/lib/broadcast-piece-sets";
+import { playerFederationFlag, type FederationLookup } from "@/lib/broadcast-piece-sets";
 import { broadcastConfig } from "@/app/dgt-boards/data";
 import {
-  BroadcastFetchError, fetchBroadcast, lichessGameUrl,
-  type BroadcastGame, type BroadcastPosition, type BroadcastTournament,
+  followBroadcast, mergeBroadcastGames, syncBroadcastClocks, lichessGameUrl, broadcastClock, broadcastPlayerScore,
+  type BroadcastConnection, type BroadcastGame, type BroadcastPosition, type BroadcastTournament,
 } from "@/lib/lichess-broadcast";
 
 const pieceNames: Record<string, string> = {
   k: "king", q: "queen", r: "rook", b: "bishop", n: "knight", p: "pawn",
 };
 
-type Feed = Awaited<ReturnType<typeof fetchBroadcast>>;
+type Feed = { games: BroadcastGame[]; errors: string[]; snapshotVersion: number };
+
+const ClockNow = createContext(0);
+
+function LiveClockProvider({ games, children }: { games: BroadcastGame[]; children: ReactNode }) {
+  const [now, setNow] = useState(() => Date.now());
+  const running = games.some(game => game.runningColor);
+  useEffect(() => {
+    if (!running) return;
+    const tick = () => setNow(Date.now());
+    tick();
+    const timer = window.setInterval(tick, 1000);
+    document.addEventListener("visibilitychange", tick);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", tick);
+    };
+  }, [running]);
+  return <ClockNow.Provider value={now}>{children}</ClockNow.Provider>;
+}
+
+function BroadcastClock({ game, color, ply = game.positions.length - 1, followLive = true, miniature = false }: {
+  game: BroadcastGame; color: "w" | "b"; ply?: number; followLive?: boolean; miniature?: boolean;
+}) {
+  const now = useContext(ClockNow);
+  const clock = broadcastClock(game, ply, color, now, followLive);
+  const score = broadcastPlayerScore(game.headers.Result, color);
+  if (score) return <span className={`${styles.playerScore}${miniature ? ` ${styles.miniClock}` : ""}`} data-result={score.outcome}
+    aria-label={`${color === "w" ? "White" : "Black"} result: ${score.text}, ${score.outcome}`}>{score.text}</span>;
+  return <time className={miniature ? styles.miniClock : undefined} data-running={clock.running || undefined}
+    data-low-time={clock.lowTime || undefined}
+    aria-label={`${color === "w" ? "White" : "Black"} ${clock.running ? "estimated running" : "recorded"} clock`}
+    title={clock.running ? "Estimated live clock; synchronizes with the broadcast." : "Recorded broadcast clock"}>{clock.text}</time>;
+}
+
 
 function BroadcastBoard({ position, headers, label, flipped = false, miniature = false, result }: {
   position: BroadcastPosition;
@@ -32,16 +69,19 @@ function BroadcastBoard({ position, headers, label, flipped = false, miniature =
 }) {
   const federations = usePlayerFederations(headers);
   const resultText = result === "1-0" ? "1–0" : result === "0-1" ? "0–1" : result === "1/2-1/2" ? "½–½" : undefined;
-  const squares = useMemo(() => new Chess(position.fen).board().flat(), [position.fen]);
+  const { squares, checkedColor } = useMemo(() => {
+    const board = new Chess(position.fen);
+    return { squares: board.board().flat(), checkedColor: board.isCheck() ? board.turn() : undefined };
+  }, [position.fen]);
   const shownSquares = flipped ? [...squares].reverse() : squares;
   const arrow = boardMoveArrow(position.from, position.to, flipped);
   const arrowId = `move-arrow-${useId().replace(/:/g, "")}`;
-  return <Translated>{<span className={`chessboard${miniature ? ` ${styles.miniBoard}` : ""}`} role="img" aria-label={`${label}${resultText ? `. Final result: ${resultText}` : ""}`}>
+  return <Translated>{<span className={`chessboard${miniature ? ` ${styles.miniBoard}` : ""}`} role="img" aria-label={`${label}${checkedColor ? `. ${checkedColor === "w" ? "White" : "Black"} king in check` : ""}${resultText ? `. Final result: ${resultText}` : ""}`}>
     {shownSquares.map((piece, index) => {
       const file = flipped ? 7 - index % 8 : index % 8;
       const rank = flipped ? Math.floor(index / 8) + 1 : 8 - Math.floor(index / 8);
       const square = `${"abcdefgh"[file]}${rank}`;
-      return <span key={square} className={styles.square} data-square={(file + rank) % 2 ? "dark" : "light"} data-highlight={square === position.from || undefined} aria-hidden="true">
+      return <span key={square} className={styles.square} data-square={(file + rank) % 2 ? "dark" : "light"} data-highlight={square === position.from || undefined} data-check={(piece?.type === "k" && piece.color === checkedColor) || undefined} aria-hidden="true">
         {piece && <PieceImage className={styles.piece} color={piece.color} type={piece.type} federation={federations[piece.color]} width="80" height="80" alt="" title={`${piece.color === "w" ? "White" : "Black"} ${pieceNames[piece.type]}`} draggable={false} />}
         {index % 8 === 0 && <small className="board-rank">{rank}</small>}
         {index >= 56 && <small className="board-file">{"abcdefgh"[file]}</small>}
@@ -57,15 +97,26 @@ function BroadcastBoard({ position, headers, label, flipped = false, miniature =
   </span>}</Translated>;
 }
 
+function PlayerFlag({ federation, color }: { federation: ReturnType<typeof playerFederationFlag>; color: "w" | "b" }) {
+  const [failedSource, setFailedSource] = useState("");
+  const side = color === "w" ? "White" : "Black";
+  const label = `${side}, ${federation ? `${federation.name} federation` : "federation unavailable"}`;
+  return <span className={styles.playerFlag} data-color={color} role="img" aria-label={label} title={label}>
+    {federation && failedSource !== federation.src
+      ? <img src={federation.src} onError={() => setFailedSource(federation.src)} width="24" height="24" alt="" />
+      : <span className={styles.flagFallback} aria-hidden="true">{color === "w" ? "♙" : "♟"}</span>}
+  </span>;
+}
+
 function PlayerIdentity({ headers, color }: { headers: BroadcastGame["headers"]; color: "w" | "b" }) {
   const federations = usePlayerFederations(headers);
-  const federation = FEDERATION_PIECE_SETS.find(entry => entry.code === federations[color]);
+  const federation = playerFederationFlag(headers, color, federations[color]);
   const side = color === "w" ? "White" : "Black";
   const title = (headers[`${side}Title`] || "").trim().toUpperCase();
   const recognizedTitle = /^(W?CM|W?FM|W?IM|W?GM)$/.test(title);
   const rating = (headers[`${side}Elo`] || "").trim();
   return <Translated>{<span className={styles.playerIdentity}>
-    {federation && <img className={styles.playerFlag} src={`/pacific/flags/${federation.code}.svg`} width="22" height="16" alt={`${federation.name} federation`} title={federation.name} />}
+    <PlayerFlag federation={federation} color={color} />
     {recognizedTitle && <span className={styles.titleBadge} data-title={title}>{title}</span>}
     <strong className={styles.playerName} translate="no">{headers[side] || `${side} player`}</strong>
     {/^\d+$/.test(rating) && rating !== "0" && <span className={styles.playerElo}>({rating})</span>}
@@ -76,9 +127,11 @@ function boardPreviewId(tournamentId: string, gameId: string) {
   return `board-preview-${tournamentId}-${encodeURIComponent(gameId)}`;
 }
 
-function BoardOverview({ games, game, round, rounds, tournamentId, tournamentName, onSelect, onRoundChange, onBack, backButton }: {
+function BoardOverview({ games, game, round, rounds, tournamentId, tournamentName, onSelect, onRoundChange, onBack, backButton, active, snapshotVersion }: {
   games: BroadcastGame[];
   game?: BroadcastGame;
+  active: boolean;
+  snapshotVersion: number;
   round: string;
   rounds: string[];
   tournamentId: string;
@@ -96,6 +149,7 @@ function BoardOverview({ games, game, round, rounds, tournamentId, tournamentNam
   const exitButton = useRef<HTMLButtonElement>(null);
   const nativeFullscreen = useRef(false);
   const layout = fullscreenBoardLayout(viewport.width, viewport.height, games.length);
+  useLiveBroadcastSound(games, active && !game, snapshotVersion);
 
   const exitFullscreen = useCallback(() => {
     setFullscreen(false);
@@ -168,32 +222,32 @@ function BoardOverview({ games, game, round, rounds, tournamentId, tournamentNam
   const fullscreenControl = <button type="button" ref={fullscreenButton} onClick={enterFullscreen}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M9 4H4v5m11-5h5v5M4 15v5h5m11-5v5h-5"/></svg>Fullscreen</button>;
   const allBoardsControl = <button type="button" ref={backButton} className={styles.backToBoards} onClick={onBack}><span aria-hidden="true">←</span> All boards <span className={styles.backCount}>{games.length}</span></button>;
 
-  return <Translated>{<section ref={panel} className={`${game ? styles.detailView : styles.overview}${fullscreen ? ` ${styles.fullscreen}` : ""}`} role={fullscreen ? "dialog" : undefined} aria-modal={fullscreen || undefined} aria-label={game ? `${fullscreen ? "Fullscreen " : ""}Board ${game.board} viewer` : fullscreen ? "Fullscreen tournament boards" : "All boards"}>
+  return <LiveClockProvider games={games}><Translated>{<section ref={panel} className={`${game ? styles.detailView : styles.overview}${fullscreen ? ` ${styles.fullscreen}` : ""}`} role={fullscreen ? "dialog" : undefined} aria-modal={fullscreen || undefined} aria-label={game ? `${fullscreen ? "Fullscreen " : ""}Board ${game.board} viewer` : fullscreen ? "Fullscreen tournament boards" : "All boards"}>
     {fullscreen ? <div className={styles.fullscreenHeader}>
       {game && allBoardsControl}
       <h2 title={tournamentName} translate="no">{tournamentName}</h2>
       <label><span>Round</span><select aria-label="Fullscreen round" value={round} onChange={event => onRoundChange(event.target.value)}>{rounds.map(value => <option key={value} value={value}>{value}</option>)}</select></label>
-      <PieceSetSettings />
+      <BroadcastSoundToggle /><PieceSetSettings />
       <button type="button" ref={exitButton} onClick={exitFullscreen} aria-label="Exit fullscreen"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M4 9h5V4m11 5h-5V4M4 15h5v5m11-5h-5v5"/></svg><span>Exit</span></button>
-    </div> : game ? <div className={`${styles.detailToolbar} ${styles.overviewActions}`}>{allBoardsControl}<div className={styles.overviewActions}><PieceSetSettings />{fullscreenControl}</div></div> : <div className={styles.overviewHeading}>
+    </div> : game ? <div className={`${styles.detailToolbar} ${styles.overviewActions}`}>{allBoardsControl}<div className={styles.overviewActions}><BroadcastSoundToggle /><PieceSetSettings />{fullscreenControl}</div></div> : <div className={styles.overviewHeading}>
       <div><span className="eyebrow">Round {round}</span><h2>All boards<span>{games.length}</span></h2></div>
-      <div className={styles.overviewActions}><p>Choose a board to follow the game.</p><PieceSetSettings />{fullscreenControl}</div>
+      <div className={styles.overviewActions}><p>Choose a board to follow the game.</p><BroadcastSoundToggle /><PieceSetSettings />{fullscreenControl}</div>
     </div>}
     <div ref={gridViewport} className={fullscreen ? `${styles.fullscreenViewport}${game ? ` ${styles.fullscreenDetail}` : ""}` : undefined} style={fullscreen && game ? { "--fullscreen-detail-board-size": `${Math.max(160, viewport.height - 240)}px` } as CSSProperties : undefined}>
-    {game ? <GameViewer key={`${round}:${game.id}`} game={game} games={games} onSelect={onSelect} /> : <div className={styles.boardGrid} style={fullscreen ? { "--board-columns": layout.columns, "--board-card-width": `${layout.cardWidth}px` } as CSSProperties : undefined}>{games.map(game => {
+    {game ? <GameViewer key={`${round}:${game.id}`} game={game} games={games} onSelect={onSelect} active={active} snapshotVersion={snapshotVersion} /> : <div className={styles.boardGrid} style={fullscreen ? { "--board-columns": layout.columns, "--board-card-width": `${layout.cardWidth}px` } as CSSProperties : undefined}>{games.map(game => {
       const position = game.positions[game.positions.length - 1];
       const white = game.headers.White || "White player";
       const black = game.headers.Black || "Black player";
       const result = game.headers.Result === "*" ? "In progress" : game.headers.Result || "Awaiting result";
       return <button type="button" key={game.id} id={boardPreviewId(tournamentId, game.id)} className={styles.boardCard} aria-label={`View board ${game.board}: ${white} versus ${black}`} onClick={() => onSelect(game.id)}>
         <span className={styles.cardHeading}><span className="eyebrow">Board {game.board.padStart(2, "0")}</span><span className={styles.cardResult} data-live={game.headers.Result === "*"}>{result}</span></span>
-        <span className={styles.miniPlayer}><span className={styles.blackMarker} /><PlayerIdentity headers={game.headers} color="b" /><span className={styles.miniClock}>{position.blackClock || "—"}</span></span>
+        <span className={styles.miniPlayer}><PlayerIdentity headers={game.headers} color="b" /><BroadcastClock game={game} color="b" miniature /></span>
         <BroadcastBoard headers={game.headers} position={position} label={`Latest position: ${white} versus ${black}`} miniature result={game.headers.Result} />
-        <span className={styles.miniPlayer}><span className={styles.whiteMarker} /><PlayerIdentity headers={game.headers} color="w" /><span className={styles.miniClock}>{position.whiteClock || "—"}</span></span>
+        <span className={styles.miniPlayer}><PlayerIdentity headers={game.headers} color="w" /><BroadcastClock game={game} color="w" miniature /></span>
         <span className={styles.cardFooter}><span>{position.san ? `${position.moveNumber}${position.color === "w" ? "." : "…"} ${position.san}` : "Awaiting first move"}</span><span>View board <span aria-hidden="true">↗</span></span></span>
       </button>;
     })}</div>}</div>
-  </section>}</Translated>;
+  </section>}</Translated></LiveClockProvider>;
 }
 
 function TournamentBroadcast({ tournament, onName, active, divisionPicker }: {
@@ -204,72 +258,59 @@ function TournamentBroadcast({ tournament, onName, active, divisionPicker }: {
 }) {
   const [feed, setFeed] = useState<Feed>();
   const [error, setError] = useState("");
-  const [fetching, setFetching] = useState(true);
+  const [connection, setConnection] = useState<BroadcastConnection>("loading");
+  const fetching = connection === "loading";
+  const [reload, setReload] = useState(0);
   const [updatedAt, setUpdatedAt] = useState<Date>();
   const [round, setRound] = useState("");
   const [gameId, setGameId] = useState("");
-  const refresh = useRef<() => void>(() => {});
   const backButton = useRef<HTMLButtonElement>(null);
   const lastViewedId = useRef("");
+  const [players, setPlayers] = useState<BroadcastPlayer[]>([]);
+  const needPlayers = needsBroadcastPlayers(feed?.games || []);
+  useEffect(() => {
+    if (!active || !needPlayers) return;
+    let ignored = false;
+    void loadBroadcastPlayers(tournament.id).then(roster => {
+      if (!ignored) setPlayers(roster);
+    });
+    return () => { ignored = true; };
+  }, [active, needPlayers, tournament.id, reload]);
 
   useEffect(() => {
     if (!active) return;
-    let stopped = false;
-    let inFlight = false;
-    let timer: ReturnType<typeof setTimeout>;
-    let controller: AbortController | undefined;
-    let retryAt = 0;
-    async function load() {
-      if (stopped || inFlight || Date.now() < retryAt) return;
-      clearTimeout(timer);
-      inFlight = true;
-      controller = new AbortController();
-      const timeout = setTimeout(() => controller?.abort(), 25_000);
-      setFetching(true);
-      let delay = 60_000;
-      try {
-        const data = await fetchBroadcast(tournament, {
-          token: process.env.NEXT_PUBLIC_LICHESS_TOKEN,
-          signal: controller.signal,
-        });
-        if (stopped) return;
-        setFeed(data);
+    const controller = new AbortController();
+    void followBroadcast(tournament, {
+      token: process.env.NEXT_PUBLIC_LICHESS_TOKEN,
+      signal: controller.signal,
+      onState(state, message) {
+        if (controller.signal.aborted) return;
+        setConnection(state);
+        setError(message || "");
+      },
+      onGames(data, snapshot) {
+        if (controller.signal.aborted) return;
+        setFeed(previous => ({
+          games: snapshot ? syncBroadcastClocks(data.games, previous?.games || [], Date.now())
+            : mergeBroadcastGames(previous?.games || [], data.games, Date.now()),
+          snapshotVersion: (previous?.snapshotVersion || 0) + (snapshot ? 1 : 0),
+          errors: snapshot ? data.errors : [...new Set([...(previous?.errors || []), ...data.errors])].slice(-50),
+        }));
         const incomingRounds = [...new Set(data.games.map(game => game.roundGroup))]
           .sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-        setRound(previous => incomingRounds.includes(previous) ? previous : incomingRounds.at(-1) || "");
-        setError("");
-        setUpdatedAt(new Date());
-        if (data.games[0]) onName(tournament.id, data.games[0].tournamentName);
-        delay = data.refreshAfterMs;
-        retryAt = 0;
-      } catch (cause) {
-        if (stopped) return;
-        setError(controller.signal.aborted ? "The broadcast request timed out. Please try again."
-          : cause instanceof Error ? cause.message : "The broadcast could not be loaded.");
-        if (cause instanceof BroadcastFetchError) {
-          delay = cause.retryAfterMs;
-          retryAt = Date.now() + delay;
+        setRound(previous => snapshot
+          ? incomingRounds.includes(previous) ? previous : incomingRounds.at(-1) || ""
+          : previous || incomingRounds.at(-1) || "");
+        if (data.games.length) {
+          setUpdatedAt(new Date());
+          onName(tournament.id, data.games[0].tournamentName);
         }
-      } finally {
-        clearTimeout(timeout);
-        inFlight = false;
-        if (!stopped) {
-          setFetching(false);
-          timer = setTimeout(() => void load(), delay);
-        }
-      }
-    }
-    refresh.current = () => { void load(); };
-    void load();
-    return () => {
-      stopped = true;
-      clearTimeout(timer);
-      controller?.abort();
-      refresh.current = () => {};
-    };
-  }, [tournament, onName, active]);
+      },
+    });
+    return () => controller.abort();
+  }, [tournament, onName, active, reload]);
 
-  const games = feed?.games || [];
+  const games = useMemo(() => enrichBroadcastPlayers(feed?.games || [], players), [feed?.games, players]);
   const rounds = [...new Set(games.map(game => game.roundGroup))].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
   const selectedRound = rounds.includes(round) ? round : rounds.at(-1);
   const roundGames = games.filter(game => game.roundGroup === selectedRound)
@@ -305,21 +346,23 @@ function TournamentBroadcast({ tournament, onName, active, divisionPicker }: {
       </div>
     </section>
     <div className="broadcast-feed-status">
-      <p role="status"><span className={styles.statusDot} data-state={error ? "error" : fetching ? "loading" : "ready"} />{fetching ? "Updating broadcast…" : updatedAt ? <>Updated <time dateTime={updatedAt.toISOString()}>{updatedAt.toLocaleTimeString()}</time></> : "Waiting for broadcast"}</p>
-      <button type="button" disabled={fetching} onClick={() => refresh.current()}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 6.1A8 8 0 0 1 20 12M4 12a8 8 0 0 0 13.9 5.9"/></svg>Refresh</button>
+      <p role="status"><span className={styles.statusDot} data-state={error ? "error" : fetching ? "loading" : "ready"} />{fetching ? "Loading broadcast…" : connection === "connecting" ? "Connecting live updates…" : connection === "reconnecting" ? "Reconnecting live updates…" : <>Live{updatedAt && <> · Updated <time dateTime={updatedAt.toISOString()}>{updatedAt.toLocaleTimeString()}</time></>}</>}</p>
+      <button type="button" disabled={connection !== "live"} onClick={() => setReload(value => value + 1)}><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 6.1A8 8 0 0 1 20 12M4 12a8 8 0 0 0 13.9 5.9"/></svg>Refresh</button>
     </div>
-    {error && <div className="broadcast-notice" role="alert"><p>{error}</p>{feed && <p>Showing the last successfully fetched games.</p>}</div>}
+    {error && <div className="broadcast-notice" role="alert"><p>{error}</p>{feed && <p>Showing the last received games while the connection recovers.</p>}</div>}
     {!!feed?.errors.length && <details className="broadcast-notice"><summary>{feed.errors.length} game(s) could not be displayed</summary><ul>{feed.errors.map((message, index) => <li key={index}>{message}</li>)}</ul></details>}
     {!fetching && feed && !games.length && <p className="broadcast-notice">No games have been published for this tournament yet.</p>}
     {fetching && !feed && <div className={styles.loadingViewer} aria-label="Loading games" aria-busy="true"><div className={styles.loadingBoard} aria-hidden="true">{Array.from({ length: 64 }, (_, index) => <span key={index} data-dark={(Math.floor(index / 8) + index % 8) % 2 === 1} />)}</div><div className={styles.loadingNotation}><span className="eyebrow">Preparing the boards</span><h2>The next move awaits.</h2><p>Loading games, pairings, and recorded clocks.</p></div></div>}
-    {!!roundGames.length && <BoardOverview games={roundGames} game={game} round={selectedRound || ""} rounds={rounds} tournamentId={tournament.id} tournamentName={roundGames[0]?.tournamentName || tournament.id} onSelect={openGame} onRoundChange={chooseRound} onBack={showAllBoards} backButton={backButton} />}
-    {feed && <details className={styles.feedNotes}><summary>Broadcast timing</summary><p>This feed refreshes automatically every {feed.refreshAfterMs < 60_000 ? `${feed.refreshAfterMs / 1000} seconds` : "1 minute"}, based on the PGN Variant tag. Updates may still be delayed by Lichess. Clocks show recorded values rather than running timers.</p></details>}
+    {!!roundGames.length && <BoardOverview active={active} snapshotVersion={feed?.snapshotVersion || 0} games={roundGames} game={game} round={selectedRound || ""} rounds={rounds} tournamentId={tournament.id} tournamentName={roundGames[0]?.tournamentName || tournament.id} onSelect={openGame} onRoundChange={chooseRound} onBack={showAllBoards} backButton={backButton} />}
+    {feed && <details className={styles.feedNotes}><summary>Broadcast timing</summary><p>After loading the tournament, a live connection receives game updates directly from Lichess. There is no regular polling. Interrupted connections reconnect automatically with a delay. Updates may still be delayed by the broadcast source. Live clocks are estimates between updates; finished games show player scores, and replay of unfinished games shows recorded times.</p></details>}
   </>}</Translated>;
 }
 
-function GameViewer({ game, games, onSelect }: {
+function GameViewer({ game, games, onSelect, active, snapshotVersion }: {
   game: BroadcastGame;
   games: BroadcastGame[];
+  active: boolean;
+  snapshotVersion: number;
   onSelect: (id: string) => void;
 }) {
   // null follows incoming moves; a number pins the viewer to a historical move.
@@ -334,6 +377,13 @@ function GameViewer({ game, games, onSelect }: {
   const black = game.headers.Black || "Black player";
   const result = game.headers.Result === "*" ? "In progress" : game.headers.Result || "Awaiting result";
   const moveCount = game.positions.length - 1;
+  const { play } = useBroadcastSound();
+  useLiveBroadcastSound([game], active && replayPly === null, snapshotVersion);
+  const navigateReplay = useCallback((next: number | null) => {
+    const target = Math.max(0, Math.min(next ?? game.positions.length - 1, game.positions.length - 1));
+    play(replayMoveSound(game, ply, target));
+    setReplayPly(next);
+  }, [game, ply, play]);
 
   useEffect(() => {
     function navigateMove(event: KeyboardEvent) {
@@ -344,11 +394,11 @@ function GameViewer({ game, games, onSelect }: {
       if (event.target instanceof Element && event.target.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="combobox"], [role="slider"], [role="spinbutton"]')) return;
       event.preventDefault();
       const key = event.key;
-      setReplayPly(previous => replayPlyForKey(previous, moveCount, key));
+      navigateReplay(replayPlyForKey(replayPly, moveCount, key));
     }
     window.addEventListener("keydown", navigateMove);
     return () => window.removeEventListener("keydown", navigateMove);
-  }, [moveCount]);
+  }, [moveCount, replayPly, navigateReplay]);
 
   async function copyPgn() {
     try {
@@ -361,7 +411,7 @@ function GameViewer({ game, games, onSelect }: {
   const player = (color: "w" | "b") => <div className={`broadcast-player broadcast-player-${color}`}>
     <PieceImage color={color} type="k" federation={federations[color]} width="32" height="32" alt={color === "w" ? "White" : "Black"} />
     <PlayerIdentity headers={game.headers} color={color} />
-    <time aria-label={`${color === "w" ? "White" : "Black"} recorded clock`}>{(color === "w" ? position.whiteClock : position.blackClock) || "—"}</time>
+    <BroadcastClock game={game} color={color} ply={ply} followLive={replayPly === null} />
   </div>;
 
   return <Translated>{<section ref={viewer} className="broadcast-stage" aria-label="Game viewer">
@@ -376,21 +426,21 @@ function GameViewer({ game, games, onSelect }: {
         <BroadcastBoard headers={game.headers} position={position} flipped={flipped} result={ply === moveCount ? game.headers.Result : undefined} label={`${white} versus ${black}, ${ply ? `after ${position.moveNumber}${position.color === "b" ? "..." : "."} ${position.san}` : "starting position"}. ${flipped ? "Black" : "White"} at bottom.`} />
         {player(flipped ? "b" : "w")}
         <div className="broadcast-controls" aria-label="Replay controls">
-          <button type="button" aria-label="Starting position" disabled={ply === 0} onClick={() => setReplayPly(0)}>⏮</button>
-          <button type="button" aria-label="Previous move" aria-keyshortcuts="ArrowLeft" title="Previous move (Left arrow)" disabled={ply === 0} onClick={() => setReplayPly(ply - 1)}>←</button>
+          <button type="button" aria-label="Starting position" disabled={ply === 0} onClick={() => navigateReplay(0)}>⏮</button>
+          <button type="button" aria-label="Previous move" aria-keyshortcuts="ArrowLeft" title="Previous move (Left arrow)" disabled={ply === 0} onClick={() => navigateReplay(ply - 1)}>←</button>
           <span>{ply} / {moveCount}</span>
-          <button type="button" aria-label="Next move" aria-keyshortcuts="ArrowRight" title="Next move (Right arrow)" disabled={ply === moveCount} onClick={() => setReplayPly(ply + 1)}>→</button>
-          <button type="button" aria-label="Latest position, follow new moves" aria-pressed={replayPly === null} onClick={() => setReplayPly(null)}>Latest</button>
+          <button type="button" aria-label="Next move" aria-keyshortcuts="ArrowRight" title="Next move (Right arrow)" disabled={ply === moveCount} onClick={() => navigateReplay(ply + 1)}>→</button>
+          <button type="button" aria-label="Latest position, follow new moves" aria-pressed={replayPly === null} onClick={() => navigateReplay(null)}>Latest</button>
           <button type="button" aria-label="Flip board" onClick={() => setFlipped(value => !value)}>Flip</button>
         </div>
-        <p className="broadcast-cache-note">{replayPly === null ? "Following the latest position." : "Replaying a recorded position."} Clocks show recorded values.</p>
+        <p className="broadcast-cache-note">{replayPly === null ? "Following the latest position." : "Replaying a recorded position."} {replayPly === null ? "Live clocks are estimates between broadcast updates; finished games show player scores." : broadcastPlayerScore(game.headers.Result, "w") ? "Finished games show player scores." : "Clocks show recorded values."}</p>
       </div>
       <div className="broadcast-side">
         <div className="broadcast-notation">
           <div className="flexline"><span>{game.headers.Opening || "Opening unavailable"}</span><span>{game.headers.ECO}</span></div>
           <h3 className="eyebrow">Moves <span className={styles.moveHint}>Select a move or use ← →</span></h3>
           <div className="broadcast-moves" aria-label="Select a move to replay">
-            {game.positions.slice(1).map((move, index) => <button type="button" key={index} aria-current={ply === index + 1 ? "step" : undefined} onClick={() => setReplayPly(index + 1)}>
+            {game.positions.slice(1).map((move, index) => <button type="button" key={index} aria-current={ply === index + 1 ? "step" : undefined} onClick={() => navigateReplay(index + 1)}>
               <span>{move.moveNumber}{move.color === "w" ? "." : "…"}</span> {move.san}
             </button>)}
             {!moveCount && <p>Waiting for the first move.</p>}
@@ -401,8 +451,8 @@ function GameViewer({ game, games, onSelect }: {
           <h3 className="eyebrow">Boards in this round <span className={styles.boardCount}>{games.length}</span></h3>
           <div className="subgrid">{games.map(candidate => <button type="button" key={candidate.id} data-board={candidate.board} aria-pressed={candidate.id === game.id} onClick={() => onSelect(candidate.id)}>
             <span className={styles.pairingBoardLabel}>Board {candidate.board}</span>
-            <p><span className={styles.whiteMarker} aria-label="White" /><PlayerIdentity headers={candidate.headers} color="w" /></p>
-            <p><span className={styles.blackMarker} aria-label="Black" /><PlayerIdentity headers={candidate.headers} color="b" /></p>
+            <p><PlayerIdentity headers={candidate.headers} color="w" /></p>
+            <p><PlayerIdentity headers={candidate.headers} color="b" /></p>
             <span className={styles.pairingResult} data-live={candidate.headers.Result === "*"}>{candidate.headers.Result === "*" ? "In progress" : candidate.headers.Result === "1/2-1/2" ? "½–½" : candidate.headers.Result || "—"}</span>
           </button>)}</div>
         </div>
@@ -418,7 +468,7 @@ export function DgtBoardsPage({ initialNames = {}, federationLookup = {} }: { in
   const onName = useCallback((id: string, name: string) => {
     setNames(previous => previous[id] === name ? previous : { ...previous, [id]: name });
   }, []);
-  return <Translated>{<PieceSetProvider federationLookup={federationLookup}><div className={`page-broadcast ${styles.room}`}>
+  return <Translated>{<BroadcastSoundProvider><PieceSetProvider federationLookup={federationLookup}><div className={`page-broadcast ${styles.room}`}>
     <section className={`page-title ${styles.title}`}><div className="eyebrow">Oceania Youth 2027 / DGT broadcasts</div>
       <h1>Broadcast room</h1><p>Choose your division. Find your round.<br />Follow the action, one move at a time.</p>
     </section>
@@ -435,5 +485,5 @@ export function DgtBoardsPage({ initialNames = {}, federationLookup = {} }: { in
         </select>
       </div>} />
     </div>)}
-  </div></PieceSetProvider>}</Translated>;
+  </div></PieceSetProvider></BroadcastSoundProvider>}</Translated>;
 }

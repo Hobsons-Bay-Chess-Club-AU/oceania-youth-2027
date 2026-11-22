@@ -61,8 +61,25 @@ export function playerFederation(headers: Record<string, string>, color: "w" | "
     const codes = explicit.map(value => federationCode(value));
     return codes[0] && codes.every(code => code === codes[0]) ? codes[0] : undefined;
   }
-  const id = (headers[side + "FideId"] || headers[side + "FIDEId"] || headers[side + "FIDEID"] || "").trim();
-  return /^[1-9]\d*$/.test(id) ? lookup[id] : undefined;
+  const ids = [...new Set(["FideId", "FIDEId", "FIDEID"].map(suffix => (headers[side + suffix] || "").trim())
+    .filter(id => /^[1-9]\d*$/.test(id)))];
+  return ids.length === 1 ? lookup[ids[0]] : undefined;
+}
+
+export function playerFederationFlag(headers: Record<string, string>, color: "w" | "b", fallback?: FederationCode) {
+  const side = color === "w" ? "White" : "Black";
+  const explicit = ["Federation", "Fed", "Country"].map(suffix => headers[side + suffix]?.trim())
+    .filter((value): value is string => !!value && value !== "-" && value !== "?");
+  const canonical = (value: string) => {
+    const local = FEDERATION_PIECE_SETS.find(set => set.code === federationCode(value));
+    return local?.fide || (/^[a-z]{3}$/i.test(value) ? value.toUpperCase() : undefined);
+  };
+  const codes = explicit.length ? explicit.map(canonical) : fallback ? [canonical(fallback)] : [];
+  const code = codes[0];
+  if (!code || !codes.every(value => value === code)) return undefined;
+  const local = FEDERATION_PIECE_SETS.find(set => set.fide === code);
+  return { name: local?.name || code, src: local ? `/pacific/flags/${local.code}.svg`
+    : `https://lichess1.org/assets/fide/fed/${code}.svg` };
 }
 
 export function resolvePieceSet(preference: PiecePreference, federation?: string): PieceSetId {
