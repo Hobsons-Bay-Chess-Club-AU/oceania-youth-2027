@@ -354,7 +354,6 @@ function TournamentBroadcast({ tournament, onName, active, divisionPicker }: {
     {!fetching && feed && !games.length && <p className="broadcast-notice">No games have been published for this tournament yet.</p>}
     {fetching && !feed && <div className={styles.loadingViewer} aria-label="Loading games" aria-busy="true"><div className={styles.loadingBoard} aria-hidden="true">{Array.from({ length: 64 }, (_, index) => <span key={index} data-dark={(Math.floor(index / 8) + index % 8) % 2 === 1} />)}</div><div className={styles.loadingNotation}><span className="eyebrow">Preparing the boards</span><h2>The next move awaits.</h2><p>Loading games, pairings, and recorded clocks.</p></div></div>}
     {!!roundGames.length && <BoardOverview active={active} snapshotVersion={feed?.snapshotVersion || 0} games={roundGames} game={game} round={selectedRound || ""} rounds={rounds} tournamentId={tournament.id} tournamentName={roundGames[0]?.tournamentName || tournament.id} onSelect={openGame} onRoundChange={chooseRound} onBack={showAllBoards} backButton={backButton} />}
-    {feed && <details className={styles.feedNotes}><summary>Broadcast timing</summary><p>After loading the tournament, a live connection receives game updates directly from Lichess. There is no regular polling. Interrupted connections reconnect automatically with a delay. Updates may still be delayed by the broadcast source. Live clocks are estimates between updates; finished games show player scores, and replay of unfinished games shows recorded times.</p></details>}
   </>}</Translated>;
 }
 

@@ -329,15 +329,6 @@
 .loadingBoard span[data-dark=true] { background: var(--color-broadcast-board-dark); }
 .loadingNotation h2 { font-size: clamp(26px, 3vw, 42px); margin: var(--space-broadcast-sm) 0; }
 .loadingNotation p { color: var(--color-broadcast-muted); font-size: var(--text-broadcast-body); }
-.feedNotes {
-  margin-top: var(--space-broadcast-lg);
-  padding-top: var(--space-broadcast-sm);
-  border-top: var(--rule-broadcast-width) solid var(--color-broadcast-rule);
-  color: var(--color-broadcast-muted);
-  font-size: var(--text-broadcast-caption);
-}
-.feedNotes summary { cursor: pointer; padding-block: var(--space-broadcast-xs); }
-.feedNotes p { max-width: 80ch; padding-top: var(--space-broadcast-sm); }
 .overview { padding-top: var(--space-broadcast-lg); }
 .overviewHeading {
   display: flex;
