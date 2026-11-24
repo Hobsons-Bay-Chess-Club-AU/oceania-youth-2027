@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-11T10:19:44.790Z",
+  "lastUpdated": "2026-11-24T15:30:13.579Z",
   "description": "Official registered Oceania junior entrants for the 2027 Oceania Youth Chess Championship.",
   "divisions": [
     "U8",
@@ -15,6 +15,18 @@
     "Girls"
   ],
   "players": [
+    {
+      "name": "Qiankai (George) Guo",
+      "division": "U12",
+      "category": "Open",
+      "federation": "AUS",
+      "flag": "AU",
+      "fideId": "573000728",
+      "fideRating": 1448,
+      "rapidRating": 0,
+      "blitzRating": 0,
+      "yob": 2016
+    },
     {
       "name": "Mishleen Kaur",
       "division": "U10",
