@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-24T15:30:13.579Z",
+  "lastUpdated": "2026-11-26T20:54:51.734Z",
   "description": "Official registered Oceania junior entrants for the 2027 Oceania Youth Chess Championship.",
   "divisions": [
     "U8",
@@ -15,6 +15,18 @@
     "Girls"
   ],
   "players": [
+    {
+      "name": "Elyano Polus",
+      "division": "U16",
+      "category": "Open",
+      "federation": "AUS",
+      "flag": "AU",
+      "fideId": "3285278",
+      "fideRating": 1731,
+      "rapidRating": 1807,
+      "blitzRating": 1631,
+      "yob": 2011
+    },
     {
       "name": "Qiankai (George) Guo",
       "division": "U12",
