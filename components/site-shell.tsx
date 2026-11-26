@@ -118,10 +118,14 @@ export function SiteShell({ children }: {
     </a>
     <section className="footer-sponsors" aria-labelledby="footer-sponsors-title">
     <h4 className="eyebrow" id="footer-sponsors-title">Our Sponsors</h4>
-    <a className="sponsor-link" href="https://www.bmg.vic.edu.au/" target="_blank" rel="noreferrer">
-    <img className="sponsor-logo" src="/bgm.svg" alt="" width="322" height="427" loading="lazy"/>
-    <span>Bacchus Marsh Grammar</span>
-    </a>
+    <div className="sponsor-list">
+    {siteConfig.sponsors.map((sponsor) => (
+      <a key={sponsor.name} className="sponsor-link" href={sponsor.href} target="_blank" rel="noreferrer">
+        <img className="sponsor-logo" src={sponsor.logo} alt="" width={sponsor.width} height={sponsor.height} loading="lazy"/>
+        <span>{sponsor.name}</span>
+      </a>
+    ))}
+    </div>
     </section>
     <div className="subgrid">
     <div>

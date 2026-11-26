@@ -1,3 +1,11 @@
+export interface SponsorItem {
+  name: string;
+  href: string;
+  logo: string;
+  width: number;
+  height: number;
+}
+
 export const siteConfig = {
   name: "Oceania Youth Chess Championship 2027",
   shortName: "Oceania Youth 2027",
@@ -61,6 +69,29 @@ export const siteConfig = {
     note:
       "Hosted by Hobsons Bay Chess Club Inc. (Est. 1974) under the auspices of the Oceania Chess Confederation (OCC) and Australian Chess Federation (ACF).",
   },
+  sponsors: [
+    {
+      name: "Bacchus Marsh Grammar",
+      href: "https://www.bmg.vic.edu.au/",
+      logo: "/bgm.svg",
+      width: 322,
+      height: 427,
+    },
+    {
+      name: "WestWaters Hotel & Entertainment Complex",
+      href: "https://westwatershotel.com.au/",
+      logo: "/westwaters.png",
+      width: 2500,
+      height: 1042,
+    },
+    {
+      name: "Chess Victoria Inc.",
+      href: "https://www.chessvictoria.org.au/",
+      logo: "/cv.png",
+      width: 244,
+      height: 206,
+    },
+  ] satisfies SponsorItem[],
 };
 
 export type SiteConfig = typeof siteConfig;

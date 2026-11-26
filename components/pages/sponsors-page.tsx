@@ -1,5 +1,6 @@
 
 import { Translated } from "@/components/i18n-provider";
+import { siteConfig } from "@/lib/site-config";
 import Link from "next/link";
 import styles from "./sponsors.module.css";
 export function SponsorsPage() {
@@ -25,10 +26,14 @@ export function SponsorsPage() {
     <section className="partners-sheet">
     <div>
     <h2>Our Sponsors</h2>
-    <a className="sponsor-link" href="https://www.bmg.vic.edu.au/" target="_blank" rel="noreferrer">
-    <img className="sponsor-logo" src="/bgm.svg" alt="" width="322" height="427" loading="lazy"/>
-    <h3>Bacchus Marsh Grammar</h3>
-    </a>
+    <div className="sponsor-list">
+    {siteConfig.sponsors.map((sponsor) => (
+      <a key={sponsor.name} className="sponsor-link" href={sponsor.href} target="_blank" rel="noreferrer">
+        <img className="sponsor-logo" src={sponsor.logo} alt="" width={sponsor.width} height={sponsor.height} loading="lazy"/>
+        <h3>{sponsor.name}</h3>
+      </a>
+    ))}
+    </div>
     </div>
     <div className="host-partners">
     <div className="flexline">

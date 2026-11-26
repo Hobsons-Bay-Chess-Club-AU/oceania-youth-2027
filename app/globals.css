@@ -3448,19 +3448,35 @@ select option {
   margin-bottom: 40px;
   border-bottom: 1px solid var(--rule);
 }
+.sponsor-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 28px 48px;
+}
 .sponsor-link {
   display: inline-flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 24px;
+  gap: 20px;
   max-width: 100%;
 }
 .sponsor-logo {
   display: block;
   width: 140px;
-  height: auto;
-  padding: 16px;
+  height: 140px;
+  flex-shrink: 0;
+  object-fit: contain;
+  padding: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--rule);
   background: #fff;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.sponsor-link:hover .sponsor-logo {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 @media (max-width: 700px) {
   .home-art {
