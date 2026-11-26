@@ -28,7 +28,7 @@
 }
 .item dt {
   color: var(--muted);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   line-height: 1.5;
   letter-spacing: .08em;
@@ -48,7 +48,7 @@
 }
 .caption {
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 1.6;
   color: var(--muted);
 }
@@ -104,10 +104,10 @@
     --stats-space: 12px;
   }
   .item dt {
-    font-size: 9px;
+    font-size: 12px;
     letter-spacing: .04em;
   }
   .caption {
-    font-size: 11px;
+    font-size: 13px;
   }
 }

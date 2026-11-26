@@ -1,6 +1,6 @@
 /* Hallmark · component: piece preferences · tone: existing editorial · anchor hue: ocean teal */
 .pieceImage { object-fit: contain; }
-.trigger { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; font-size: 12px; }
+.trigger { display: inline-flex; align-items: center; justify-content: center; gap: 8px; white-space: nowrap; font-size: 14px; }
 .settingsDialog {
   width: min(760px, calc(100vw - 32px));
   max-height: calc(100dvh - 32px);
@@ -15,10 +15,10 @@
 .settingsDialog::backdrop { background: color-mix(in srgb, var(--ink) 55%, transparent); }
 .settingsDialog .dialogHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 24px; }
 .settingsDialog .dialogHeader h2 { font: 700 34px/1.1 var(--display); color: var(--ink); text-transform: none; white-space: normal; }
-.eyebrow { color: var(--muted); font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.eyebrow { color: var(--muted); font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
 .settingsDialog .dialogHeader button { min-width: 44px; min-height: 44px; flex-shrink: 0; }
 .settingsDialog fieldset { border: 0; padding: 0; margin: 0; }
-.settingsDialog legend { font-size: 13px; font-weight: 700; margin-bottom: 12px; }
+.settingsDialog legend { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
 .setGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
 .settingsDialog .setOption { position: relative; display: grid; align-content: start; gap: 12px; padding: 14px; border: 1px solid var(--rule); background: var(--surface); cursor: pointer; border-radius: 3px; }
 .settingsDialog .setOption:hover { background: var(--sea); }
@@ -27,14 +27,14 @@
 .setOption input { position: absolute; width: 1px; height: 1px; min-height: 0; padding: 0; opacity: 0; overflow: hidden; }
 .settingsDialog .setOption > span { display: block; }
 .settingsDialog .setOption > .optionHeading { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.optionHeading strong { font-size: 13px; font-weight: 800; }
-.selectedMark { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 1px solid var(--rule); border-radius: 50%; font-size: 11px; flex-shrink: 0; }
+.optionHeading strong { font-size: 15px; font-weight: 800; }
+.selectedMark { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 1px solid var(--rule); border-radius: 50%; font-size: 13px; flex-shrink: 0; }
 .settingsDialog .setOption > .preview { display: flex; justify-content: space-around; align-items: center; gap: 3px; padding: 8px 4px; background: var(--paper); border-radius: 3px; }
 .preview img { width: calc((100% - 15px) / 6); height: 66px; min-width: 0; }
-.settingsDialog .setOption .description { font-size: 11px; line-height: 1.65; color: var(--muted); font-weight: 500; letter-spacing: 0; text-transform: none; }
+.settingsDialog .setOption .description { font-size: 13px; line-height: 1.65; color: var(--muted); font-weight: 500; letter-spacing: 0; text-transform: none; }
 .settingsDialog .setOption > .flags { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; }
 .flags img { width: 16px; height: 12px; object-fit: contain; }
-.storageNote { margin-top: 20px; font-size: 11px; line-height: 1.7; color: var(--muted); }
+.storageNote { margin-top: 20px; font-size: 13px; line-height: 1.7; color: var(--muted); }
 @media (max-width: 560px) {
   .settingsDialog { padding: 16px; }
   .setGrid { grid-template-columns: minmax(0, 1fr); }
@@ -49,7 +49,7 @@
   background: linear-gradient(120deg, var(--sea), var(--paper));
 }
 .settingsDialog .officialOption:has(input:checked) { border-color: var(--gold, #c9a34d); }
-.settingsDialog .officialOption .officialBadge { color: var(--ink); font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.settingsDialog .officialOption .officialBadge { color: var(--ink); font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .settingsDialog .officialOption .optionHeading strong { font: 700 27px/1.1 var(--display); }
 .settingsDialog .officialOption > .preview { justify-content: center; gap: 12px; }
 .officialOption .preview img { width: min(12%, 70px); height: 88px; }
@@ -57,9 +57,9 @@
 .settingsDialog .collection { margin-top: 24px; }
 .settingsDialog .adaptiveOption { grid-column: 1 / -1; }
 .settingsDialog .setOption > .adaptivePreview { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 8px; background: var(--paper); }
-.adaptivePreview > span { font-size: 11px; font-weight: 600; text-align: center; }
+.adaptivePreview > span { font-size: 13px; font-weight: 600; text-align: center; }
 .adaptivePreview > span > span { display: inline-block; margin-inline: 6px; color: var(--muted); }
 .optionHeading strong { display: inline-flex; align-items: center; gap: 6px; }
-.searchLabel { display: block; margin-bottom: 6px; font-size: 11px; color: var(--muted); }
-.settingsDialog .searchInput { display: block; width: 100%; min-height: 44px; margin-bottom: 14px; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 3px; background: var(--paper); color: var(--ink); font: inherit; font-size: 13px; }
+.searchLabel { display: block; margin-bottom: 6px; font-size: 13px; color: var(--muted); }
+.settingsDialog .searchInput { display: block; width: 100%; min-height: 44px; margin-bottom: 14px; padding: 10px 12px; border: 1px solid var(--rule); border-radius: 3px; background: var(--paper); color: var(--ink); font: inherit; font-size: 15px; }
 .settingsDialog .searchInput:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
